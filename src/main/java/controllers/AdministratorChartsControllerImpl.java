@@ -22,12 +22,15 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
       
         // TODO Auto-generated method stub 
         LocalDate dataPartenza, dataArrivo;
-        
+        Integer scelta = choice;
         try {       
             if((!dateStart.getText().isBlank() || !dateStart.getText().isEmpty())
-                    && (!dateEnd.getText().isBlank() || !dateEnd.getText().isBlank())) {
+                    || (!dateEnd.getText().isBlank() || !dateEnd.getText().isBlank())) {
                 dataPartenza = dateStart.getDate();
-                dataPartenza = dateEnd.getDate();
+                dataArrivo = dateEnd.getDate();
+                    if(dataArrivo.isBefore(dataPartenza))  
+                        JOptionPane.showMessageDialog(panel, "Impossibile viaggiare nel tempo, la data di partenza è prima della data di arrivo");
+                
             } else
                 JOptionPane.showMessageDialog(panel, "Inserisci data valida!");
 

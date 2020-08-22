@@ -23,7 +23,7 @@ public class AdministratorChartsView extends JFrame {
     private static final long serialVersionUID = -800518568134501851L;
     private static final double PERCENT = 0.6;
     private static final String TITLE = "Grafici amministratore";
-    private static final AdministratorChartsControllerImpl ctrl = new AdministratorChartsControllerImpl();
+    private final AdministratorChartsControllerImpl ctrl = new AdministratorChartsControllerImpl();
     public AdministratorChartsView() {
         setTitle(AdministratorChartsView.TITLE);
         setMinimumSize(new Dimension(500, 500));
@@ -89,7 +89,7 @@ public class AdministratorChartsView extends JFrame {
         btnVisualizzaDati.setBackground(SystemColor.textHighlight);
         btnVisualizzaDati.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
         btnVisualizzaDati.addActionListener(e->{
-            ctrl.onButtonPressed(datepickerFirst, datepickerLast, 0, mainPanel); //////CONTROLLA 0, bisogna passare la scelta del combobox!
+            ctrl.onButtonPressed(datepickerFirst, datepickerLast, (comboBoxDatiGrafico.getSelectedIndex())+1, mainPanel); //////CONTROLLA 0, bisogna passare la scelta del combobox!
         });
         DatePanel.add(btnVisualizzaDati);
         
