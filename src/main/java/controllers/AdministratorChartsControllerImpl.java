@@ -11,7 +11,7 @@ import org.junit.jupiter.params.shadow.com.univocity.parsers.common.DataValidati
 import com.github.lgooddatepicker.components.DatePicker;
 
 public class AdministratorChartsControllerImpl implements AdministratorChartsController{
- 
+    
     public AdministratorChartsControllerImpl() {
         
     }
