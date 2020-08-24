@@ -7,8 +7,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.junit.jupiter.params.shadow.com.univocity.parsers.common.DataValidationException;
+import org.knowm.xchart.XYChart;
 
 import com.github.lgooddatepicker.components.DatePicker;
+
+import model.DataCharts;
 
 public class AdministratorChartsControllerImpl implements AdministratorChartsController{
     
@@ -18,7 +21,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         /*Ricordati di gestire quando la data di arrivo e maggiore della data di partenza!*/
     
     @Override
-    public void onButtonPressed(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel) {
+    public void onButtonPressed(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel, XYChart chart) {
       
         // TODO Auto-generated method stub 
         LocalDate dataPartenza, dataArrivo;
@@ -30,7 +33,9 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 dataArrivo = dateEnd.getDate();
                     if(dataArrivo.isBefore(dataPartenza))  
                         JOptionPane.showMessageDialog(panel, "Impossibile viaggiare nel tempo, la data di partenza è prima della data di arrivo");
+                DataCharts data = new DataCharts();
                 
+                //chart.addSeries(Entrate, xData, data.buildChartsFromData(dataPartenza, dataArrivo, scelta));
             } else
                 JOptionPane.showMessageDialog(panel, "Inserisci data valida!");
 

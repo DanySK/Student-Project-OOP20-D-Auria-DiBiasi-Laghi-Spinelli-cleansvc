@@ -90,9 +90,7 @@ public class AdministratorChartsView extends JFrame {
         btnVisualizzaDati.setForeground(UIManager.getColor("text"));
         btnVisualizzaDati.setBackground(SystemColor.textHighlight);
         btnVisualizzaDati.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-        btnVisualizzaDati.addActionListener(e->{
-            ctrl.onButtonPressed(datepickerFirst, datepickerLast, (comboBoxDatiGrafico.getSelectedIndex())+1, mainPanel); //////CONTROLLA 0, bisogna passare la scelta del combobox!
-        });
+       
         DatePanel.add(btnVisualizzaDati);
         
         
@@ -101,6 +99,9 @@ public class AdministratorChartsView extends JFrame {
         JPanel chartPanel = new XChartPanel<XYChart>(chart);
         mainPanel.add(chartPanel, BorderLayout.CENTER);
         
+        btnVisualizzaDati.addActionListener(e->{
+            ctrl.onButtonPressed(datepickerFirst, datepickerLast, (comboBoxDatiGrafico.getSelectedIndex())+1, mainPanel,chart); //////CONTROLLA 0, bisogna passare la scelta del combobox!
+        });
     }
     
     public void display() {
