@@ -35,11 +35,14 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                         JOptionPane.showMessageDialog(panel, "Impossibile viaggiare nel tempo, la data di partenza è prima della data di arrivo");
                 DataCharts data = new DataCharts();
                 
+                chart.addSeries("Andamento", data.getDaysDate(dataPartenza, dataArrivo), data.buildChartsFromData(dataPartenza, dataArrivo, scelta));
+                
+                
                 //chart.addSeries(Entrate, xData, data.buildChartsFromData(dataPartenza, dataArrivo, scelta));
             } else
                 JOptionPane.showMessageDialog(panel, "Inserisci data valida!");
 
-        }catch(DataValidationException e) {
+        }catch(DataValidationException | IllegalArgumentException e) {
             e.printStackTrace();
         }
     }

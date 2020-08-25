@@ -12,10 +12,10 @@ import view.AdministratorChartsView;
 import controllers.AdministratorChartsControllerImpl;
 import model.DataCharts;
 public class TestAdministrator{
-    @Test 
+   /* @Test 
     public void isVisible(){
        new AdministratorChartsView().display();
-    }
+    }*/
     
     @Test
     public void dateControllerDateStartBefore() {
@@ -28,7 +28,7 @@ public class TestAdministrator{
         dateStart.setDate(LocalDate.now());
         dateEnd.setDate(LocalDate.of(2020, 8, 18));
          new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 1,panel,chart);
-    }
+    }    /*Ok*/
     
     @Test
     public void dateControllerDateEmpty() {
@@ -38,15 +38,17 @@ public class TestAdministrator{
         XYChart chart = new XYChartBuilder().build();
         
         new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 2, panel,chart);
-    }
+    }   /*Ok*/
     
     @Test
-    public void dateListTest() {
-            
-        
+    public void dateListTest() { 
         DataCharts datRange = new DataCharts();
-        System.out.println(datRange.getDaysDate(LocalDate.of(2020,8,20), LocalDate.of(2020, 8,25)));
-        
-
+        System.out.println(datRange.getDaysDate(LocalDate.of(2020,8,20), LocalDate.of(2020, 9,1)));
+    } /*Ok*/
+    
+    @Test
+    public void dataChartTest() {
+        DataCharts data = new DataCharts();
+        System.out.println(data.buildChartsFromData(LocalDate.of(2020,8,20), LocalDate.of(2020,8, 24),2));
     }
 }

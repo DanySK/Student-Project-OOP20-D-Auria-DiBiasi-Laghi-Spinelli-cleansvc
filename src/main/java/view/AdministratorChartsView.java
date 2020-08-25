@@ -24,6 +24,7 @@ public class AdministratorChartsView extends JFrame {
     private static final double PERCENT = 0.6;
     private static final String TITLE = "Grafici amministratore";
     final AdministratorChartsControllerImpl ctrl;
+    
     public AdministratorChartsView() {   
        
         this.ctrl = new AdministratorChartsControllerImpl();
