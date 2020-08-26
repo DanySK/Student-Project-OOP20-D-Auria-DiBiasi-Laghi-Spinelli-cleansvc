@@ -1,6 +1,9 @@
 package view;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.Date;
+import java.time.LocalDate;
+
 import model.DatiDaVisualizzareEnum;
 import javax.swing.*;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -9,6 +12,8 @@ import controllers.AdministratorChartsControllerImpl;
 
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler.ChartTheme;
+import org.knowm.xchart.style.Styler.LegendPosition;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -113,7 +118,6 @@ public class AdministratorChartsView extends JFrame {
     }
     
     private void setChartStyle(XYChart chart) {
-        final double minValue= 0;
         final int padding = 10;
         chart.getStyler().setChartBackgroundColor(Color.WHITE);
         chart.getStyler().setPlotGridLinesColor(Color.LIGHT_GRAY)
@@ -121,13 +125,14 @@ public class AdministratorChartsView extends JFrame {
                               .setYAxisTickLabelsColor(Color.DARK_GRAY)
                                  .setXAxisTickMarksColor(Color.LIGHT_GRAY)
                                    .setYAxisTickMarksColor(Color.LIGHT_GRAY);
-        chart.getStyler().setXAxisMin(minValue)
-                            .setYAxisMin(minValue);
         chart.getStyler().setChartTitleBoxBackgroundColor(SystemColor.activeCaption)
                             .setChartTitleBoxBorderColor(Color.WHITE)
                                 .setChartTitlePadding(padding);
         
         chart.getStyler().setChartFontColor(Color.BLACK);
+        chart.getStyler().setDatePattern("dd/MMM/YYYY");
+        chart.getStyler().setLegendPosition(LegendPosition.InsideNW);
+        chart.setXAxisTitle("Data");
         return;
     }
 }

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import com.github.lgooddatepicker.components.DatePicker;
-import view.AdministratorChartsView;
 import controllers.AdministratorChartsControllerImpl;
 import model.DataCharts;
 public class TestAdministrator{

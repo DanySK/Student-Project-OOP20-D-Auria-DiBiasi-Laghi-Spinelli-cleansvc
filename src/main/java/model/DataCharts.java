@@ -42,6 +42,7 @@ private List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
     List<Double> entrateList = new ArrayList<>();
     Double money = 0.0;
     LocalDate auxDate = dateStart;
+    entrateList.add(money);
     while(!auxDate.isEqual(dateEnd)) {
         auxDate = auxDate.plusDays(DataCharts.DAY);
         money++;

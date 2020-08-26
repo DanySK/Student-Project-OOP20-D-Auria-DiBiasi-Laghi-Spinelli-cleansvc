@@ -34,6 +34,9 @@ dependencies {
     }*/
     implementation("com.github.lgooddatepicker:LGoodDatePicker:11.0.0")
     implementation("org.knowm.xchart:xchart:3.6.5")
+    // https://mvnrepository.com/artifact/org.jfree/jfreechart
+    //implementation("org.jfree.jfreechart:1.5.0")
+    
     // JUnit API and testing engine
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
