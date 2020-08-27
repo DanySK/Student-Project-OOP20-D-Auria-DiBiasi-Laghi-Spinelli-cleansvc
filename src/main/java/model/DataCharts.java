@@ -54,8 +54,8 @@ private List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
 private List<Double> getTempoLavoro(LocalDate dateStart, LocalDate dateEnd){
     
     List<Double> lavoroList = new ArrayList<>();
-    Double job = 8.5;
     LocalDate auxDate = dateStart;
+    Double job = 8.5;
     lavoroList.add(job);
     while(!auxDate.isEqual(dateEnd)) {
         auxDate = auxDate.plusDays(DataCharts.DAY);
