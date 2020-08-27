@@ -10,11 +10,8 @@ import org.knowm.xchart.XYChartBuilder;
 import com.github.lgooddatepicker.components.DatePicker;
 import controllers.AdministratorChartsControllerImpl;
 import model.DataCharts;
+import view.AdministratorChartsView;
 public class TestAdministrator{
-   /* @Test 
-    public void isVisible(){
-       new AdministratorChartsView().display();
-    }*/
     
     @Test
     public void dateControllerDateStartBefore() {
@@ -49,5 +46,10 @@ public class TestAdministrator{
     public void dataChartTest() {
         DataCharts data = new DataCharts();
         System.out.println(data.buildChartsFromData(LocalDate.of(2020,8,20), LocalDate.of(2020,8, 24),2));
+    }/*Ok*///Non girava perché mettevo un numero in meno nelle Y
+    
+    @Test 
+    public void isVisible(){
+       new AdministratorChartsView().display();
     }
 }

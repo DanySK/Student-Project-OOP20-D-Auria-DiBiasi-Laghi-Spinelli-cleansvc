@@ -23,22 +23,21 @@ public class DataCharts {
             
           if(choose.equals(DatiDaVisualizzareEnum.TEMPOLAVORO.getIndex())) {
             
-            return null;
+            return this.getTempoLavoro(dateStart, dateEnd);
         }
         
           else if(choose.equals(DatiDaVisualizzareEnum.ENTRATE.getIndex())){
-           final List<Double> entrateList = this.getEntrate(dateStart, dateEnd);
-        return entrateList;
+              return this.getEntrate(dateStart, dateEnd);
         }
-        
-      return null;
+          
         } catch(IllegalArgumentException e) {
           JOptionPane.showMessageDialog(new JPanel(), "Input non valido");
       }
-        return null;
+        return null; 
 }
 
 private List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
+    
     List<Double> entrateList = new ArrayList<>();
     Double money = 0.0;
     LocalDate auxDate = dateStart;
@@ -54,7 +53,16 @@ private List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
 
 private List<Double> getTempoLavoro(LocalDate dateStart, LocalDate dateEnd){
     
-    return null;
+    List<Double> lavoroList = new ArrayList<>();
+    Double job = 8.5;
+    LocalDate auxDate = dateStart;
+    lavoroList.add(job);
+    while(!auxDate.isEqual(dateEnd)) {
+        auxDate = auxDate.plusDays(DataCharts.DAY);
+        job++;
+        lavoroList.add(job);
+    }
+    return lavoroList;
 }
 
 public List<Date> getDaysDate(LocalDate dateStart, LocalDate dateEnd){
