@@ -1,20 +1,19 @@
 package Test;
 
 import java.time.LocalDate;
-
 import javax.swing.JPanel;
-
 import org.junit.jupiter.api.Test;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import com.github.lgooddatepicker.components.DatePicker;
 import controllers.AdministratorChartsControllerImpl;
 import model.DataCharts;
+import model.DateException;
 import view.AdministratorChartsView;
 public class TestAdministrator{
     
     @Test
-    public void dateControllerDateStartBefore() {
+    public void dateControllerDateStartBefore() throws DateException {
         DatePicker dateStart = new DatePicker();
         DatePicker dateEnd = new DatePicker();
         JPanel panel = new JPanel();
@@ -27,7 +26,7 @@ public class TestAdministrator{
     }    /*Ok*/
     
     @Test
-    public void dateControllerDateEmpty() {
+    public void dateControllerDateEmpty() throws DateException {
         DatePicker dateStart = new DatePicker();
         DatePicker dateEnd = new DatePicker();
         JPanel panel = new JPanel();
