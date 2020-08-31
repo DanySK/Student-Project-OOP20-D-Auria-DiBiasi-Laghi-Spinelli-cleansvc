@@ -1,6 +1,8 @@
 package controllers;
 
 import java.time.LocalDate;
+import java.util.Iterator;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.knowm.xchart.XYChart;
@@ -43,6 +45,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                                         dataChart.getDaysDate(dataPartenza, dataArrivo), 
                                             dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta)).setMarker(SeriesMarkers.NONE);
                 chart.getStyler().setXAxisTicksVisible(true);
+                chart.getStyler().setYAxisTicksVisible(true);
 
                 panel.revalidate();
                 panel.repaint();
@@ -53,12 +56,10 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
             }
         }
     
-    public void resetChart(XYChart chart, JPanel panel) {
-       for(String s : chart.getSeriesMap().keySet()) {
-           chart.removeSeries(s);
-       }
-       panel.revalidate();
-       panel.repaint();
+    public void resetChart(XYChart chart, JPanel panel) {           
+           chart.getSeriesMap().keySet().removeAll(chart.getSeriesMap().keySet());
+           panel.revalidate();
+           panel.repaint();
     }
 
     private String newLegendString(String dataArr, String dataPar, Integer scelta) {

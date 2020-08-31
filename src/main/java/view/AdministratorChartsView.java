@@ -1,6 +1,7 @@
 package view;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -97,7 +98,7 @@ public class AdministratorChartsView extends JFrame {
        
         datePanel.add(btnVisualizzaDati);
         
-        JButton btnReset = new JButton("Elimina ultima linea");
+        JButton btnReset = new JButton("Reset Grafico");
         btnReset.setForeground(SystemColor.text);
         btnReset.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
         btnReset.setBackground(new Color(51, 153, 255));
@@ -121,7 +122,10 @@ public class AdministratorChartsView extends JFrame {
         });
         
         btnReset.addActionListener(e->{
-            ctrl.resetChart(chart, chartPanel);
+           Integer option = JOptionPane.showConfirmDialog(chartPanel, "Sei Sicuro di effettuare il reset del grafico?", "ATTENZIONE!", 2);
+           System.out.println(option);
+           if(option.equals(JOptionPane.YES_NO_OPTION))
+                   ctrl.resetChart(chart, mainPanel);
         });
     }
     
