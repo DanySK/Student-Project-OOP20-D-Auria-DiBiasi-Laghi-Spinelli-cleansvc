@@ -91,18 +91,24 @@ public class AdministratorChartsView extends JFrame {
         comboBoxDatiGrafico.addItem(DatiDaVisualizzareEnum.TEMPOLAVORO.getIndex()+ " " + DatiDaVisualizzareEnum.TEMPOLAVORO.getItemName());
         comboBoxDatiGrafico.addItem(DatiDaVisualizzareEnum.ENTRATE.getIndex()+ " " + DatiDaVisualizzareEnum.ENTRATE.getItemName());
 
-        JButton btnVisualizzaDati = new JButton("Visualizza Dati");
+        JButton btnVisualizzaDati = new JButton("Visualizza dati");
         btnVisualizzaDati.setForeground(UIManager.getColor("text"));
         btnVisualizzaDati.setBackground(new Color(51, 153, 255));
         btnVisualizzaDati.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
        
         datePanel.add(btnVisualizzaDati);
         
-        JButton btnReset = new JButton("Reset Grafico");
+        JButton btnReset = new JButton("Reset grafico");
         btnReset.setForeground(SystemColor.text);
         btnReset.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
         btnReset.setBackground(new Color(51, 153, 255));
         datePanel.add(btnReset);
+        
+        JButton btnDeleteLine = new JButton("Elimina ultima linea");
+        btnDeleteLine.setForeground(Color.WHITE);
+        btnDeleteLine.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnDeleteLine.setBackground(SystemColor.textHighlight);
+        datePanel.add(btnDeleteLine);
         
         
         XYChart chart = new XYChartBuilder().title("DATI VISUALIZZATI").theme(ChartTheme.GGPlot2).build();
@@ -123,9 +129,13 @@ public class AdministratorChartsView extends JFrame {
         
         btnReset.addActionListener(e->{
            Integer option = JOptionPane.showConfirmDialog(chartPanel, "Sei Sicuro di effettuare il reset del grafico?", "ATTENZIONE!", 2);
-           System.out.println(option);
            if(option.equals(JOptionPane.YES_NO_OPTION))
                    ctrl.resetChart(chart, mainPanel);
+        });
+        
+        //Elimina sempre la prima
+        btnDeleteLine.addActionListener(e->{
+            ctrl.deleteLast(chart, chartPanel);
         });
     }
     

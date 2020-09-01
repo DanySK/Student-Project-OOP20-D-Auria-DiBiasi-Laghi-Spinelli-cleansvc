@@ -1,10 +1,18 @@
 package controllers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -57,10 +65,34 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         }
     
     public void resetChart(XYChart chart, JPanel panel) {           
-           chart.getSeriesMap().keySet().removeAll(chart.getSeriesMap().keySet());
-           panel.revalidate();
-           panel.repaint();
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        chart.getSeriesMap().clear();
+                        panel.revalidate();
+                        panel.repaint();
+                    }
+                });
+            }
+        });
+        thread.start();
     }
+
+
+    public void deleteLast(XYChart chart, JPanel panel) {
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                       
+                    }
+                });
+            }
+            });
+        thread.start();        
+    }
+       
 
     private String newLegendString(String dataArr, String dataPar, Integer scelta) {
         String choose = scelta.equals(DatiDaVisualizzareEnum.ENTRATE.getIndex()) ?  DatiDaVisualizzareEnum.ENTRATE.getItemName()

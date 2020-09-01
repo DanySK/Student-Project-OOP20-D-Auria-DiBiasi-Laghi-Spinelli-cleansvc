@@ -12,4 +12,6 @@ public interface AdministratorChartsController {
     public void onButtonPressed(DatePicker dateStart,DatePicker dateEnd, int choice, JPanel panel, XYChart chart) throws DateException;
     
     public void resetChart(XYChart chart, JPanel panel);
+    
+    public void deleteLast(XYChart chart, JPanel panel);
 }
