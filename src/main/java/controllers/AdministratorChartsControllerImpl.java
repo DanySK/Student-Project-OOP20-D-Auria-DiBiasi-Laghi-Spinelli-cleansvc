@@ -1,24 +1,19 @@
 package controllers;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 import com.github.lgooddatepicker.components.DatePicker;
 import model.DataCharts;
+import model.DataChartsImpl;
 import model.DateException;
 import model.DatiDaVisualizzareEnum;
+
 
 public class AdministratorChartsControllerImpl implements AdministratorChartsController{
     
@@ -47,7 +42,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                         throw dateExc;
                     }
         
-                DataCharts dataChart = new DataCharts();
+                DataChartsImpl dataChart = new DataChartsImpl();
                 
                 chart.addSeries( this.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
                                         dataChart.getDaysDate(dataPartenza, dataArrivo), 
@@ -65,32 +60,23 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         }
     
     public void resetChart(XYChart chart, JPanel panel) {           
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
                         chart.getSeriesMap().clear();
                         panel.revalidate();
                         panel.repaint();
-                    }
-                });
-            }
-        });
-        thread.start();
     }
 
 
     public void deleteLast(XYChart chart, JPanel panel) {
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                       
-                    }
-                });
+            try{    
+           new DataChartsImpl().deleteLastItem(chart);
+           panel.revalidate();
+           panel.repaint();
+            } catch(IndexOutOfBoundsException e) {
+                if(chart.getSeriesMap().isEmpty()) {
+                    new JOptionPane();
+                    JOptionPane.showMessageDialog(panel, "Nessun elemento da cancellare nel grafico!");
+                }
             }
-            });
-        thread.start();        
     }
        
 

@@ -13,5 +13,5 @@ public interface AdministratorChartsController {
     
     public void resetChart(XYChart chart, JPanel panel);
     
-    public void deleteLast(XYChart chart, JPanel panel);
+    
 }
