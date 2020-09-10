@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.border.TitledBorder;
+import java.awt.Cursor;
 
 public class AdministratorChartsView extends JFrame {
     
@@ -44,13 +45,13 @@ public class AdministratorChartsView extends JFrame {
         
         JLabel lblTitle = new JLabel("Finestra Grafici");
         lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitle.setForeground(Color.DARK_GRAY);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+        lblTitle.setForeground(SystemColor.textText);
+        lblTitle.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         panelTitle.add(lblTitle, BorderLayout.NORTH);
         
         JLabel lblNewLabel = new JLabel("Seleziona la data e il tipo di dato d'interesse per visualizzare l'andamento nell'intervallo di tempo richiesto.");
-        lblNewLabel.setForeground(Color.DARK_GRAY);
-        lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+        lblNewLabel.setForeground(SystemColor.textText);
+        lblNewLabel.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         panelTitle.add(lblNewLabel, BorderLayout.SOUTH);
         
         JPanel mainPanel = new JPanel();
@@ -69,9 +70,9 @@ public class AdministratorChartsView extends JFrame {
         datePanel.add(labelDatePickerFirst);
         
         DatePicker datepickerFirst = new DatePicker();
-        datepickerFirst.getComponentToggleCalendarButton().setForeground(UIManager.getColor("text"));
+        datepickerFirst.getComponentToggleCalendarButton().setForeground(SystemColor.textText);
         datepickerFirst.getComponentDateTextField().setToolTipText("Seleziona data di partenza per dati");
-        datepickerFirst.getComponentToggleCalendarButton().setBackground(SystemColor.textHighlight);
+        datepickerFirst.getComponentToggleCalendarButton().setBackground(SystemColor.activeCaption);
         datepickerFirst.getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         datePanel.add(datepickerFirst);
         
@@ -82,33 +83,37 @@ public class AdministratorChartsView extends JFrame {
         DatePicker datepickerLast = new DatePicker();
         datepickerLast.getComponentToggleCalendarButton().setForeground(UIManager.getColor("text"));
         datepickerLast.getComponentDateTextField().setToolTipText("Seleziona data d'arrivo per i dati");
-        datepickerLast.getComponentToggleCalendarButton().setBackground(SystemColor.textHighlight);
+        datepickerLast.getComponentToggleCalendarButton().setBackground(SystemColor.activeCaption);
         datepickerLast.getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         datePanel.add(datepickerLast);
         
         JComboBox<String> comboBoxDatiGrafico = new JComboBox<>();
+        comboBoxDatiGrafico.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        comboBoxDatiGrafico.setToolTipText("Dato da visualizzare");
+        comboBoxDatiGrafico.setBackground(SystemColor.inactiveCaption);
+        comboBoxDatiGrafico.setForeground(SystemColor.textText);
         comboBoxDatiGrafico.setFont(new Font("Tahoma", Font.PLAIN, 13));
         datePanel.add(comboBoxDatiGrafico);
         comboBoxDatiGrafico.addItem(DatiDaVisualizzareEnum.TEMPOLAVORO.getIndex()+ " " + DatiDaVisualizzareEnum.TEMPOLAVORO.getItemName());
         comboBoxDatiGrafico.addItem(DatiDaVisualizzareEnum.ENTRATE.getIndex()+ " " + DatiDaVisualizzareEnum.ENTRATE.getItemName());
 
-        JButton btnVisualizzaDati = new JButton("Visualizza dati");
-        btnVisualizzaDati.setForeground(UIManager.getColor("text"));
-        btnVisualizzaDati.setBackground(new Color(51, 153, 255));
+        final JButton btnVisualizzaDati = new JButton("Visualizza dati");
+        btnVisualizzaDati.setForeground(SystemColor.textText);
+        btnVisualizzaDati.setBackground(SystemColor.activeCaption);
         btnVisualizzaDati.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
        
         datePanel.add(btnVisualizzaDati);
         
-        JButton btnReset = new JButton("Reset grafico");
-        btnReset.setForeground(SystemColor.text);
+        final JButton btnReset = new JButton("Reset grafico");
+        btnReset.setForeground(SystemColor.textText);
         btnReset.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-        btnReset.setBackground(new Color(51, 153, 255));
+        btnReset.setBackground(SystemColor.activeCaption);
         datePanel.add(btnReset);
         
-        JButton btnDeleteLine = new JButton("Elimina ultima linea");
-        btnDeleteLine.setForeground(Color.WHITE);
+        final JButton btnDeleteLine = new JButton("Elimina ultima linea");
+        btnDeleteLine.setForeground(SystemColor.textText);
         btnDeleteLine.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-        btnDeleteLine.setBackground(SystemColor.textHighlight);
+        btnDeleteLine.setBackground(SystemColor.activeCaption);
         datePanel.add(btnDeleteLine);
         
         
@@ -132,6 +137,7 @@ public class AdministratorChartsView extends JFrame {
            Integer option = JOptionPane.showConfirmDialog(chartPanel, "Sei Sicuro di effettuare il reset del grafico?", "ATTENZIONE!", 2);
            if(option.equals(JOptionPane.YES_NO_OPTION))
                    ctrl.resetChart(chart, mainPanel);
+           
         });
         
         //Elimina sempre la prima
@@ -141,12 +147,13 @@ public class AdministratorChartsView extends JFrame {
     }
     
     public void display() {
-       Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+       final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
        setSize((int) (dimension.getWidth()*(AdministratorChartsView.PERCENT)) , (int)(dimension.getHeight() * AdministratorChartsView.PERCENT));
        setVisible(true);
        setResizable(true);
     }
     
+    //Setta lo stile del grafico;
     private void setChartStyle(XYChart chart) {
         chart.setXAxisTitle("Data");
         chart.getStyler().setChartBackgroundColor(SystemColor.window)

@@ -3,7 +3,7 @@ package model;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class DateException extends Exception {
+public class DateException extends IllegalArgumentException {
 
     /**
      * 
@@ -13,10 +13,10 @@ public class DateException extends Exception {
      * 
      */
     
-    private JPanel panel;
     private final static String ERROR = "Errore formato data";
-    public DateException( final JPanel panel) {
-        this.panel = panel;
+    
+    public DateException() {
+        super();
     }
     
     public void warning(JPanel panel){
