@@ -27,10 +27,10 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
       
         // TODO Auto-generated method stub 
         final LocalDate dataPartenza, dataArrivo;
-        Integer scelta = choice;
+        final Integer scelta = choice;
         try {
                 if((dateStart.getText().isBlank() || dateStart.getText().isEmpty())
-                        || (dateEnd.getText().isBlank() || dateEnd.getText().isBlank())) {
+                        || (dateEnd.getText().isBlank() || dateEnd.getText().isBlank())) {  //lancia un warning se le date sono vuote
                     this.dateExc.warning(panel);
                     throw this.dateExc;
                 }    
@@ -39,7 +39,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 dataArrivo = dateEnd.getDate();
                     
                 if(dataArrivo.isBefore(dataPartenza)) {
-                        this.dateExc.warning(panel);
+                        this.dateExc.warning(panel);            //lancia un warning se la data di arrivo è prima della data di partenza
                         throw this.dateExc;
                     }
         
@@ -56,12 +56,12 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         }       
             catch(IllegalArgumentException e){
                 JOptionPane.showMessageDialog(panel, "Formato dati non valido, riprova.");
-                e.printStackTrace();
+                throw e;
             }
         }
     
     
-    public void resetChart(XYChart chart, JPanel panel) throws ChartException {           
+    public void resetChart(XYChart chart, JPanel panel) throws ChartException {        //elimina il grafico.   
         if(chart.getSeriesMap().isEmpty()) {
             this.chExc.warning(panel); 
             throw chExc;
@@ -82,8 +82,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         }
             new DataChartsImpl().deleteLastItem(chart);
                panel.revalidate();
-               panel.repaint();
-       
+               panel.repaint();   
     }
        
 

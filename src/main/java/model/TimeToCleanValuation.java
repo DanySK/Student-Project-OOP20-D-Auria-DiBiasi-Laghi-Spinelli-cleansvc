@@ -2,6 +2,7 @@ package model;
 
 import java.time.*;
 
+//BOZZA CALCOLO DEL TEMPO PER CUI AVVIARE UN PROCESSO DI PULIZIA
 
 public class TimeToCleanValuation {
     

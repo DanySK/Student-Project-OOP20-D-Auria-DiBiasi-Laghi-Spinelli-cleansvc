@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.Date;
 
+import model.ChartException;
 import model.DateException;
 import model.DatiDaVisualizzareEnum;
 import javax.swing.*;
@@ -128,21 +129,29 @@ public class AdministratorChartsView extends JFrame {
                 ctrl.onButtonPressed(datepickerFirst, datepickerLast, (comboBoxDatiGrafico.getSelectedIndex())+1, mainPanel,chart);
             } catch (DateException dateExc) {
                 // TODO Auto-generated catch block
-                   System.out.println(dateExc.message());
+                   System.out.println(dateExc.getMessage());
                    }
        
         });
         
         btnReset.addActionListener(e->{
+            try {
            Integer option = JOptionPane.showConfirmDialog(chartPanel, "Sei Sicuro di effettuare il reset del grafico?", "ATTENZIONE!", 2);
            if(option.equals(JOptionPane.YES_NO_OPTION))
                    ctrl.resetChart(chart, mainPanel);
+            }catch(ChartException chExc) {
+                System.out.println(chExc.getMessage() + "in Reset.");
+            }
            
         });
         
-        //Elimina sempre la prima
         btnDeleteLine.addActionListener(e->{
+            try {
             ctrl.deleteLast(chart, chartPanel);
+            }
+            catch(ChartException chExc) {
+                System.out.println(chExc.getMessage() + "in deleteLine.");
+            }
         });
     }
     

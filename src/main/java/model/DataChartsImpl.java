@@ -23,7 +23,7 @@ public class DataChartsImpl implements DataCharts {
         
     }
     
-    public List<Double> buildChartsFromData(LocalDate dateStart, LocalDate dateEnd, Integer choose) {
+    public List<Double> buildChartsFromData(LocalDate dateStart, LocalDate dateEnd, Integer choose) {       
         try {
                 if(choose.equals(DatiDaVisualizzareEnum.TEMPOLAVORO.getIndex())) {
                 return this.getTempoLavoro(dateStart, dateEnd);
@@ -102,7 +102,7 @@ public class DataChartsImpl implements DataCharts {
     }
 
     @Override
-    public void deleteLastItem(XYChart chart) {
+    public void deleteLastItem(XYChart chart) {   //cancella l'ultimo elemento, da migliorare
         // TODO Auto-generated method stub
         List<String> list = new ArrayList<String>();
         System.out.println(chart.getSeriesMap().keySet());
