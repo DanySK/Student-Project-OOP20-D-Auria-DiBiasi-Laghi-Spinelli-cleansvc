@@ -40,7 +40,7 @@ public class DataChartsImpl implements DataCharts {
     }
      
     //Qui devi implementare delle query, conta i giorni dall'inizio alla fine e per ogni giorno assegna la sua entrata,
-    //aggiungendola ad una lista che verrà aggiunta al grafuci
+    //aggiungendola ad una lista che verrà aggiunta al grafico
     private List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
         
         List<Double> entrateList = new ArrayList<>();
@@ -74,7 +74,7 @@ public class DataChartsImpl implements DataCharts {
     //Siccome ad ogni giorno corrisponde un tipo di dato che bisogna tracciare è necessario quindi calcolarsi ogni giorno fino allda dateEnd
     // per poterli poi associare al tipo di dato nel rispettivo giorno
     public List<Date> getDaysDate(LocalDate dateStart, LocalDate dateEnd){
-        List<Date> successiveDate = new ArrayList<>();    //necessita di convertire da localDate a te perché XYChart non accetta LocalDate;
+        List<Date> successiveDate = new ArrayList<>();    //necessita di convertire da localDate a date perché XYChart non accetta LocalDate;
         LocalDate auxDate = dateStart;
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
         

@@ -1,12 +1,13 @@
 package model;
 
 import java.time.*;
+import java.time.temporal.TemporalUnit;
+import java.util.concurrent.TimeUnit;
 
-//BOZZA CALCOLO DEL TEMPO PER CUI AVVIARE UN PROCESSO DI PULIZIA
 
 public class TimeToCleanValuation {
     
-    private final static Duration LAVAGGIO = Duration.ofSeconds(60);
+    private final static Duration LAVAGGIO = Duration.ofSeconds(60);        //Il tempo è per metroquadro.
     private final static Duration DISINFEZIONE = Duration.ofSeconds(20);
     private final static Duration RISCIACQUO = Duration.ofSeconds(30);
     private Integer numFasi;
@@ -20,11 +21,27 @@ public class TimeToCleanValuation {
         
     }
     
-    public long coreValuation() {                     
+    public long washValuation() {                     
         Duration timeToRoom =  TimeToCleanValuation.LAVAGGIO.multipliedBy(this.getMqStanza())
                                                                 .dividedBy(this.getNumDipendenti());
-        
         return timeToRoom.toMinutes();
+    }
+    
+    public long disinfectionValuation() {
+        Duration timeToRoom = TimeToCleanValuation.DISINFEZIONE.multipliedBy(this.getMqStanza())
+                                                                   .dividedBy(this.getNumDipendenti());
+        return timeToRoom.toMinutes();
+    }
+    
+    public long flushingValuation() {
+        Duration timeToRoom = TimeToCleanValuation.RISCIACQUO.multipliedBy(this.getMqStanza())
+                                                                   .dividedBy(this.getNumDipendenti());
+        return timeToRoom.toMinutes();
+    }
+    
+    public long completeSet() {
+        Long completeTime = (this.washValuation() + this.disinfectionValuation() + this.flushingValuation());
+        return completeTime;
     }
     
     public int getNumFasi() {

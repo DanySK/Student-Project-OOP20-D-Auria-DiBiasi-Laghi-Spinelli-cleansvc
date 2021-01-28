@@ -66,7 +66,6 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
             this.chExc.warning(panel); 
             throw chExc;
         }
-        
                         chart.getSeriesMap().clear();
                         panel.revalidate();
                         panel.repaint();

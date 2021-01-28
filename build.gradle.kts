@@ -24,18 +24,9 @@ val javaFXModules = listOf(
 val supportedPlatforms = listOf("linux", "mac", "win")
 
 dependencies {
-    // Example library: Guava. Add what you need (and remove Guava if you don't use it)
     implementation("com.google.guava:guava:28.1-jre")
-    // JavaFX: comment out if you do not need them
-    /*for (platform in supportedPlatforms) {
-        for (module in javaFXModules) {
-            implementation("org.openjfx:javafx-$module:13:$platform")
-        }
-    }*/
     implementation("com.github.lgooddatepicker:LGoodDatePicker:11.0.0")
     implementation("org.knowm.xchart:xchart:3.6.5")
-    // https://mvnrepository.com/artifact/org.jfree/jfreechart
-    //implementation("org.jfree.jfreechart:1.5.0")
     
     // JUnit API and testing engine
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
