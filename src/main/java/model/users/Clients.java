@@ -1,6 +1,6 @@
 package model.users;
 
-public class Clients extends PeopleImpl {
+public interface Clients extends People {
     
-    private int mqStructure;
+    int getmqStructure();
 }

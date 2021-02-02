@@ -1,6 +1,8 @@
 package model.users;
 
-public class Staff extends PeopleImpl {
+public interface Staff extends People {
     
-    private boolean admin;
+    void setIsAdmin(Boolean value);
+    
+    Boolean isAdmin();
 }
