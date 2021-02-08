@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -17,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import model.users.*;
+
 public class ClientsView extends JFrame {
     /**
      * 
@@ -144,10 +145,16 @@ public class ClientsView extends JFrame {
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
         btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnSubmit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
         pnlSubmit.add(btnSubmit);
-        
-        
-        
     }
 
    
@@ -181,10 +188,6 @@ public class ClientsView extends JFrame {
     
     public String getemail() {
         return txtemail.getText();
-    }
-    
-    public void submitClient(ActionListener submitListener) {
-        btnSubmit.addActionListener(submitListener);
     }
     
     public void display() {
