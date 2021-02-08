@@ -1,4 +1,4 @@
-package controllers;
+package controller;
 import javax.swing.JPanel;
 
 import org.knowm.xchart.XYChart;

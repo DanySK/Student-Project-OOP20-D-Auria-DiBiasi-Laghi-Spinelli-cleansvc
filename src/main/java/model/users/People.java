@@ -2,16 +2,18 @@ package model.users;
 
 public interface People {
     
-    String getNome();
+    String getName();
     String getCFPIVA();
-    String getIndirizzo();
-    String getCitta();
+    String getAddress();
+    String getCity();
     String getCAP();
-    String getTelefono();
+    String getTel();
     String getEmail();
-    void setIndirizzo(String newIndirizzo);
-    void setCitta(String newCitta);
+    
+    void setAddress(String newAddress);
+    void setCity(String newCity);
     void setCAP(String newCAP);
-    void setTelefono(String newTel);
+    void setTel(String newTel);
     void setEmail(String newEmail);
+    
 }

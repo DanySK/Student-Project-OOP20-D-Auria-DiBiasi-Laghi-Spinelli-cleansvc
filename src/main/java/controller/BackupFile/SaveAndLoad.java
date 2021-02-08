@@ -1,4 +1,4 @@
-package controllers.BackupFile;
+package controller.BackupFile;
 
 public interface SaveAndLoad {
     
@@ -6,5 +6,5 @@ public interface SaveAndLoad {
     public void loadStaff();
     public void saveClient();
     public void loadClient();
-    
+
 }

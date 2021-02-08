@@ -1,4 +1,4 @@
-package controllers.BackupFile;
+package controller.BackupFile;
 
 public class SaveAndLoadImpl implements SaveAndLoad {
 
@@ -14,7 +14,6 @@ public class SaveAndLoadImpl implements SaveAndLoad {
      *              System.out.println(line)
      *          }
      *      }
-     *      
      * public static void write throws Exception {
      *      try ( final BufferedWriter w = new BufferedWriter (new FileWriter (FILE_NAME)) ) {
      *          w.write("string");
@@ -25,26 +24,20 @@ public class SaveAndLoadImpl implements SaveAndLoad {
     @Override
     public void saveStaff() {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void loadStaff() {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void saveClient() {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
     public void loadClient() {
         // TODO Auto-generated method stub
-        
     }
-    
-    
 }
