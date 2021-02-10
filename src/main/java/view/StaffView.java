@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,29 +18,27 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
+public class StaffView extends JFrame {
 
-public class ClientsView extends JFrame {
     /**
      * 
      */
-    private static final long serialVersionUID = -3694166450488400402L;
-    private static final String TITLE = "Clienti";
+    private static final long serialVersionUID = -6791011571687868971L;
+    private static final String TITLE = "Dipendenti";
     
-
     JTextField txtCFPIVA;
     JTextField txtName;
     JTextField txtAddress;
     JTextField txtCity;
     JTextField txtCAP;
-    JTextField txtmq;
     JTextField txttel;
     JTextField txtemail;
+    JCheckBox checkAdmin;
     final JButton btnSubmit;
     final JButton btnHome;
-
-    public ClientsView() {
-
-        setTitle(ClientsView.TITLE);
+    
+    public StaffView() {
+        setTitle(StaffView.TITLE);
         setMinimumSize(new Dimension(1000, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
@@ -56,7 +55,7 @@ public class ClientsView extends JFrame {
         getContentPane().add(panelTitle, BorderLayout.CENTER);
         panelTitle.setLayout(new BorderLayout(0, 0));
 
-        JLabel lblTitle = new JLabel("Elenco clienti");
+        JLabel lblTitle = new JLabel("Elenco dipendenti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
         lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE,20));
@@ -80,10 +79,11 @@ public class ClientsView extends JFrame {
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
         
-        String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
+
+        String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Telefono", "Email", "CF_PIVA", "Amministratore"};
         Object[][] data = new Object[][] {
-            {"Unibo", "Via dell'università 50", "Cesena", "47522", "900", "0088338550", "unibo@unibo.it", "0385719047300"}, 
-            {"Mario Rossi", "Via degli omonimi 33", "Meldola", "47014", "150", "95947524022", "mario.rossi@oulook.it", "MRORSS77M45D706Y"}
+            {"Luigi Bianchi", "Via dell'università 50", "Cesena", "47522", "0088338550", "unibo@unibo.it", "0385719047300", "no"}, 
+            {"Mario Rossi", "Via degli omonimi 33", "Meldola", "47014", "95947524022", "mario.rossi@oulook.it", "MRORSS77M45D706Y", "si"}
         };
         JTable table = new JTable(data,cols);
         table.setPreferredScrollableViewportSize(new Dimension(500, 310));
@@ -97,17 +97,17 @@ public class ClientsView extends JFrame {
         mainPanel.setLayout(new BorderLayout(0, 0));
         
         final JPanel pnlSubmit = new JPanel();
-        pnlSubmit.setBorder(new TitledBorder(null, "Dati nuovo cliente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
+        pnlSubmit.setBorder(new TitledBorder(null, "Dati nuovo dipendente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setPreferredSize(new Dimension(10, 100));
         pnlSubmit.setMinimumSize(new Dimension(1000, 100));
         mainPanel.add(pnlSubmit, BorderLayout.SOUTH);
         
-        JLabel labelCFPIVA = new JLabel("CF/P.IVA:");
+        JLabel labelCFPIVA = new JLabel("CF:");
         labelCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(labelCFPIVA);
         
-        txtCFPIVA = new JTextField(20);
+        txtCFPIVA = new JTextField(18);
         txtCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(txtCFPIVA);
         
@@ -115,7 +115,7 @@ public class ClientsView extends JFrame {
         labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(labelName);
         
-        txtName = new JTextField(10);
+        txtName = new JTextField(14);
         txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(txtName);
         
@@ -143,13 +143,12 @@ public class ClientsView extends JFrame {
         txtCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(txtCAP);
         
-        JLabel labelmq = new JLabel("Struttura (mq):");
+        JLabel labelmq = new JLabel("Amministratore:");
         labelmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(labelmq);
         
-        txtmq = new JTextField(5);
-        txtmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSubmit.add(txtmq);
+        checkAdmin = new JCheckBox("");
+        pnlSubmit.add(checkAdmin);
         
         JLabel labeltel = new JLabel("Telefono:");
         labeltel.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -204,11 +203,11 @@ public class ClientsView extends JFrame {
         return txtCAP.getText();
     }
     
-    public int getMq() {
-        return Integer.parseInt(txtmq.getText());
+    public boolean getIsAdmin() {
+        return checkAdmin.isSelected();
     }
     
-    public String getTel() {
+    public String geTel() {
         return txttel.getText();
     }
     
@@ -220,5 +219,4 @@ public class ClientsView extends JFrame {
         setVisible(true);
         setResizable(true);
     }
-
 }

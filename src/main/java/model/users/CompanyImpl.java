@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import model.Products;
+
 public class CompanyImpl implements Company {
     
     private static final CompanyImpl SINGLETON = new CompanyImpl();

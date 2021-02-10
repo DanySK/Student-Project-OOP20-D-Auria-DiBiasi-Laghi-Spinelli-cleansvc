@@ -1,8 +1,9 @@
-package controller.BackupFile;
+package controller.backupFile;
 
 public class SaveAndLoadImpl implements SaveAndLoad {
 
     /*
+     * Per Silvia:
      * In massima FileReader + BufferedReader / FileWriter + BufferedWriter (fonte: slide 68 Blocco 15 - InputOutput)
      * 
      * public static final String FILE_NALE = "/..path../file.txt";
@@ -39,5 +40,17 @@ public class SaveAndLoadImpl implements SaveAndLoad {
     @Override
     public void loadClient() {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void saveProduct() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void loadProduct() {
+        // TODO Auto-generated method stub
+        
     }
 }

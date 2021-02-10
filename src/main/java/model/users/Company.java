@@ -3,6 +3,8 @@ package model.users;
 import java.util.List;
 import java.util.Optional;
 
+import model.Products;
+
 public interface Company {
         
     public void addStaff (final Staff s);

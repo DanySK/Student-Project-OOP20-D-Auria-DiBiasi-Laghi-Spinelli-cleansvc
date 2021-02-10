@@ -1,4 +1,4 @@
-package model.users;
+package model;
 
 public class ProductsImpl implements Products {
 

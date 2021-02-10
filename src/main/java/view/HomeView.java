@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,6 +22,7 @@ public class HomeView extends JFrame{
     private static final String TITLE = "CLEAN SERVICE MANAGER";
     final JButton btnClienti;
     final JButton btnGrafici;
+    final JButton btnStaff;
     
     public HomeView() {
         
@@ -52,6 +52,23 @@ public class HomeView extends JFrame{
             
         });
         panelTitle.add(btnClienti);
+        
+        btnStaff = new JButton("Area Dipendenti");
+        btnStaff.setForeground(SystemColor.textText);
+        btnStaff.setBackground(SystemColor.activeCaption);
+        btnStaff.setPreferredSize(new Dimension(280,70));
+        btnStaff.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnStaff.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StaffView cv = new StaffView();
+                cv.display();
+                dispose();
+            }
+            
+        });
+        panelTitle.add(btnStaff);
 
         btnGrafici = new JButton("Area Grafici");
         btnGrafici.setForeground(SystemColor.textText);
@@ -70,13 +87,8 @@ public class HomeView extends JFrame{
         });
         panelTitle.add(btnGrafici);
     }
-    
-    //public void addClientsListener(ActionListener ClientsListener) {
-    //    btnClienti.addActionListener(ClientsListener);
-    //}
 
     public void display() {
-        final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         setVisible(true);
         setResizable(true);
     }
