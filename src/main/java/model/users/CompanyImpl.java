@@ -17,7 +17,7 @@ public class CompanyImpl implements Company {
     
     public CompanyImpl () {}
     
-    public static CompanyImpl getSingleton() {
+    public static CompanyImpl getInstance() {
         return SINGLETON;
     }
 
