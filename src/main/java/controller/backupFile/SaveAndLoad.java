@@ -1,12 +1,17 @@
 package controller.backupFile;
 
+import java.util.List;
+
+import model.Products;
+import model.users.*;
+
 public interface SaveAndLoad {
     
     public void saveStaff();
-    public void loadStaff();
+    public List<Staff> loadStaff();
     public void saveClient();
-    public void loadClient();
+    public List<Clients> loadClient();
     public void saveProduct();
-    public void loadProduct();
+    public List<Products> loadProduct();
 
 }

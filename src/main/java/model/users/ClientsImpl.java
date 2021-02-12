@@ -10,7 +10,7 @@ public class ClientsImpl extends PeopleImpl implements Clients {
     }
 
     @Override
-    public int getmqStructure() {
+    public int getMqStructure() {
         return this.mqStructure;
     }
 

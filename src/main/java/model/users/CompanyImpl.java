@@ -15,9 +15,9 @@ public class CompanyImpl implements Company {
     private final List<Clients> clients = new ArrayList<>();
     private final List<Products> products = new ArrayList<>();
     
-    public CompanyImpl () {}
+    public CompanyImpl() {}
     
-    public static CompanyImpl getSingleton() {
+    public static CompanyImpl getInstance() {
         return SINGLETON;
     }
 

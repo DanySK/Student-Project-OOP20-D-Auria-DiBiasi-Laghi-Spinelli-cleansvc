@@ -1,5 +1,10 @@
 package controller.backupFile;
 
+import java.util.List;
+
+import model.Products;
+import model.users.*;
+
 public class SaveAndLoadImpl implements SaveAndLoad {
 
     /*
@@ -28,7 +33,8 @@ public class SaveAndLoadImpl implements SaveAndLoad {
     }
 
     @Override
-    public void loadStaff() {
+    public List<Staff> loadStaff() {
+        return null;
         // TODO Auto-generated method stub
     }
 
@@ -38,7 +44,8 @@ public class SaveAndLoadImpl implements SaveAndLoad {
     }
 
     @Override
-    public void loadClient() {
+    public List<Clients> loadClient() {
+        return null;
         // TODO Auto-generated method stub
     }
 
@@ -49,7 +56,8 @@ public class SaveAndLoadImpl implements SaveAndLoad {
     }
 
     @Override
-    public void loadProduct() {
+    public List<Products> loadProduct() {
+        return null;
         // TODO Auto-generated method stub
         
     }
