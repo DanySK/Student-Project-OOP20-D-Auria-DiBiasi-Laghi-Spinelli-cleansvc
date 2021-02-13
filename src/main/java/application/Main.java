@@ -1,6 +1,8 @@
 package application;
 
 import view.AdministratorChartsView;
+import view.ClientsView;
+import view.HomeView;
 
 /**
  * This class represent the Main class of the JavaFX-based application.
@@ -8,8 +10,7 @@ import view.AdministratorChartsView;
 public final class Main{
 
     public static void main(final String[] args) {
-		
-        new AdministratorChartsView().display();
+        new HomeView().display();
     }
         
 

@@ -10,7 +10,9 @@ public class TestTimeToClean {
 
         @Test
         public void timeToTest() {
+
             System.out.println("Tempo stimato: " + new TimeToCleanValuation(1, 2, 30).coreValuation() + " min");
+
         }
     }
 
