@@ -11,9 +11,12 @@ import model.users.Staff;
 
 public class SaveAndLoadImpl implements SaveAndLoad {
     private Company company = CompanyImpl.getInstance();
-    private static final String FILE_STAFF = "src/main/java/doc/Staff.txt";
-    private static final String FILE_CLIENTS = "src/main/java/doc/Clients.txt";
-    private static final String FILE_PRODUCTS = "src/main/java/doc/Products.txt";
+    //private static final String FILE_STAFF = "src/main/java/doc/Staff.txt";
+    //private static final String FILE_CLIENTS = "src/main/java/doc/Clients.txt";
+    //private static final String FILE_PRODUCTS = "src/main/java/doc/Products.txt";
+    private static final String FILE_STAFF = "doc/Staff.txt";
+    private static final String FILE_CLIENTS = "doc/Clients.txt";
+    private static final String FILE_PRODUCTS = "doc/Products.txt";
     private static final String CFPIVA_STR = "CFPIVA: ";
     private static final String NAME_STR = "NAME: ";
     private static final String ADDRESS_STR = "ADDRESS: ";
