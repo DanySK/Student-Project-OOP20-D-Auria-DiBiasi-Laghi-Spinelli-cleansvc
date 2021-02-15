@@ -13,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import model.users.Company;
+import model.users.CompanyImpl;
+
 public class HomeView extends JFrame{
 
     /**
@@ -23,6 +26,7 @@ public class HomeView extends JFrame{
     final JButton btnClienti;
     final JButton btnGrafici;
     final JButton btnStaff;
+    
     
     public HomeView() {
         
@@ -35,6 +39,8 @@ public class HomeView extends JFrame{
         //panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(panelTitle, BorderLayout.CENTER);
         panelTitle.setLayout(new FlowLayout());
+        
+        
 
         btnClienti = new JButton("Area Clienti");
         btnClienti.setForeground(SystemColor.textText);
