@@ -18,7 +18,6 @@ import javax.swing.border.TitledBorder;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
-
 public class AppointmentsView extends JFrame {
     /**
      * 

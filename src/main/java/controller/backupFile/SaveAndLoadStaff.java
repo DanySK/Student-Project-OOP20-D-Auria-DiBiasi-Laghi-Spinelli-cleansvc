@@ -1,22 +1,21 @@
 package controller.backupFile;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import model.Products;
-import model.users.Clients;
 import model.users.Company;
 import model.users.CompanyImpl;
 import model.users.Staff;
+import model.users.StaffImpl;
 
-public class SaveAndLoadImpl implements SaveAndLoad {
+public class SaveAndLoadStaff implements SaveAndLoad<List<Staff>> {
     private Company company = CompanyImpl.getInstance();
-    //private static final String FILE_STAFF = "src/main/java/doc/Staff.txt";
-    //private static final String FILE_CLIENTS = "src/main/java/doc/Clients.txt";
-    //private static final String FILE_PRODUCTS = "src/main/java/doc/Products.txt";
     private static final String FILE_STAFF = "doc/Staff.txt";
-    private static final String FILE_CLIENTS = "doc/Clients.txt";
-    private static final String FILE_PRODUCTS = "doc/Products.txt";
     private static final String CFPIVA_STR = "CFPIVA: ";
     private static final String NAME_STR = "NAME: ";
     private static final String ADDRESS_STR = "ADDRESS: ";
@@ -27,7 +26,7 @@ public class SaveAndLoadImpl implements SaveAndLoad {
     private static final String ADMIN_STR = "ADMIN: ";
 
     @Override
-    public void saveStaff() {
+    public void save() {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_STAFF))) {
             for (final Staff s : this.company.getStaff()) {
                 w.write(CFPIVA_STR + s.getCFPIVA());
@@ -44,26 +43,8 @@ public class SaveAndLoadImpl implements SaveAndLoad {
                 w.newLine();
                 w.write(EMAIL_STR + s.getEmail());
                 w.newLine();
-                int varAdmin = s.isAdmin() ? 1 : 0;
-                w.write(ADMIN_STR + varAdmin);
+                w.write(ADMIN_STR + s.isAdmin());
                 w.newLine();
-                /*w.write("MPYZTB73S59F342U");
-                w.newLine();
-                w.write("Giorgio Verdi");
-                w.newLine();
-                w.write("Via Garibaldi, 31");
-                w.newLine();
-                w.write("Cesena");
-                w.newLine();
-                w.write("47521");
-                w.newLine();
-                w.write("3333333333");
-                w.newLine();
-                w.write("giorver@gmail.com");
-                w.newLine();
-                //int varAdmin = s.isAdmin() ? 1 : 0;
-                w.write("0");
-                w.newLine();*/
             }
         } catch (final IOException e) {
             e.printStackTrace();
@@ -71,7 +52,7 @@ public class SaveAndLoadImpl implements SaveAndLoad {
     }
 
     @Override
-    public List<Staff> loadStaff() {
+    public List<Staff> load() {
         final List<Staff> staffList = new ArrayList<>();
         final List<String> cfPIvaList = new ArrayList<>();
         final List<String> nameList = new ArrayList<>();
@@ -80,7 +61,7 @@ public class SaveAndLoadImpl implements SaveAndLoad {
         final List<String> capList = new ArrayList<>();
         final List<String> telList = new ArrayList<>();
         final List<String> emailList = new ArrayList<>();
-        final List<Integer> adminList = new ArrayList<>();
+        final List<Boolean> adminList = new ArrayList<>();
         try (BufferedReader r = new BufferedReader(new FileReader(FILE_STAFF))) {
             r.lines().forEach(l -> {
                 if (l.contains(CFPIVA_STR)) {
@@ -105,39 +86,16 @@ public class SaveAndLoadImpl implements SaveAndLoad {
                     emailList.add(l.substring(EMAIL_STR.length()));
                 }
                 if (l.contains(ADMIN_STR)) {
-                    adminList.add(Integer.parseInt(l.substring(ADMIN_STR.length())));
+                    adminList.add(Boolean.valueOf(l.substring(ADMIN_STR.length())));
                 }
             });
-            //DA IMPLEMENTARE
             for (int i = 0; i < cfPIvaList.size(); i++) {
-                /*staffList.add(company.getCinema().createFilm(titleList.get(i), lengthList.get(i), genreList.get(i),
-                        over14List.get(i), threeDimList.get(i)));*/
+                staffList.add(new StaffImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
+                        capList.get(i), telList.get(i), emailList.get(i), adminList.get(i)));
             }
             return staffList;
         } catch (final IOException e) {
             return staffList;
         }
-    }
-
-    @Override
-    public void saveClient() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public List<Clients> loadClient() {
-        return null;
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void saveProduct() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public List<Products> loadProduct() {
-        return null;
-        // TODO Auto-generated method stub
     }
 }

@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,6 +19,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import model.users.CompanyImpl;
+import model.users.Staff;
 
 public class StaffView extends JFrame {
 
@@ -79,7 +83,6 @@ public class StaffView extends JFrame {
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
         
-
         String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Telefono", "Email", "CF_PIVA", "Amministratore"};
         Object[][] data = new Object[][] {
             {"Luigi Bianchi", "Via dell'università 50", "Cesena", "47522", "0088338550", "unibo@unibo.it", "0385719047300", "no"}, 
@@ -175,7 +178,6 @@ public class StaffView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO Auto-generated method stub
-                
             }
             
         });
