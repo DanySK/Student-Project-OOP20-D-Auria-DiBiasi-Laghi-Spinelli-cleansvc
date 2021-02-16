@@ -2,21 +2,23 @@ package model;
 
 public class ProductsImpl implements Products {
 
-    private String code;
+    private String name;
     private String description;
-    private double price;
+    private double priceL;
+    private double usage500mq;
     //private Step step;
     
-    public ProductsImpl(String code, String description, double price) {
-        this.code = code;
+    public ProductsImpl(String name, String description, double priceLitre, double usage500mq) {
+        this.name = name;
         this.description = description;
-        this.price = price;
+        this.priceL = priceLitre;
+        this.usage500mq = usage500mq;
     }
     
     
     @Override
-    public String getCode() {
-        return this.code;
+    public String getName() {
+        return this.name;
     }
 
 
@@ -27,13 +29,24 @@ public class ProductsImpl implements Products {
 
 
     @Override
-    public double getPrice() {
-        return this.price;
+    public double getPricePerLitre() {
+        return this.priceL;
     }
 
     @Override
-    public void setPrice(double newPrice) {
-        this.price = newPrice;
+    public double getLitersPer500Mq() {
+        return this.usage500mq;
+    }
+    
+    @Override
+    public void setPricePerLitre(double newPrice) {
+        this.priceL = newPrice;
+    }
+
+
+    @Override
+    public void setLitersPer500MQ(double newUsage) {
+        this.usage500mq = newUsage;
     }
 
     

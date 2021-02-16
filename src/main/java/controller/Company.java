@@ -1,9 +1,11 @@
-package model.users;
+package controller;
 
 import java.util.List;
 import java.util.Optional;
 
 import model.Products;
+import model.users.Clients;
+import model.users.Staff;
 
 public interface Company {
     
@@ -19,6 +21,6 @@ public interface Company {
     
     public void addProduct(final Products p);
     public void removeProduct(final Products p);
-    public Optional<Products> searchProduct(final String codeProduct);
+    public Optional<Products> searchProduct(final String nameProduct);
     public List<Products> getProduct();
 }

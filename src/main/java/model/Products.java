@@ -1,10 +1,13 @@
 package model;
 
 public interface Products {
-    
-    public String getCode();
-    public String getDescription();
-    public double getPrice();
+
     //public Step getStep();
-    public void setPrice(double newPrice);
+    public String getName();
+    public String getDescription();
+    public double getPricePerLitre();
+    public double getLitersPer500Mq();
+    
+    public void setPricePerLitre(double newPrice);
+    public void setLitersPer500MQ(double newUsage);
 }

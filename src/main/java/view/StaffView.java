@@ -23,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 
+import controller.Company;
+import controller.CompanyImpl;
 import model.users.Staff;
 import model.users.StaffImpl;
 
@@ -48,7 +50,13 @@ public class StaffView extends JFrame {
     final JButton btnChange;
     final JButton btnRemove;
     final JButton btnHome;
-    List<Staff> staffList = new ArrayList<>();// = SaveAndLoadStaff.loadStaff();
+    /*
+     * List<Staff> create fort testing table
+     */
+    List<Staff> staffList = new ArrayList<>(); 
+//    Company company = CompanyImpl.getInstance();
+//    List<Staff> staffList = company.getStaff();
+            
     
     public StaffView() {
         setTitle(StaffView.TITLE);
@@ -242,7 +250,6 @@ public class StaffView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
                 
             }
             

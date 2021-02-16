@@ -23,10 +23,10 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 
+import controller.Company;
+import controller.CompanyImpl;
 import model.users.Clients;
 import model.users.ClientsImpl;
-import model.users.Company;
-import model.users.CompanyImpl;
 
 public class ClientsView extends JFrame {
 
@@ -51,7 +51,7 @@ public class ClientsView extends JFrame {
     final JButton btnRemove;
     final JButton btnHome;
     Company c = CompanyImpl.getInstance();
-    List<Clients> clientsList = new ArrayList<>();//c.getClient(); //= SaveAndLoadClients.loadClients();
+    List<Clients> clientsList = new ArrayList<>();//c.getClient();
 
     public ClientsView() {
         

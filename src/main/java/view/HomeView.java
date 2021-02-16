@@ -13,8 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import model.users.Company;
-import model.users.CompanyImpl;
+import controller.Company;
+import controller.CompanyImpl;
 
 public class HomeView extends JFrame{
 
@@ -26,6 +26,7 @@ public class HomeView extends JFrame{
     final JButton btnClienti;
     final JButton btnGrafici;
     final JButton btnStaff;
+    final JButton btnProduct;
     
     
     public HomeView() {
@@ -68,13 +69,30 @@ public class HomeView extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                StaffView cv = new StaffView();
-                cv.display();
+                StaffView sv = new StaffView();
+                sv.display();
                 dispose();
             }
             
         });
         panelTitle.add(btnStaff);
+        
+        btnProduct = new JButton("Area Prodotti");
+        btnProduct.setForeground(SystemColor.textText);
+        btnProduct.setBackground(SystemColor.activeCaption);
+        btnProduct.setPreferredSize(new Dimension(280,70));
+        btnProduct.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnProduct.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ProductView pv = new ProductView();
+                pv.display();
+                dispose();
+            }
+            
+        });
+        panelTitle.add(btnProduct);
 
         btnGrafici = new JButton("Area Grafici");
         btnGrafici.setForeground(SystemColor.textText);
@@ -85,8 +103,8 @@ public class HomeView extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                AdministratorChartsView cv = new AdministratorChartsView();
-                cv.display();
+                AdministratorChartsView av = new AdministratorChartsView();
+                av.display();
                 dispose();
             }
             
