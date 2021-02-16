@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.users.Company;
-import model.users.CompanyImpl;
+import controller.Company;
+import controller.CompanyImpl;
 import model.users.Staff;
 import model.users.StaffImpl;
 
@@ -60,7 +60,7 @@ public class SaveAndLoadStaff implements SaveAndLoad {
         final List<String> capList = new ArrayList<>();
         final List<String> telList = new ArrayList<>();
         final List<String> emailList = new ArrayList<>();
-        final List<Boolean> adminList = new ArrayList<>();
+        final List<String> adminList = new ArrayList<>();
         try (BufferedReader r = new BufferedReader(new FileReader(FILE_STAFF))) {
             r.lines().forEach(l -> {
                 if (l.contains(CFPIVA_STR)) {
@@ -85,7 +85,7 @@ public class SaveAndLoadStaff implements SaveAndLoad {
                     emailList.add(l.substring(EMAIL_STR.length()));
                 }
                 if (l.contains(ADMIN_STR)) {
-                    adminList.add(Boolean.valueOf(l.substring(ADMIN_STR.length())));
+                    adminList.add(l.substring(ADMIN_STR.length()));
                 }
             });
             for (int i = 0; i < cfPIvaList.size(); i++) {

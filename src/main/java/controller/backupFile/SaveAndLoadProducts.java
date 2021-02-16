@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Products;
-import model.users.Company;
-import model.users.CompanyImpl;
+import controller.Company;
+import controller.CompanyImpl;
 
 public class SaveAndLoadProducts implements SaveAndLoad {
 
@@ -22,7 +22,7 @@ public class SaveAndLoadProducts implements SaveAndLoad {
     public void save() {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_PRODUCTS))) {
             for (final Products p : this.company.getProduct()) {
-                w.write(CODE_STR + p.getCode());
+                w.write(CODE_STR + p.getName());
                 w.newLine();
             }
         } catch (final IOException e) {

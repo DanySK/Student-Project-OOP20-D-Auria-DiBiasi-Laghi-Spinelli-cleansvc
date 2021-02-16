@@ -10,8 +10,8 @@ import java.util.List;
 
 import model.users.Clients;
 import model.users.ClientsImpl;
-import model.users.Company;
-import model.users.CompanyImpl;
+import controller.Company;
+import controller.CompanyImpl;
 
 public class SaveAndLoadClients implements SaveAndLoad {
 
@@ -44,7 +44,7 @@ public class SaveAndLoadClients implements SaveAndLoad {
                 w.newLine();
                 w.write(EMAIL_STR + c.getEmail());
                 w.newLine();
-                w.write(MQ_STR + c.getmqStructure());
+                w.write(MQ_STR + c.getMqStructure());
                 w.newLine();
             }
         } catch (final IOException e) {
