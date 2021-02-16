@@ -1,6 +1,6 @@
 package controller.backupFile;
 
-public interface SaveAndLoad<X> {
+public interface SaveAndLoad {
     void save();
-    X load();
+    void load();
 }

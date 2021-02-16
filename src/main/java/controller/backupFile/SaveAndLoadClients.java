@@ -13,7 +13,7 @@ import model.users.ClientsImpl;
 import model.users.Company;
 import model.users.CompanyImpl;
 
-public class SaveAndLoadClients implements SaveAndLoad<List<Clients>> {
+public class SaveAndLoadClients implements SaveAndLoad {
 
     private Company company = CompanyImpl.getInstance();
     private static final String FILE_CLIENTS = "doc/Clients.txt";
@@ -53,8 +53,7 @@ public class SaveAndLoadClients implements SaveAndLoad<List<Clients>> {
     }
 
     @Override
-    public List<Clients> load() {
-        final List<Clients> clientsList = new ArrayList<>();
+    public void load() {
         final List<String> cfPIvaList = new ArrayList<>();
         final List<String> nameList = new ArrayList<>();
         final List<String> addressList = new ArrayList<>();
@@ -91,12 +90,11 @@ public class SaveAndLoadClients implements SaveAndLoad<List<Clients>> {
                 }
             });
             for (int i = 0; i < cfPIvaList.size(); i++) {
-                clientsList.add(new ClientsImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
+                this.company.addClient(new ClientsImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
                         capList.get(i), telList.get(i), emailList.get(i), mqStructureList.get(i)));
             }
-            return clientsList;
         } catch (final IOException e) {
-            return clientsList;
+            System.err.println(e.getMessage());
         }
     }
 

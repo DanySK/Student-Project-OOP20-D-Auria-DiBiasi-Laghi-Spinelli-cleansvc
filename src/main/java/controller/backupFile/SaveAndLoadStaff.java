@@ -13,7 +13,7 @@ import model.users.CompanyImpl;
 import model.users.Staff;
 import model.users.StaffImpl;
 
-public class SaveAndLoadStaff implements SaveAndLoad<List<Staff>> {
+public class SaveAndLoadStaff implements SaveAndLoad {
     private Company company = CompanyImpl.getInstance();
     private static final String FILE_STAFF = "doc/Staff.txt";
     private static final String CFPIVA_STR = "CFPIVA: ";
@@ -52,8 +52,7 @@ public class SaveAndLoadStaff implements SaveAndLoad<List<Staff>> {
     }
 
     @Override
-    public List<Staff> load() {
-        final List<Staff> staffList = new ArrayList<>();
+    public void load() {
         final List<String> cfPIvaList = new ArrayList<>();
         final List<String> nameList = new ArrayList<>();
         final List<String> addressList = new ArrayList<>();
@@ -90,12 +89,11 @@ public class SaveAndLoadStaff implements SaveAndLoad<List<Staff>> {
                 }
             });
             for (int i = 0; i < cfPIvaList.size(); i++) {
-                staffList.add(new StaffImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
+                this.company.addStaff(new StaffImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
                         capList.get(i), telList.get(i), emailList.get(i), adminList.get(i)));
             }
-            return staffList;
         } catch (final IOException e) {
-            return staffList;
+            System.err.println(e.getMessage());
         }
     }
 }

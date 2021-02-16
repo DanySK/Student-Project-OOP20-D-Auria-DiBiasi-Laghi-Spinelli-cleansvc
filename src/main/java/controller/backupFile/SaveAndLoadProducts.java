@@ -12,7 +12,7 @@ import model.Products;
 import model.users.Company;
 import model.users.CompanyImpl;
 
-public class SaveAndLoadProducts implements SaveAndLoad<List<Products>> {
+public class SaveAndLoadProducts implements SaveAndLoad {
 
     private Company company = CompanyImpl.getInstance();
     private static final String FILE_PRODUCTS = "doc/Products.txt";
@@ -31,8 +31,7 @@ public class SaveAndLoadProducts implements SaveAndLoad<List<Products>> {
     }
 
     @Override
-    public List<Products> load() {
-        final List<Products> productsList = new ArrayList<>();
+    public void load() {
         final List<String> codeList = new ArrayList<>();
         try (BufferedReader r = new BufferedReader(new FileReader(FILE_PRODUCTS))) {
             r.lines().forEach(l -> {
@@ -41,11 +40,10 @@ public class SaveAndLoadProducts implements SaveAndLoad<List<Products>> {
                 }
             });
             for (int i = 0; i < codeList.size(); i++) {
-                //codeList.add(new ProductsImpl(codeList.get(i)));
+                //this.company.addProduct(new ProductImpl(codeList.get(i)));
             }
-            return productsList;
         } catch (final IOException e) {
-            return productsList;
+            System.err.println(e.getMessage());
         }
     }
 }
