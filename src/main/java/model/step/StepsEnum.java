@@ -1,8 +1,11 @@
 package model.step;
 
-import utils.*;
 
+import utils.StringUtils;
 
+/**
+ * Enum for describing the various steps that a sanitization has to go through production.
+ */
 public enum StepsEnum implements Steps {
     /** 
      * Mandatory CLEANING step (pulizia).
@@ -13,7 +16,7 @@ public enum StepsEnum implements Steps {
      */
     CLEANSING,
     /**
-     * Mandatory DISINFECTION step (disinfezione). 
+     * Mandatory DISINFECTION step. 
      */
     DISINFECTION,
     /**
@@ -21,11 +24,11 @@ public enum StepsEnum implements Steps {
      */
     RINSING,
     /**
-     * Optional DISINFESTATION step (disinfestazione).
+     * Optional DISINFESTATION step.
      */
     DISINFESTATION,
     /**
-     * Mandatory CONCLUSION step (processo concluso).
+     * Mandatory CONCLUSION step.
      */
     CONCLUSION;
 
@@ -39,9 +42,9 @@ public enum StepsEnum implements Steps {
         return StringUtils.underscoreWithWords(this.name());
     }
 
+    @Override
     public String toString() {
         return this.getName();
     }
- 
 
 }

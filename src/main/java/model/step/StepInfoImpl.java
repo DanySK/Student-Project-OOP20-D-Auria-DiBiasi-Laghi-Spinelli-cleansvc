@@ -5,8 +5,13 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+/**
+ * Implementation of StepInfo using pattern decorator for constructor.
+ *  This package is private.
+ */
 
-class StepInfoImpl implements StepInfo {
+
+class StepInfoImpl implements StepInfo extends StepsEnum {
 
     private final Steps step;
     private final Date start;
@@ -16,12 +21,17 @@ class StepInfoImpl implements StepInfo {
 
    StepInfoImpl(final Steps step, final Date start) {
         this.step = step;
-        this.start = start;
+        this.start = new Date(start.getTime());
     }
 
+   /**
+    * Decorator constructor copying the data passed by parameter.
+    * @param stepInfo, it is a copy.
+    */
+
    StepInfoImpl(final StepInfo stepInfo) {
-       this(stepInfo.getType(), stepInfo.getStartDate());
-      stepInfo.getEndDate().ifPresent(this::setInternalEndDate);
+       this(stepInfo.getName(), stepInfo.getStartDate());
+       stepInfo.getEndDate().ifPresent(this::setInternalEndDate);
    }
 
     @Override
@@ -39,21 +49,24 @@ class StepInfoImpl implements StepInfo {
         return Optional.ofNullable(this.end).map(e -> new Date(e.getTime()));
     }
 
+    @Override
     public final String toString() {
         return "[StepInfoImpl] {"
                 + "step=" + step
                 + "statTime=" + start
                 + "endTime" + end
-                + "}";
+                + '}';
     }
 
     /**
      * Sets internal endDate.
-     * @param end
+     * @param endDate date to set as end date.
      */
 
     void setInternalEndDate(final Date end) {
         this.end = new Date(end.getTime());
     }
+
+ 
 
 }

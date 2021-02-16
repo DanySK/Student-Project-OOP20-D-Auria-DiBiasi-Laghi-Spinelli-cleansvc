@@ -1,5 +1,10 @@
 package model.step;
 
+
+/**
+ * Interface use to indicate the type of step.
+ */
+
 public interface Steps {
     /**
      * Returns true if it is the final state.
@@ -12,5 +17,6 @@ public interface Steps {
      * @return the name of the step.
      */
     String getName();
+
 
 }

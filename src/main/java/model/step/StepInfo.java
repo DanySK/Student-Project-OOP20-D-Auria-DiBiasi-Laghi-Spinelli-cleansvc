@@ -3,12 +3,7 @@ package model.step;
 import java.util.Date;
 import java.util.Optional;
 
-public interface StepInfo {
-    /**
-     * Method returns a {@link Steps} associated to Step.
-     * @return a {@link Steps} associated to Step.
-     */
-    Steps getType();
+public interface StepInfo extends Steps {
 
     /**
      * Method returns the StartDate when the step was created.

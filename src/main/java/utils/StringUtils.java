@@ -13,7 +13,7 @@ public final class StringUtils {
      * @return a readable string.
      */
     public static String underscoreWithWords(final String change) {
-        return Arrays.stream(change.split("_")).map(StringUtils::maiuscola).collect(Collectors.joining(" "));
+        return Arrays.stream(change.split("_")).map(StringUtils::uppercase).collect(Collectors.joining(" "));
     }
 
      /**
@@ -23,7 +23,7 @@ public final class StringUtils {
       * @return the capitalized string.
       */
 
-    public static String maiuscola(final String change) {
+    public static String uppercase(final String change) {
         return change.substring(0, 1).toUpperCase() + change.substring(1).toLowerCase();
     }
 
