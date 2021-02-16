@@ -42,17 +42,17 @@ public class StaffView extends JFrame {
     JTextField txtAddress;
     JTextField txtCity;
     JTextField txtCAP;
-    JTextField txttel;
-    JTextField txtemail;
+    JTextField txtTel;
+    JTextField txtEmail;
     JCheckBox checkAdmin;
-    JTextField txtsearchCFPIVA;
+    JTextField txtSearch;
     final JButton btnSearch;
     final JButton btnSubmit;
     final JButton btnChange;
     final JButton btnRemove;
     final JButton btnHome;
     /*
-     * List<Staff> create fort testing table
+     * List<Staff> create for testing table
      */
     List<Staff> staffList = new ArrayList<>(); 
 //    Company company = CompanyImpl.getInstance();
@@ -114,6 +114,7 @@ public class StaffView extends JFrame {
             data[i][6] = staffList.get(i).getEmail();
             data[i][7] = staffList.get(i).getCFPIVA();
         }
+        
         JTable table = new JTable(data,cols);
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
@@ -131,15 +132,15 @@ public class StaffView extends JFrame {
         lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearchCFPIVA);
 
-        txtsearchCFPIVA = new JTextField(20);
-        txtsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSearch.add(txtsearchCFPIVA);
+        txtSearch = new JTextField(20);
+        txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlSearch.add(txtSearch);
         
         JLabel lblNoFound = new JLabel("Dipendente non trovato!");
         lblNoFound.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblNoFound);
         
-        btnSearch = new JButton("Cerca");
+        btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
         btnSearch.setPreferredSize(new Dimension(120,20));
@@ -214,23 +215,24 @@ public class StaffView extends JFrame {
         pnlData.add(labelmq);
         
         checkAdmin = new JCheckBox("");
+        checkAdmin.setBackground(SystemColor.window);
         pnlData.add(checkAdmin);
         
         JLabel labeltel = new JLabel("Telefono:");
         labeltel.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labeltel);
         
-        txttel = new JTextField(10);
-        txttel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlData.add(txttel);
+        txtTel = new JTextField(10);
+        txtTel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlData.add(txtTel);
         
         JLabel labelemail = new JLabel("Email:");
         labelemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelemail);
         
-        txtemail = new JTextField(15);
-        txtemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlData.add(txtemail);
+        txtEmail = new JTextField(15);
+        txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlData.add(txtEmail);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
         
         final JPanel pnlButtons = new JPanel();
@@ -337,11 +339,11 @@ public class StaffView extends JFrame {
     }
     
     public String geTel() {
-        return txttel.getText();
+        return txtTel.getText();
     }
     
     public String getEmail() {
-        return txtemail.getText();
+        return txtEmail.getText();
     }
     
     public void display() {

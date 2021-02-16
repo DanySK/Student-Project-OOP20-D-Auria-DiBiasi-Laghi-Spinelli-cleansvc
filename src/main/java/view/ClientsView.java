@@ -41,10 +41,10 @@ public class ClientsView extends JFrame {
     JTextField txtAddress;
     JTextField txtCity;
     JTextField txtCAP;
-    JTextField txtmq;
-    JTextField txttel;
-    JTextField txtemail;
-    JTextField txtsearchCFPIVA;
+    JTextField txtMq;
+    JTextField txtTel;
+    JTextField txtEmail;
+    JTextField txtSearch;
     final JButton btnSearch;
     final JButton btnSubmit;
     final JButton btnChange;
@@ -129,15 +129,15 @@ public class ClientsView extends JFrame {
         lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearchCFPIVA);
 
-        txtsearchCFPIVA = new JTextField(20);
-        txtsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSearch.add(txtsearchCFPIVA);
+        txtSearch = new JTextField(20);
+        txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlSearch.add(txtSearch);
         
         JLabel lblNoFound = new JLabel("Cliente non trovato!");
         lblNoFound.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblNoFound);
         
-        btnSearch = new JButton("Cerca");
+        btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
         btnSearch.setPreferredSize(new Dimension(120,20));
@@ -212,25 +212,25 @@ public class ClientsView extends JFrame {
         labelmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelmq);
         
-        txtmq = new JTextField(5);
-        txtmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlData.add(txtmq);
+        txtMq = new JTextField(5);
+        txtMq.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlData.add(txtMq);
         
         JLabel labeltel = new JLabel("Telefono:");
         labeltel.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labeltel);
         
-        txttel = new JTextField(10);
-        txttel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlData.add(txttel);
+        txtTel = new JTextField(10);
+        txtTel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlData.add(txtTel);
         
         JLabel labelemail = new JLabel("Email:");
         labelemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelemail);
         
-        txtemail = new JTextField(15);
-        txtemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlData.add(txtemail);
+        txtEmail = new JTextField(15);
+        txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlData.add(txtEmail);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
         
         final JPanel pnlButtons = new JPanel();
@@ -335,15 +335,15 @@ public class ClientsView extends JFrame {
     }
     
     public int getMq() {
-        return Integer.parseInt(txtmq.getText());
+        return Integer.parseInt(txtMq.getText());
     }
     
     public String getTel() {
-        return txttel.getText();
+        return txtTel.getText();
     }
     
     public String getEmail() {
-        return txtemail.getText();
+        return txtEmail.getText();
     }
 
     public void display() {
