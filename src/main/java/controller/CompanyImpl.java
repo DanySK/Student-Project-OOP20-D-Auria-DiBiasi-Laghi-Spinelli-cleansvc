@@ -1,4 +1,4 @@
-package model.users;
+package controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import model.Products;
+import model.users.Clients;
+import model.users.Staff;
 
 public class CompanyImpl implements Company {
     
@@ -15,7 +17,7 @@ public class CompanyImpl implements Company {
     private final List<Clients> clients = new ArrayList<>();
     private final List<Products> products = new ArrayList<>();
     
-    public CompanyImpl () {}
+    public CompanyImpl() {}
     
     public static CompanyImpl getInstance() {
         return SINGLETON;
@@ -82,9 +84,9 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<Products> searchProduct(String codeProduct) {
+    public Optional<Products> searchProduct(String nameProduct) {
         for (final Products p : this.products) {
-            if (p.getCode().equals(codeProduct)) {
+            if (p.getName().equals(nameProduct)) {
                 return Optional.of(p);
             }
         }

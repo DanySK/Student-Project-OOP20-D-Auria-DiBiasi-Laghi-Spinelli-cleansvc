@@ -2,5 +2,5 @@ package model.users;
 
 public interface Clients extends People {
 
-    int getmqStructure();
+    int getMqStructure();
 }
