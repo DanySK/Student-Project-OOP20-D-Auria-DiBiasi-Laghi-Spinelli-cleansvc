@@ -24,19 +24,19 @@ public class NewAppointmentView extends JFrame {
      * 
      */
     private static final long serialVersionUID = 2089945830206989799L;
-    private static final String TITLE = "Inserimento nuovo appuntamento";
+    private static final String TITLE = "NUOVO APPUNTAMENTO";
     private JComboBox<String> users;
-    private final JButton btnSubmit;
+    //private final JButton btnSubmit;
     private final JButton btnHome;
 
     public NewAppointmentView() {
 
         setTitle(NewAppointmentView.TITLE);
-        setMinimumSize(new Dimension(1000, 500));
+        setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setMinimumSize(new Dimension(1000, 20));
+        panelTitle.setMinimumSize(new Dimension(1000, 60));
         panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(panelTitle, BorderLayout.NORTH);
         panelTitle.setLayout(new BorderLayout(0, 0));
@@ -44,13 +44,13 @@ public class NewAppointmentView extends JFrame {
         JLabel lblTitle = new JLabel("Richieste sanificazione");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE,20));
+        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE, 20));
         panelTitle.add(lblTitle, BorderLayout.WEST);
 
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120,20));
+        btnHome.setPreferredSize(new Dimension(120, 20));
         btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnHome.addActionListener(new ActionListener() {
 
@@ -111,7 +111,7 @@ public class NewAppointmentView extends JFrame {
         timepicker.getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         pnlSubmit.add(timepicker);
 
-        btnSubmit = new JButton("Inserisci");
+        /*btnSubmit = new JButton("Conferma");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
         btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
@@ -123,7 +123,7 @@ public class NewAppointmentView extends JFrame {
             }
         });
         pnlSubmit.add(btnSubmit);
-        mainPanel.add(pnlSubmit);
+        mainPanel.add(pnlSubmit);*/
     }
 
     public void display() {
