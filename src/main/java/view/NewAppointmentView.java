@@ -25,7 +25,7 @@ public class NewAppointmentView extends JFrame {
      */
     private static final long serialVersionUID = 2089945830206989799L;
     private static final String TITLE = "NUOVO APPUNTAMENTO";
-    private JComboBox<String> users;
+    private JComboBox<String> comboClients;
     //private final JButton btnSubmit;
     private final JButton btnHome;
 
@@ -74,20 +74,19 @@ public class NewAppointmentView extends JFrame {
         pnlSubmit.setMinimumSize(new Dimension(1000, 100));
         mainPanel.add(pnlSubmit, BorderLayout.NORTH);
 
-        JLabel labelCFPIVA = new JLabel("CF/P.IVA:");
-        labelCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSubmit.add(labelCFPIVA);
+        JLabel labelCliente = new JLabel("Seleziona un cliente:");
+        labelCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlSubmit.add(labelCliente);
 
-        users = new JComboBox<>();
-        users.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        users.setToolTipText("CF o Partita IVA");
-        users.setBackground(SystemColor.inactiveCaption);
-        users.setForeground(SystemColor.textText);
-        users.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        pnlSubmit.add(users);
-        users.addItem("Mario Rossi Via degli omonimi 33");
-        users.addItem("Luigi Bianchi Via dell'Università 50");
-
+        comboClients = new JComboBox<>();
+        comboClients.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        comboClients.setToolTipText("Cliente");
+        comboClients.setBackground(SystemColor.inactiveCaption);
+        comboClients.setForeground(SystemColor.textText);
+        comboClients.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        pnlSubmit.add(comboClients);
+        comboClients.addItem("Mario Rossi Via degli omonimi 33");
+        comboClients.addItem("Luigi Bianchi Via dell'Università 50");
 
         JLabel labelDatePicker = new JLabel("Seleziona una data:");
         labelDatePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -95,7 +94,7 @@ public class NewAppointmentView extends JFrame {
 
         DatePicker datepicker = new DatePicker();
         datepicker.getComponentToggleCalendarButton().setForeground(SystemColor.textText);
-        datepicker.getComponentDateTextField().setToolTipText("Seleziona data dell'appuntamento");
+        datepicker.getComponentDateTextField().setToolTipText("Data dell'appuntamento");
         datepicker.getComponentToggleCalendarButton().setBackground(SystemColor.activeCaption);
         datepicker.getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         pnlSubmit.add(datepicker);
@@ -106,7 +105,7 @@ public class NewAppointmentView extends JFrame {
 
         TimePicker timepicker = new TimePicker();
         timepicker.getComponentToggleTimeMenuButton().setForeground(SystemColor.textText);
-        timepicker.getComponentTimeTextField().setToolTipText("Seleziona orario dell'appuntamento");
+        timepicker.getComponentTimeTextField().setToolTipText("Orario dell'appuntamento");
         timepicker.getComponentToggleTimeMenuButton().setBackground(SystemColor.activeCaption);
         timepicker.getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         pnlSubmit.add(timepicker);
@@ -122,8 +121,8 @@ public class NewAppointmentView extends JFrame {
                 // TODO Auto-generated method stub
             }
         });
-        pnlSubmit.add(btnSubmit);
-        mainPanel.add(pnlSubmit);*/
+        pnlSubmit.add(btnSubmit);*/
+        mainPanel.add(pnlSubmit);
     }
 
     public void display() {

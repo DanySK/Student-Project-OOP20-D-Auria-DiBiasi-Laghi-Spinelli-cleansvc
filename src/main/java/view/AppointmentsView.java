@@ -73,6 +73,7 @@ public class AppointmentsView extends JFrame {
             {"22/02/2021", "16:30", "Luigi Bianchi", "Via dell'università 50"}
         };
 
+        /*(change with DefaultTableModel) */
         JTable table = new JTable(data, cols);
         table.setPreferredScrollableViewportSize(new Dimension(500, 310));
         table.setFillsViewportHeight(true);
