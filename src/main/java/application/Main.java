@@ -1,4 +1,5 @@
 package application;
+import controller.backupFile.SaveAndLoadClients;
 import view.HomeView;
 
 /**
@@ -7,6 +8,9 @@ import view.HomeView;
 public final class Main {
 
     public static void main(final String[] args) {
+        
+        SaveAndLoadClients backup = new SaveAndLoadClients();
+        backup.load();
         new HomeView().display();
     }
 

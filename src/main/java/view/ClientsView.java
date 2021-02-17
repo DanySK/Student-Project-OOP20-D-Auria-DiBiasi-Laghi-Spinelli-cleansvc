@@ -10,11 +10,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,9 +24,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import controller.Company;
 import controller.CompanyImpl;
+import controller.backupFile.SaveAndLoadClients;
 import model.users.Clients;
 import model.users.ClientsImpl;
 
@@ -36,22 +41,31 @@ public class ClientsView extends JFrame {
     private static final long serialVersionUID = 3375687914483476432L;
     private static final String TITLE ="CLIENTI";
     
-    JTextField txtCFPIVA;
-    JTextField txtName;
-    JTextField txtAddress;
-    JTextField txtCity;
-    JTextField txtCAP;
-    JTextField txtMq;
-    JTextField txtTel;
-    JTextField txtEmail;
-    JTextField txtSearch;
-    final JButton btnSearch;
-    final JButton btnSubmit;
-    final JButton btnChange;
-    final JButton btnRemove;
-    final JButton btnHome;
-    Company c = CompanyImpl.getInstance();
-    List<Clients> clientsList = new ArrayList<>();//c.getClient();
+    private JTextField txtCFPIVA;
+    private JTextField txtName;
+    private JTextField txtAddress;
+    private JTextField txtCity;
+    private JTextField txtCAP;
+    private JTextField txtMq;
+    private JTextField txtTel;
+    private JTextField txtEmail;
+    private JTextField txtSearch;
+    private final JButton btnSearch;
+    private final JButton btnSubmit;
+    private final JButton btnChange;
+    private final JButton btnRemove;
+    private final JButton btnHome;
+    private Company c = CompanyImpl.getInstance();
+    private List<Clients> clientsList = c.getClient();
+    /*
+     * testing:
+     */
+    //List<Clients> clientsList = new ArrayList<>();
+    private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
+    private Object[][] data = new Object[clientsList.size()][cols.length];
+    private JPanel panelTable;
+    private DefaultTableModel model = new DefaultTableModel(data,cols);
+    private JTable table = new JTable(model);
 
     public ClientsView() {
         
@@ -59,7 +73,7 @@ public class ClientsView extends JFrame {
         setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        JPanel panelTable = new JPanel();
+        panelTable = new JPanel();
         panelTable.setMinimumSize(new Dimension(1000, 200));
         panelTable.setBackground(SystemColor.activeCaption);
         panelTable.setLayout(new BorderLayout(0, 0));
@@ -84,6 +98,7 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                model.setRowCount(0);
                 HomeView cv = new HomeView();
                 cv.display();
                 dispose();
@@ -94,30 +109,26 @@ public class ClientsView extends JFrame {
         panelTable.add(panelTitle, BorderLayout.NORTH);
         
         /*
-         * test
+         * testing:
+         *
+         *
+         * clientsList.add(new ClientsImpl("a", "b", "c", "d", "f", "f", "f", 22));
+         * clientsList.add(new ClientsImpl("b", "b", "b", "b", "f", "f", "f", 22));
          */
-        clientsList.add(new ClientsImpl("a", "b", "c", "d", "f", "f", "f", 22));
-        clientsList.add(new ClientsImpl("b", "b", "b", "b", "f", "f", "f", 22));
-        final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
-        Object[][] data = new Object[clientsList.size()][cols.length];
-        
-        for (int i = 0; i < clientsList.size(); i++) {
-            data[i][0] = clientsList.get(i).getName();
-            data[i][1] = clientsList.get(i).getAddress();
-            data[i][2] = clientsList.get(i).getCity();
-            data[i][3] = clientsList.get(i).getCAP();
-            data[i][4] = String.valueOf(clientsList.get(i).getMqStructure());
-            data[i][5] = clientsList.get(i).getTel();
-            data[i][6] = clientsList.get(i).getEmail();
-            data[i][7] = clientsList.get(i).getCFPIVA();
-        }
-
-        JTable table = new JTable(data,cols);
+       
+        Clients cc;
+         for (int i = 0; i < clientsList.size(); i++) {
+             cc = c.getClient().get(i);
+             model.insertRow(i, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
+         }
+         
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
         panelTable.add(table,BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
+       
+        
 
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati clienti", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
@@ -133,10 +144,6 @@ public class ClientsView extends JFrame {
         txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(txtSearch);
         
-        JLabel lblNoFound = new JLabel("Cliente non trovato!");
-        lblNoFound.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSearch.add(lblNoFound);
-        
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
@@ -146,7 +153,9 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
+                // TODO if cf exist set textfield else alert not found
+                
+                JOptionPane.showMessageDialog(rootPane, "Cliente non trovato!", "Alert", JOptionPane.WARNING_MESSAGE);
                 
             }
             
@@ -249,10 +258,12 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
+                c.addClient(new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq()));
+                Clients cc = c.getClient().get(clientsList.size()-1);
+                JOptionPane.showMessageDialog(rootPane, "Cliente inserito con successo!");
+                model.insertRow(clientsList.size()-1, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
+                clearInsertField();
             }
-            
         });
         pnlButtons.add(btnSubmit);
         
@@ -265,8 +276,10 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
+                Clients changed = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                //TODO if cf exist remove and add, else alert pop-up
+                JOptionPane.showMessageDialog(rootPane, "Cliente modificato con successo!");
+                JOptionPane.showMessageDialog(rootPane, "Ci sono dati mancanti o errati!", "Alert", JOptionPane.WARNING_MESSAGE);
             }
             
         });
@@ -281,8 +294,14 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
+                //Clients toRemove = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                //TODO if cf exist remove else alert
+                int answer = JOptionPane.showConfirmDialog(rootPane, "Vuoi eliminare un cliente?");
+                if (answer==JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(rootPane, "Cliente eliminato con successo!");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Cliente non rimosso! Riprovare.", "Alert", JOptionPane.ERROR_MESSAGE);
+                }
             }
             
         });
@@ -314,6 +333,17 @@ public class ClientsView extends JFrame {
         
     }
 
+    public void clearInsertField() {
+        txtCFPIVA.setText("");
+        txtName.setText("");
+        txtAddress.setText("");
+        txtCity.setText("");
+        txtCAP.setText("");
+        txtMq.setText("");
+        txtTel.setText("");
+        txtEmail.setText("");
+    }
+    
     public String getCFPIVA() {
         return txtCFPIVA.getText();
     }
