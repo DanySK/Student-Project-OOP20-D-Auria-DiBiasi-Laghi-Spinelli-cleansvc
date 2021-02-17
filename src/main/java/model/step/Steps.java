@@ -1,22 +1,16 @@
 package model.step;
 
-
-/**
- * Interface use to indicate the type of step.
- */
+import model.step.enumerations.StepType;
 
 public interface Steps {
-    /**
-     * Returns true if it is the final state.
-     * @return true if it is the final state.
-     */
-    boolean isEnd();
 
-    /**
-     * Returns the name of the step.
-     * @return the name of the step.
-     */
-    String getName();
+   double getTime500mq();
+
+   double getPrice500mq();
+
+   StepType getType();
+
+   String description();
 
 
 }

@@ -26,19 +26,19 @@ public enum StepType {
      */
     CONCLUSION("CONCLUSION", "Fase finale: sistemazione");
 
-    private String type;
+    private String name;
     private String description;
 
-    public String getType() {
-        return this.type;
+    public String getName() {
+        return this.name;
     }
 
     public String getDesciption() {
         return this.description;
     }
 
-    StepType(final String type, final String description) {
+    StepType(final String name, final String description) {
         this.description = description;
-        this.type = type;
+        this.name = name;
     }
 }
