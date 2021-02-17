@@ -63,7 +63,6 @@ public class ClientsView extends JFrame {
     //List<Clients> clientsList = new ArrayList<>();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
     private Object[][] data = new Object[clientsList.size()][cols.length];
-    private JPanel panelTable;
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
 
@@ -73,7 +72,7 @@ public class ClientsView extends JFrame {
         setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        panelTable = new JPanel();
+        JPanel panelTable = new JPanel();
         panelTable.setMinimumSize(new Dimension(1000, 200));
         panelTable.setBackground(SystemColor.activeCaption);
         panelTable.setLayout(new BorderLayout(0, 0));
@@ -127,8 +126,6 @@ public class ClientsView extends JFrame {
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
         panelTable.add(table,BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
-       
-        
 
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati clienti", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
@@ -260,7 +257,7 @@ public class ClientsView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 c.addClient(new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq()));
                 Clients cc = c.getClient().get(clientsList.size()-1);
-                JOptionPane.showMessageDialog(rootPane, "Cliente inserito con successo!");
+                JOptionPane.showMessageDialog(rootPane, "Cliente inserito con successo.");
                 model.insertRow(clientsList.size()-1, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
                 clearInsertField();
             }
@@ -278,7 +275,7 @@ public class ClientsView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Clients changed = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                 //TODO if cf exist remove and add, else alert pop-up
-                JOptionPane.showMessageDialog(rootPane, "Cliente modificato con successo!");
+                JOptionPane.showMessageDialog(rootPane, "Cliente modificato con successo.");
                 JOptionPane.showMessageDialog(rootPane, "Ci sono dati mancanti o errati!", "Alert", JOptionPane.WARNING_MESSAGE);
             }
             

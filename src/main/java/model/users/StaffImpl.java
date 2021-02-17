@@ -10,7 +10,7 @@ public class StaffImpl extends PeopleImpl implements Staff {
     }
 
     @Override
-    public String isAdmin() {
+    public String getIsAdmin() {
         return this.admin;
     }
 
