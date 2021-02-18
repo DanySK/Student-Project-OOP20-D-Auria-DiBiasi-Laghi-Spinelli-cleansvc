@@ -11,7 +11,8 @@ public interface Company {
 
     public void addStaff(final Staff s);
     public void removeStaff(final Staff s);
-    public Optional<Staff> searchStaff(final String emailStaff);
+    public Optional<Staff> searchStaffbyCF(final String CFStaff);
+    public Optional<Staff> searchStaffbyEmail(final String emailStaff);
     public List<Staff> getStaff();
 
     public void addClient(final Clients c);

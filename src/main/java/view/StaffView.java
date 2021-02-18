@@ -69,6 +69,8 @@ public class StaffView extends JFrame {
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
     
+    public PopUp popUp = new PopUp();
+    
     public StaffView() {
         setTitle(StaffView.TITLE);
         setMinimumSize(new Dimension(1200, 500));
@@ -161,8 +163,13 @@ public class StaffView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                JOptionPane.showMessageDialog(rootPane, "Dipendente non trovato!", "Alert", JOptionPane.WARNING_MESSAGE);
+                Optional<Staff> ss = company.searchStaffbyCF(getSearchingCF());
+                if (ss.isEmpty()) {
+                    popUp.popUpWarning("Dipendente non trovato!");
+                } else {
+                    writeField(ss.get());
+                    txtSearch.setText("");
+                }
             }
             
         });
@@ -263,11 +270,19 @@ public class StaffView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                company.addStaff(new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(), getIsAdmin()));
-                Staff s = company.getStaff().get(staffList.size()-1);
-                JOptionPane.showMessageDialog(rootPane, "Dipendente inserito con successo.");
-                model.insertRow(staffList.size()-1, new Object[] {s.getName(), s.getAddress(), s.getCity(), s.getCAP(), s.getIsAdmin(), s.getTel(), s.getEmail(), s.getCFPIVA()});
-                clearInsertField();
+                if (!missingField()) {
+                    Staff s = new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(), getIsAdmin());
+                    if (company.searchStaffbyCF(s.getCFPIVA()).isEmpty() && company.searchStaffbyEmail(s.getEmail()).isEmpty()){
+                        popUp.popUpInfo("Dipendente inserito con successo.");
+                        company.addStaff(s);
+                        addStaffToTable(company.getStaff().get(staffList.size()-1));
+                        clearInsertField();
+                    } else {
+                        popUp.popUpError("Dipendente già esistente");
+                    }
+                } else {
+                    popUp.popUpWarning("Ci sono dati mancanti o errati");
+                }
             }
             
         });
@@ -282,11 +297,22 @@ public class StaffView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
                 Staff changed = new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getIsAdmin());
-                //TODO if cf exist remove and add, else alert pop-up
-                JOptionPane.showMessageDialog(rootPane, "Dipendente modificato con successo.");
-                JOptionPane.showMessageDialog(rootPane, "Ci sono dati mancanti o errati!", "Alert", JOptionPane.WARNING_MESSAGE);
+                if (!missingField()) {
+                    Optional<Staff> older = company.searchStaffbyCF(changed.getCFPIVA());
+                    if (older.isEmpty()) {
+                        popUp.popUpWarning("Codice Fiscale inesistente tra i dipendenti. Non puoi modificare il Codice Fiscale.");
+                    } else {
+                        popUp.popUpInfo("Dipendente modificato con successo.");
+                        company.removeStaff(older.get());
+                        removeStaffToTable(older.get());
+                        company.addStaff(changed);
+                        addStaffToTable(changed);
+                        clearInsertField();
+                    }
+                } else {
+                    popUp.popUpWarning("Ci sono dati mancanti o errati!");
+                }
             }
             
         });
@@ -301,17 +327,24 @@ public class StaffView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                String email = JOptionPane.showInputDialog(rootPane, "Inserisci la email per verificare se possiedi i permessi:");
-                if (email!=null) {
-                    Optional<Staff> ss = company.searchStaff(email);
-                    if (ss.isEmpty()) {
-                        JOptionPane.showMessageDialog(rootPane, "L'email non esiste!", "Alert", JOptionPane.ERROR_MESSAGE);
-                    } else if (ss.isPresent()) {
-                        if (ss.get().getIsAdmin() == "si") {
-                            JOptionPane.showMessageDialog(rootPane, "Dipendente eliminato con successo.");
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "Non hai i permessi necessari!", "Alert", JOptionPane.ERROR_MESSAGE);
+                if (getCFPIVA().isEmpty()) {
+                    popUp.popUpWarning("Nessun dipendente specificato.");
+                } else {
+                    Optional<Staff> staffToRemove = company.searchStaffbyCF(getCFPIVA());
+                    String email = popUp.popUpInput("Inserisci email:");
+                    if (email!=null) {
+                        Optional<Staff> staffAdmin = company.searchStaffbyEmail(email);
+                        if (staffAdmin.isEmpty()) {
+                            popUp.popUpWarning("L'email non esiste!");
+                        } else if (staffAdmin.isPresent()) {
+                            if (staffAdmin.get().getIsAdmin() == "si") {
+                                popUp.popUpInfo("Dipendente eliminato con successo.");
+                                company.removeStaff(staffToRemove.get());
+                                removeStaffToTable(staffToRemove.get());
+                                clearInsertField();
+                            } else {
+                                popUp.popUpError("Non hai i permessi necessari!");
+                            }
                         }
                     }
                 }
@@ -344,6 +377,18 @@ public class StaffView extends JFrame {
         
     }
     
+    public void addStaffToTable(Staff s) {
+        model.insertRow(company.getStaff().size()-1, new Object[] {s.getName(), s.getAddress(), s.getCity(), s.getCAP(), s.getIsAdmin(), s.getTel(), s.getEmail(), s.getCFPIVA()});
+    }
+    
+    public void removeStaffToTable(Staff s) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getDataVector().elementAt(i).elementAt(7).equals(s.getCFPIVA())) {
+                model.removeRow(i);
+            }
+        }
+    }
+    
     public void clearInsertField() {
         txtCFPIVA.setText("");
         txtName.setText("");
@@ -354,7 +399,21 @@ public class StaffView extends JFrame {
         txtTel.setText("");
         txtEmail.setText("");
     }
-
+    
+    public Boolean missingField() {
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP().isEmpty() || getTel().isEmpty() || getEmail().isEmpty());
+    }
+    
+    public void writeField(Staff s) {
+        txtCFPIVA.setText(s.getCFPIVA());
+        txtName.setText(s.getName());
+        txtAddress.setText(s.getAddress());
+        txtCity.setText(s.getCity());
+        txtCAP.setText(s.getCAP());
+        checkAdmin.setSelected(s.getIsAdmin()=="si");
+        txtTel.setText(s.getTel());
+        txtEmail.setText(s.getEmail());
+    }
    
     public String getCFPIVA() {
         return txtCFPIVA.getText();
@@ -386,6 +445,10 @@ public class StaffView extends JFrame {
     
     public String getEmail() {
         return txtEmail.getText();
+    }
+    
+    public String getSearchingCF() {
+        return txtSearch.getText();
     }
     
     public void display() {

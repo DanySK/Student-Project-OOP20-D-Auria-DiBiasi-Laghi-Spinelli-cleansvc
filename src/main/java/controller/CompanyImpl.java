@@ -31,9 +31,19 @@ public class CompanyImpl implements Company {
     public void removeStaff(Staff s) {
         this.staff.remove(s);
     }
+    
+    @Override
+    public Optional<Staff> searchStaffbyCF(String CFStaff) {
+        for (final Staff s : this.staff) {
+            if (s.getCFPIVA().equals(CFStaff)) {
+                return Optional.of(s);
+            }
+        }
+        return Optional.empty();
+    }
 
     @Override
-    public Optional<Staff> searchStaff(String emailStaff) {
+    public Optional<Staff> searchStaffbyEmail(String emailStaff) {
         for (final Staff s : this.staff) {
             if (s.getEmail().equals(emailStaff)) {
                 return Optional.of(s);
