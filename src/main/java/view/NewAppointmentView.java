@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,6 +22,10 @@ import javax.swing.border.TitledBorder;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
+import controller.Company;
+import controller.CompanyImpl;
+import model.users.Clients;
+
 public class NewAppointmentView extends JFrame {
     /**
      * 
@@ -28,6 +35,8 @@ public class NewAppointmentView extends JFrame {
     private JComboBox<String> comboClients;
     //private final JButton btnSubmit;
     private final JButton btnHome;
+    private Company c = CompanyImpl.getInstance();
+    private List<Clients> clientsList = c.getClient();
 
     public NewAppointmentView() {
 
@@ -85,8 +94,15 @@ public class NewAppointmentView extends JFrame {
         comboClients.setForeground(SystemColor.textText);
         comboClients.setFont(new Font("Tahoma", Font.PLAIN, 13));
         pnlSubmit.add(comboClients);
-        comboClients.addItem("Mario Rossi Via degli omonimi 33");
-        comboClients.addItem("Luigi Bianchi Via dell'Università 50");
+        Clients cc;
+        for (int i = 0; i < clientsList.size(); i++) {
+            cc = c.getClient().get(i);
+            comboClients.addItem(cc.getName() + " " + cc.getAddress());
+        }
+        /*
+        comboClients.addItem("Mario Rossi" + " " + "Via degli omonimi 33");
+        comboClients.addItem("Luigi Bianchi" + " " + "Via dell'Università 50");
+       */
 
         JLabel labelDatePicker = new JLabel("Seleziona una data:");
         labelDatePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -110,7 +126,8 @@ public class NewAppointmentView extends JFrame {
         timepicker.getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         pnlSubmit.add(timepicker);
 
-        /*btnSubmit = new JButton("Conferma");
+        /*
+        btnSubmit = new JButton("Conferma");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
         btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
@@ -118,11 +135,18 @@ public class NewAppointmentView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
+                //test
+                String selectedClient = comboClients.getSelectedItem().toString();
+                System.out.println(selectedClient);
+                String dateValue = datepicker.getDate().toString();
+                System.out.println(dateValue);
+                String timeValue = timepicker.getTime().toString();
+                System.out.println(timeValue);
             }
         });
-        pnlSubmit.add(btnSubmit);*/
+        pnlSubmit.add(btnSubmit);
         mainPanel.add(pnlSubmit);
+        */
     }
 
     public void display() {
