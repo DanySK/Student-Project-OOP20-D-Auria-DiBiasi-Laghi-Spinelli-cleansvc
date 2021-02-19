@@ -22,6 +22,10 @@ public class PopUp extends JFrame {
         JOptionPane.showMessageDialog(rootPane, msg, "Errore", JOptionPane.ERROR_MESSAGE);
     }
     
+    public void popUpErrorOrMissing() {
+        this.popUpError("Ci sono dati mancanti o errati");
+    }
+    
     public String popUpInput(String msg) {
         return JOptionPane.showInputDialog(rootPane, msg, "Richiesta dati", JOptionPane.QUESTION_MESSAGE);
     }

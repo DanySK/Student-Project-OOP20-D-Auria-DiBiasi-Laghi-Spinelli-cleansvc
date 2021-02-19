@@ -91,7 +91,7 @@ public class SaveAndLoadClients implements SaveAndLoad {
             });
             for (int i = 0; i < cfPIvaList.size(); i++) {
                 this.company.addClient(new ClientsImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
-                        capList.get(i), telList.get(i), emailList.get(i), mqStructureList.get(i)));
+                        Integer.valueOf(capList.get(i)), Integer.valueOf(telList.get(i)), emailList.get(i), Integer.valueOf(mqStructureList.get(i))));
             }
         } catch (final IOException e) {
             System.err.println(e.getMessage());

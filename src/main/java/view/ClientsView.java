@@ -33,7 +33,11 @@ import controller.CompanyImpl;
 import controller.backupFile.SaveAndLoadClients;
 import model.users.Clients;
 import model.users.ClientsImpl;
-
+/**
+ * Graphic view to handle clients
+ * @author Vanessa Di Biasi
+ *
+ */
 public class ClientsView extends JFrame {
 
     /**
@@ -41,7 +45,6 @@ public class ClientsView extends JFrame {
      */
     private static final long serialVersionUID = 3375687914483476432L;
     private static final String TITLE ="CLEAN SERVICE MANAGER";
-    
     private JTextField txtCFPIVA;
     private JTextField txtName;
     private JTextField txtAddress;
@@ -65,7 +68,7 @@ public class ClientsView extends JFrame {
     private Object[][] data = new Object[company.getClients().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
-    
+    private InputValidator validator = new InputValidator();
     private PopUp popUp = new PopUp();
 
     public ClientsView() {
@@ -117,10 +120,10 @@ public class ClientsView extends JFrame {
          * clientsList.add(new ClientsImpl("b", "b", "b", "b", "f", "f", "f", 22));
          */
         
-        Clients cc;
+        Clients client;
         for (int i = 0; i < company.getClients().size(); i++) {
-            cc = company.getClients().get(i);
-            model.insertRow(i, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
+            client = company.getClients().get(i);
+            model.insertRow(i, new Object[] {client.getName(), client.getAddress(), client.getCity(), client.getCAP(), client.getMqStructure(), client.getTel(), client.getEmail(), client.getCFPIVA()});
         }
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
@@ -152,18 +155,21 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Optional<Clients> c = company.searchClient(getSearchingCFPIVA());
-                if (c.isEmpty()) {
-                    popUp.popUpWarning("Cliente non trovato!");
+                if (getSearchingCFPIVA().isEmpty()) {
+                    popUp.popUpErrorOrMissing();
                 } else {
-                    writeField(c.get());
-                    txtSearch.setText("");
+                    Optional<Clients> c = company.searchClient(getSearchingCFPIVA());
+                    if (c.isEmpty()) {
+                        popUp.popUpWarning("Cliente non trovato!");
+                    } else {
+                        writeField(c.get());
+                        txtSearch.setText("");
+                    }
                 }
             }
         });
         pnlSearch.add(btnSearch);
-        
-        
+
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati cliente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
@@ -260,17 +266,17 @@ public class ClientsView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!missingField()){
-                    Clients c = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
-                    if (company.searchClient(c.getCFPIVA()).isEmpty()) {
+                    Clients client = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                    if (company.searchClient(client.getCFPIVA()).isEmpty()) {
                         popUp.popUpInfo("Cliente inserito con successo.");
-                        company.addClient(c);
-                        addClientToTable(company.getClients().get(company.getClients().size()-1));
+                        company.addClient(client);
+                        addClientToTable(company.getClients().get(company.getClients().size() - 1));
                         clearInsertField();
                     } else {
                         popUp.popUpError("Cliente già esistente!");
                     }
                 } else {
-                    popUp.popUpWarning("Ci sono dati mancanti o errati.");
+                    popUp.popUpErrorOrMissing();
                 }
             }
         });
@@ -299,13 +305,13 @@ public class ClientsView extends JFrame {
                         clearInsertField();
                     }
                 } else {
-                    popUp.popUpWarning("Ci sono dati mancanti o errati!");
+                    popUp.popUpErrorOrMissing();
                 }
             }
         });
         pnlButtons.add(btnChange);
         
-        btnRemove = new JButton("Elimina");
+        btnRemove = new JButton("Elimina cliente");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
         btnRemove.setPreferredSize(new Dimension(120,20));
@@ -314,14 +320,14 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (getCFPIVA().isEmpty()) {
-                    popUp.popUpWarning("Nessun cliente specificato");
+                if (missingField()) {
+                    popUp.popUpErrorOrMissing();
                 } else {
                     Optional<Clients> clientToRemove = company.searchClient(getCFPIVA());
                     if (clientToRemove.isEmpty()) {
                         popUp.popUpWarning("Cliente non trovato");
                     } else {
-                        Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il cliente " + clientToRemove.get().getName() + "?");
+                        Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il cliente '" + clientToRemove.get().getName() + "' ?");
                         if (confirmed) {
                             popUp.popUpInfo("Cliente eliminato con successo.");
                             company.removeClient(clientToRemove.get());
@@ -337,12 +343,11 @@ public class ClientsView extends JFrame {
         pnlButtons.add(btnRemove);
         pnlSubmit.add(pnlButtons, BorderLayout.SOUTH);
 
-        
         GroupLayout layout = new GroupLayout(this.getContentPane());
         this.getContentPane().setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-        
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addComponent(panelTable)
@@ -351,7 +356,7 @@ public class ClientsView extends JFrame {
                 .addGap(0)
                 .addComponent(pnlSubmit)
                 .addGap(0));
-        
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addGroup(layout.createParallelGroup(Alignment.CENTER)
@@ -359,7 +364,6 @@ public class ClientsView extends JFrame {
                         .addComponent(pnlSearch)
                         .addComponent(pnlSubmit))
                 .addGap(0));
-        
     }
 
     /**
@@ -380,14 +384,14 @@ public class ClientsView extends JFrame {
      * 
      * @param c
      */
-    public void writeField(Clients c) {
+    public void writeField(final Clients c) {
         txtCFPIVA.setText(c.getCFPIVA());
         txtName.setText(c.getName());
         txtAddress.setText(c.getAddress());
         txtCity.setText(c.getCity());
-        txtCAP.setText(c.getCAP());
+        txtCAP.setText(String.valueOf(c.getCAP()));
         txtMq.setText(String.valueOf(c.getMqStructure()));
-        txtTel.setText(c.getTel());
+        txtTel.setText(String.valueOf(c.getTel()));
         txtEmail.setText(c.getEmail());
     }
 
@@ -396,22 +400,22 @@ public class ClientsView extends JFrame {
      * @return
      */
     public Boolean missingField() {
-        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP().isEmpty() || String.valueOf(getMq()).isEmpty());
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP()==Integer.MIN_VALUE || getMq()==Integer.MIN_VALUE || getTel()==Integer.MIN_VALUE || getEmail().isEmpty());
     }
 
     /**
      * 
      * @param c
      */
-    public void addClientToTable(Clients c) {
-        model.insertRow(company.getClients().size()-1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA()});
+    public void addClientToTable(final Clients c) {
+        model.insertRow(company.getClients().size() - 1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA()});
     }
 
     /**
      * 
      * @param c
      */
-    public void removeClientToTable(Clients c) {
+    public void removeClientToTable(final Clients c) {
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getDataVector().elementAt(i).elementAt(7).equals(c.getCFPIVA())) {
                 model.removeRow(i);
@@ -424,7 +428,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getSearchingCFPIVA() {
-        return txtSearch.getText();
+        return validator.isName(txtSearch.getText()) ? txtSearch.getText() : null;
     }
 
     /**
@@ -432,14 +436,14 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getCFPIVA() {
-        return txtCFPIVA.getText();
+        return validator.isCFPIVA(txtCFPIVA.getText()) ? txtCFPIVA.getText() : null;
     }
 
     /**
      * 
      */
     public String getName() {
-        return txtName.getText();
+        return validator.isName(txtName.getText()) ? txtName.getText() : null;
     }
 
     /**
@@ -447,7 +451,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getAddress() {
-        return txtAddress.getText();
+        return validator.isName(txtAddress.getText()) ? txtAddress.getText() : null;
     }
 
     /**
@@ -455,15 +459,15 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getCity() {
-        return txtCity.getText();
+        return validator.isName(txtCity.getText()) ? txtCity.getText() : null;
     }
 
     /**
      * 
      * @return
      */
-    public String getCAP() {
-        return txtCAP.getText();
+    public int getCAP() {
+        return validator.isCAP(txtCAP.getText()) ? Integer.parseInt(txtCAP.getText()) : Integer.MIN_VALUE;
     }
 
     /**
@@ -471,15 +475,15 @@ public class ClientsView extends JFrame {
      * @return
      */
     public int getMq() {
-        return Integer.parseInt(txtMq.getText());
+        return validator.isInteger(txtMq.getText()) ? Integer.parseInt(txtMq.getText()) : Integer.MIN_VALUE;
     }
 
     /**
      * 
      * @return
      */
-    public String getTel() {
-        return txtTel.getText();
+    public int getTel() {
+        return validator.isPhone(txtTel.getText()) ? Integer.parseInt(txtTel.getText()) : Integer.MIN_VALUE;
     }
 
     /**
@@ -487,7 +491,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getEmail() {
-        return txtEmail.getText();
+        return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : null;
     }
 
     /**

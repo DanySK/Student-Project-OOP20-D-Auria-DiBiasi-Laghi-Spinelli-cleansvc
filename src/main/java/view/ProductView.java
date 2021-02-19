@@ -31,7 +31,12 @@ import model.Products;
 import model.ProductsImpl;
 import model.users.Clients;
 import model.users.ClientsImpl;
-
+/**
+ * Graphic view to handle products
+ * 
+ * @author Vanessa Di Biasi
+ *
+ */
 public class ProductView extends JFrame {
 
     /**
@@ -54,6 +59,7 @@ public class ProductView extends JFrame {
     private final JButton btnRemove;
     private Company company = CompanyImpl.getInstance();
     private PopUp popUp = new PopUp();
+    private InputValidator validator = new InputValidator();
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo/Litro", "Utilizzo L/500mq", "Fase sanificazione"};
     private Object[][] data = new Object[company.getProducts().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data,cols);
@@ -151,12 +157,16 @@ public class ProductView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Optional<Products> p = company.searchProduct(getSearching());
-                if (p.isEmpty()) {
-                    popUp.popUpWarning("Prodotto non trovato!");
+                if (getSearching().isEmpty()) {
+                    popUp.popUpErrorOrMissing();
                 } else {
-                    writeField(p.get());
-                    txtSearch.setText("");
+                    Optional<Products> p = company.searchProduct(getSearching());
+                    if (p.isEmpty()) {
+                        popUp.popUpWarning("Prodotto non trovato!");
+                    } else {
+                        writeField(p.get());
+                        txtSearch.setText("");
+                    }
                 }
             }
         });
@@ -252,12 +262,12 @@ public class ProductView extends JFrame {
                         popUp.popUpError("Prodotto già esistente!");
                     }
                 } else {
-                    popUp.popUpWarning("Ci sono dati mancanti o errati.");
+                    popUp.popUpErrorOrMissing();
                 }
             }
         });
         pnlButtons.add(btnSubmit);
-        
+
         btnChange = new JButton("Modifica esistente");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
@@ -267,8 +277,8 @@ public class ProductView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Products changed = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
                 if (!missingField()) {
+                    Products changed = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
                     Optional<Products> toModify = company.searchProduct(changed.getCode());
                     if (toModify.isEmpty()) {
                         popUp.popUpWarning("Codice inesistente tra i prodotti.");
@@ -281,13 +291,13 @@ public class ProductView extends JFrame {
                         clearInsertField();
                     }
                 } else {
-                    popUp.popUpWarning("Ci sono dati mancanti o errati!");
+                    popUp.popUpErrorOrMissing();;
                 }
             }
         });
         pnlButtons.add(btnChange);
-        
-        btnRemove = new JButton("Elimina");
+
+        btnRemove = new JButton("Elimina prodotto");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
         btnRemove.setPreferredSize(new Dimension(200,20));
@@ -296,14 +306,14 @@ public class ProductView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (getCode().isEmpty()) {
-                    popUp.popUpWarning("Nessun codice prodotto specificato");
+                if (missingField()) {
+                    popUp.popUpErrorOrMissing();
                 } else {
                     Optional<Products> productToRemove = company.searchProduct(getCode());
                     if (productToRemove.isEmpty()) {
                         popUp.popUpWarning("Prodotto non trovato!");
                     } else {
-                        Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il prodotto " + productToRemove.get().getName() + "?");
+                        Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il prodotto '" + productToRemove.get().getName() + "' ?");
                         if (confirmed) {
                             popUp.popUpInfo("Prodotto eliminato con successo.");
                             company.removeProduct(productToRemove.get());
@@ -318,7 +328,6 @@ public class ProductView extends JFrame {
         });
         pnlButtons.add(btnRemove);
         pnlSubmit.add(pnlButtons, BorderLayout.SOUTH);
-        
 
         GroupLayout layout = new GroupLayout(this.getContentPane());
         this.getContentPane().setLayout(layout);
@@ -333,7 +342,7 @@ public class ProductView extends JFrame {
                 .addGap(0)
                 .addComponent(pnlSubmit)
                 .addGap(0));
-        
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addGroup(layout.createParallelGroup(Alignment.CENTER)
@@ -344,11 +353,11 @@ public class ProductView extends JFrame {
     }
 
     /**
-     * method the returns text.
-     * @return the text.
+     * 
+     * @return
      */
     public String getSearching() {
-        return txtSearch.getText();
+        return validator.isName(txtSearch.getText()) ? txtSearch.getText() : null;
     }
     /**
      * 
@@ -378,7 +387,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public Boolean missingField() {
-        return (getCode().isEmpty() || getStep().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || String.valueOf(getPrice()).isEmpty() || String.valueOf(getUsage()).isEmpty());
+        return (getCode().isEmpty() || getStep().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || Double.isNaN(getPrice()) || Double.isNaN(getUsage()));
     }
     /**
      * 
@@ -403,7 +412,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public String getCode() {
-        return txtCode.getText();
+        return validator.isName(txtCode.getText()) ? txtCode.getText() : null;
     }
     /**
      * 
@@ -416,14 +425,14 @@ public class ProductView extends JFrame {
      * 
      */
     public String getName() {
-        return txtName.getText();
+        return validator.isName(txtName.getText()) ? txtName.getText() : null;
     }
     /**
      * 
      * @return
      */
     public String getDescription() {
-        return txtDescr.getText();
+        return validator.isName(txtDescr.getText()) ? txtDescr.getText() : null;
     }
     
     /**
@@ -431,7 +440,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public double getPrice() {
-        return Double.parseDouble(txtPrice.getText());
+        return validator.isDouble(txtPrice.getText()) ? Double.parseDouble(txtPrice.getText()) : Double.NaN;
     }
     
     /**
@@ -439,7 +448,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public double getUsage() {
-        return Double.parseDouble(txtUsage.getText());
+        return validator.isDouble(txtUsage.getText()) ? Double.parseDouble(txtUsage.getText()) : Double.NaN;
     }
     
     /**

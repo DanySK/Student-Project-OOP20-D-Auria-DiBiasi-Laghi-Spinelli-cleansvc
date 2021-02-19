@@ -34,7 +34,11 @@ import controller.Company;
 import controller.CompanyImpl;
 import model.users.Staff;
 import model.users.StaffImpl;
-
+/**
+ * Graphic view for handle staff
+ * @author Vanessa Di Biasi
+ *
+ */
 public class StaffView extends JFrame {
 
     /**
@@ -67,6 +71,7 @@ public class StaffView extends JFrame {
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
     private PopUp popUp = new PopUp();
+    private InputValidator validator = new InputValidator();
 
     public StaffView() {
         setTitle(StaffView.TITLE);
@@ -124,10 +129,11 @@ public class StaffView extends JFrame {
          *   }
          */
         
-        Staff s;
+        Staff staff;
         for (int i = 0; i < company.getStaff().size(); i++) {
-            s = company.getStaff().get(i);
-            model.insertRow(i, new Object[] {s.getName(), s.getAddress(), s.getCity(), s.getCAP(), s.getIsAdmin(), s.getTel(), s.getEmail(), s.getCFPIVA()});
+            staff = company.getStaff().get(i);
+            String admin = staff.isAdmin() ? "si" : "no";
+            model.insertRow(i, new Object[] {staff.getName(), staff.getAddress(), staff.getCity(), staff.getCAP(), admin, staff.getTel(), staff.getEmail(), staff.getCFPIVA()});
         }
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
@@ -265,11 +271,11 @@ public class StaffView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!missingField()) {
-                    Staff s = new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(), getIsAdmin());
-                    if (company.searchStaffbyCF(s.getCFPIVA()).isEmpty() && company.searchStaffbyEmail(s.getEmail()).isEmpty()){
+                    Staff staff = new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(), isAdmin());
+                    if (company.searchStaffbyCF(staff.getCFPIVA()).isEmpty() && company.searchStaffbyEmail(staff.getEmail()).isEmpty()){
                         popUp.popUpInfo("Dipendente inserito con successo.");
-                        company.addStaff(s);
-                        addStaffToTable(company.getStaff().get(company.getStaff().size()-1));
+                        company.addStaff(staff);
+                        addStaffToTable(company.getStaff().get(company.getStaff().size() - 1));
                         clearInsertField();
                     } else {
                         popUp.popUpError("Dipendente già esistente!");
@@ -278,7 +284,6 @@ public class StaffView extends JFrame {
                     popUp.popUpWarning("Ci sono dati mancanti o errati.");
                 }
             }
-            
         });
         pnlButtons.add(btnSubmit);
         
@@ -291,7 +296,7 @@ public class StaffView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Staff changed = new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getIsAdmin());
+                Staff changed = new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  isAdmin());
                 if (!missingField()) {
                     Optional<Staff> toModify = company.searchStaffbyCF(changed.getCFPIVA());
                     if (toModify.isEmpty()) {
@@ -325,15 +330,15 @@ public class StaffView extends JFrame {
                 } else {
                     Optional<Staff> staffToRemove = company.searchStaffbyCF(getCFPIVA());
                     if (staffToRemove.isEmpty()) {
-                        popUp.popUpWarning("Dipendente non trovato.");;
+                        popUp.popUpWarning("Dipendente non trovato.");
                     } else {
                         String email = popUp.popUpInput("Inserisci email:");
-                        if (email!=null) {
+                        if (validator.isEmail(email)) {
                             Optional<Staff> staffAdmin = company.searchStaffbyEmail(email);
                             if (staffAdmin.isEmpty()) {
                                 popUp.popUpWarning("L'email non esiste!");
                             } else if (staffAdmin.isPresent()) {
-                                if (staffAdmin.get().getIsAdmin() == "si") {
+                                if (staffAdmin.get().isAdmin()) {
                                     Boolean confirm = popUp.popUpConfirm("Vuoi eliminare il dipendente " + staffToRemove.get().getName() + "?");
                                     if (confirm) {
                                         popUp.popUpInfo("Dipendente eliminato con successo.");
@@ -347,6 +352,8 @@ public class StaffView extends JFrame {
                                     popUp.popUpError("Non hai i permessi necessari!");
                                 }
                             }
+                        } else {
+                            popUp.popUpErrorOrMissing();
                         }
                     }
                 }
@@ -382,15 +389,16 @@ public class StaffView extends JFrame {
      * 
      * @param s
      */
-    public void addStaffToTable(Staff s) {
-        model.insertRow(company.getStaff().size()-1, new Object[] {s.getName(), s.getAddress(), s.getCity(), s.getCAP(), s.getIsAdmin(), s.getTel(), s.getEmail(), s.getCFPIVA()});
+    public void addStaffToTable(final Staff s) {
+        String admin = s.isAdmin() ? "si" : "no";
+        model.insertRow(company.getStaff().size() - 1, new Object[] {s.getName(), s.getAddress(), s.getCity(), s.getCAP(), admin, s.getTel(), s.getEmail(), s.getCFPIVA()});
     }
 
     /**
      * 
      * @param s
      */
-    public void removeStaffToTable(Staff s) {
+    public void removeStaffToTable(final Staff s) {
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getDataVector().elementAt(i).elementAt(7).equals(s.getCFPIVA())) {
                 model.removeRow(i);
@@ -417,21 +425,21 @@ public class StaffView extends JFrame {
      * @return
      */
     public Boolean missingField() {
-        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP().isEmpty() || getTel().isEmpty() || getEmail().isEmpty());
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP()==Integer.MIN_VALUE || getTel()==Integer.MIN_VALUE || getEmail().isEmpty());
     }
 
     /**
      * 
      * @param s
      */
-    public void writeField(Staff s) {
+    public void writeField(final Staff s) {
         txtCFPIVA.setText(s.getCFPIVA());
         txtName.setText(s.getName());
         txtAddress.setText(s.getAddress());
         txtCity.setText(s.getCity());
-        txtCAP.setText(s.getCAP());
-        checkAdmin.setSelected(s.getIsAdmin()=="si");
-        txtTel.setText(s.getTel());
+        txtCAP.setText(String.valueOf(s.getCAP()));
+        checkAdmin.setSelected(s.isAdmin());
+        txtTel.setText(String.valueOf(s.getTel()));
         txtEmail.setText(s.getEmail());
     }
 
@@ -440,14 +448,14 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getCFPIVA() {
-        return txtCFPIVA.getText();
+        return validator.isCFPIVA(txtCFPIVA.getText()) ? txtCFPIVA.getText() : null;
     }
 
     /**
      * 
      */
     public String getName() {
-        return txtName.getText();
+        return validator.isName(txtName.getText()) ? txtName.getText() : null;
     }
 
     /**
@@ -455,7 +463,7 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getAddress() {
-        return txtAddress.getText();
+        return validator.isName(txtAddress.getText()) ? txtAddress.getText() : null;
     }
 
     /**
@@ -463,31 +471,31 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getCity() {
-        return txtCity.getText();
+        return validator.isName(txtCity.getText()) ? txtCity.getText() : null;
     }
 
     /**
      * 
      * @return
      */
-    public String getCAP() {
-        return txtCAP.getText();
+    public int getCAP() {
+        return validator.isCAP(txtCAP.getText()) ? Integer.parseInt(txtCAP.getText()) : Integer.MIN_VALUE;
     }
 
     /**
      * 
      * @return
      */
-    public String getIsAdmin() {
-        return checkAdmin.isSelected() ? "si" : "no";
+    public Boolean isAdmin() {
+        return checkAdmin.isSelected();
     }
 
     /**
      * 
      * @return
      */
-    public String getTel() {
-        return txtTel.getText();
+    public int getTel() {
+        return validator.isPhone(txtTel.getText()) ? Integer.parseInt(txtTel.getText()) : Integer.MIN_VALUE;
     }
     
     /**
@@ -495,7 +503,7 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getEmail() {
-        return txtEmail.getText();
+        return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : null;
     }
 
     /**
@@ -503,7 +511,7 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getSearchingCF() {
-        return txtSearch.getText();
+        return validator.isCFPIVA(txtSearch.getText()) ? txtSearch.getText() : null;
     }
 
     /**

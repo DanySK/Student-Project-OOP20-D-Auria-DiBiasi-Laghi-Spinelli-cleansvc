@@ -43,7 +43,8 @@ public class SaveAndLoadStaff implements SaveAndLoad {
                 w.newLine();
                 w.write(EMAIL_STR + s.getEmail());
                 w.newLine();
-                w.write(ADMIN_STR + s.getIsAdmin());
+                String admin = s.isAdmin() ? "si" : "no";
+                w.write(ADMIN_STR + admin);
                 w.newLine();
             }
         } catch (final IOException e) {
@@ -89,8 +90,9 @@ public class SaveAndLoadStaff implements SaveAndLoad {
                 }
             });
             for (int i = 0; i < cfPIvaList.size(); i++) {
+                Boolean admin = (adminList.get(i)=="si");
                 this.company.addStaff(new StaffImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
-                        capList.get(i), telList.get(i), emailList.get(i), adminList.get(i)));
+                        Integer.valueOf(capList.get(i)), Integer.valueOf(telList.get(i)), emailList.get(i), admin));
             }
         } catch (final IOException e) {
             System.err.println(e.getMessage());
