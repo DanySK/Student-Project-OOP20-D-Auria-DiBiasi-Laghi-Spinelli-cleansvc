@@ -9,7 +9,7 @@ public class PeopleImpl implements People {
     private String cap;
     private String tel;
     private String email;
-    
+
     public PeopleImpl(String CF_PIVA, String name, String address, String city, String cap, String tel, String email) {
         this.CF_PIVA = CF_PIVA;
         this.name = name;
@@ -19,7 +19,7 @@ public class PeopleImpl implements People {
         this.tel = tel;
         this.email = email;
     }
-    
+
     @Override
     public String getName() {
         return this.name;
@@ -48,7 +48,9 @@ public class PeopleImpl implements People {
     public String getEmail() {
         return this.email;
     }
-    //if the client/employee change his contacts
+    /*
+     * methods for the change of client/employee's contacts
+     */
     @Override
     public void setAddress(String newAddress) {
         this.address = newAddress;

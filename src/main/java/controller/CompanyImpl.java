@@ -11,14 +11,13 @@ import model.users.Clients;
 import model.users.Staff;
 
 public class CompanyImpl implements Company {
-    
+
     private static final CompanyImpl SINGLETON = new CompanyImpl();
     private final List<Staff> staff = new ArrayList<>();
     private final List<Clients> clients = new ArrayList<>();
     private final List<Products> products = new ArrayList<>();
-    
+
     public CompanyImpl() {}
-    
     public static CompanyImpl getInstance() {
         return SINGLETON;
     }
@@ -32,9 +31,19 @@ public class CompanyImpl implements Company {
     public void removeStaff(Staff s) {
         this.staff.remove(s);
     }
+    
+    @Override
+    public Optional<Staff> searchStaffbyCF(String CFStaff) {
+        for (final Staff s : this.staff) {
+            if (s.getCFPIVA().equals(CFStaff)) {
+                return Optional.of(s);
+            }
+        }
+        return Optional.empty();
+    }
 
     @Override
-    public Optional<Staff> searchStaff(String emailStaff) {
+    public Optional<Staff> searchStaffbyEmail(String emailStaff) {
         for (final Staff s : this.staff) {
             if (s.getEmail().equals(emailStaff)) {
                 return Optional.of(s);
@@ -97,5 +106,4 @@ public class CompanyImpl implements Company {
     public List<Products> getProduct() {
         return Collections.unmodifiableList(this.products);
     }
-    
 }

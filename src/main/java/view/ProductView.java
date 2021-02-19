@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -37,7 +38,7 @@ public class ProductView extends JFrame {
     private static final String TITLE = "PRODOTTI";
     
     final JButton btnHome;
-    JTextField txtsearchStep;
+    JTextField txtSearch;
     final JButton btnSearch;
     JTextField txtName;
     JTextField txtPrice;
@@ -111,16 +112,16 @@ public class ProductView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati prodotto", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 40));
-        pnlSearch.setMinimumSize(new Dimension(1000, 40));
+        pnlSearch.setPreferredSize(new Dimension(1000, 35));
+        pnlSearch.setMinimumSize(new Dimension(1000, 35));
         
         JLabel lblsearch = new JLabel("Step:");
         lblsearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearch);
 
-        txtsearchStep = new JTextField(20);
-        txtsearchStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSearch.add(txtsearchStep);
+        txtSearch = new JTextField(20);
+        txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlSearch.add(txtSearch);
         
         JLabel lblNoFound = new JLabel("Prodotto non trovato!");
         lblNoFound.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -144,11 +145,11 @@ public class ProductView extends JFrame {
         
         
         final JPanel pnlData = new JPanel();
-        pnlData.setBorder(new TitledBorder(null, "Dati nuovo cliente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
+        pnlData.setBorder(new TitledBorder(null, "Dati nuovo prodotto", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlData.setBackground(SystemColor.window);
-        pnlData.setPreferredSize(new Dimension(900, 20));
-        pnlData.setMinimumSize(new Dimension(900, 20));
-        pnlData.setLayout(new GridLayout(1,4,2,2));
+        pnlData.setPreferredSize(new Dimension(900, 40));
+        pnlData.setMinimumSize(new Dimension(900, 40));
+        pnlData.setLayout(new FlowLayout());
         
         JLabel labelName = new JLabel("Nome:");
         labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -157,12 +158,12 @@ public class ProductView extends JFrame {
         txtName = new JTextField(20);
         txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtName);
-        
+
         JLabel labelPrice = new JLabel("Prezzo al litro:");
         labelPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelPrice);
         
-        txtPrice = new JTextField(20);
+        txtPrice = new JTextField(10);
         txtPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtPrice);
         
@@ -170,14 +171,14 @@ public class ProductView extends JFrame {
         labelUsage.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelUsage);
         
-        txtUsage = new JTextField(20);
+        txtUsage = new JTextField(10);
         txtUsage.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtUsage);
         
         btnChange = new JButton("Modifica esistente");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setPreferredSize(new Dimension(120,20));
+        btnChange.setPreferredSize(new Dimension(200,20));
         btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnChange.addActionListener(new ActionListener() {
 
@@ -212,6 +213,18 @@ public class ProductView extends JFrame {
                         .addComponent(pnlSearch)
                         .addComponent(pnlData))
                 .addGap(0));
+    }
+    
+    public String getName() {
+        return txtName.getText();
+    }
+    
+    public double getPrice() {
+        return Double.parseDouble(txtPrice.getText());
+    }
+    
+    public double getUsage() {
+        return Double.parseDouble(txtUsage.getText());
     }
     
     public void display() {

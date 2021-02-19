@@ -43,7 +43,7 @@ public class SaveAndLoadStaff implements SaveAndLoad {
                 w.newLine();
                 w.write(EMAIL_STR + s.getEmail());
                 w.newLine();
-                w.write(ADMIN_STR + s.isAdmin());
+                w.write(ADMIN_STR + s.getIsAdmin());
                 w.newLine();
             }
         } catch (final IOException e) {

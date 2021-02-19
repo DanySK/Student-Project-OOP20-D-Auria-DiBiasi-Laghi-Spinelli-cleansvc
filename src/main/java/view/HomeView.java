@@ -13,8 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import controller.Company;
-import controller.CompanyImpl;
+import controller.backupFile.*;
 
 public class HomeView extends JFrame{
 
@@ -27,6 +26,12 @@ public class HomeView extends JFrame{
     final JButton btnGrafici;
     final JButton btnStaff;
     final JButton btnProduct;
+    final JButton btnSaveAndExit;
+    
+    private SaveAndLoadClients backupClients = new SaveAndLoadClients();
+    private SaveAndLoadStaff backupStaff = new SaveAndLoadStaff();
+    private SaveAndLoadProducts backupProducts = new SaveAndLoadProducts();
+    
     
     
     public HomeView() {
@@ -110,6 +115,24 @@ public class HomeView extends JFrame{
             
         });
         panelTitle.add(btnGrafici);
+        
+        btnSaveAndExit = new JButton("Salva ed Esci");
+        btnSaveAndExit.setForeground(SystemColor.textText);
+        btnSaveAndExit.setBackground(SystemColor.activeCaption);
+        btnSaveAndExit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnSaveAndExit.setPreferredSize(new Dimension(280,70));
+        btnSaveAndExit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backupClients.save();
+                backupStaff.save();
+                backupProducts.save();
+                dispose();
+            }
+            
+        });
+        panelTitle.add(btnSaveAndExit);
     }
 
     public void display() {
