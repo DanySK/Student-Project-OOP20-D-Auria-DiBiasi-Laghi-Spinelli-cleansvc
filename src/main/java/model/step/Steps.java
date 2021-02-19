@@ -10,7 +10,4 @@ public interface Steps {
 
    StepType getType();
 
-   String description();
-
-
 }

@@ -6,14 +6,11 @@ public class StepsImpl implements Steps {
     private double time;
     private double price;
     private StepType type;
-    private String description;
 
     public StepsImpl(final double price, final double time, final StepType type) {
-       super();
        this.price = price;
        this.time = time;
        this.type = type;
-       this.description = type.getDesciption();
     }
 
     /**
@@ -24,6 +21,7 @@ public class StepsImpl implements Steps {
     public double getTime500mq() {
         return this.time;
     }
+
 
     /**
      * Returns the price for cleaning 500 square meters by an employee.
@@ -41,15 +39,6 @@ public class StepsImpl implements Steps {
     @Override
     public StepType getType() {
         return this.type;
-    }
-
-    /**
-     * Returns step's description.
-     * @return the type.
-     */
-    @Override
-    public String description() {
-        return this.description;
     }
 
 }

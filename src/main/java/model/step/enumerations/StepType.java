@@ -14,10 +14,6 @@ public enum StepType {
      */
     DISINFECTION("DISINFECTION", "Fase chiave del processo: disinfezione"),
     /**
-     * Optional RINSING step.
-     */
-    RINSING("RINSING", "Fase opzionale: risciacquo"),
-    /**
      * Optional DISINFESTATION step.
      */
     DISINFESTATION("DISINFESTATION", "Fase opzionale: disinfestazione"),
@@ -26,19 +22,19 @@ public enum StepType {
      */
     CONCLUSION("CONCLUSION", "Fase finale: sistemazione");
 
-    private String name;
+    private String type;
     private String description;
 
-    public String getName() {
-        return this.name;
+    public String getType() {
+        return this.type;
     }
 
     public String getDesciption() {
         return this.description;
     }
 
-    StepType(final String name, final String description) {
+    StepType(final String type, final String description) {
         this.description = description;
-        this.name = name;
+        this.type = type;
     }
 }
