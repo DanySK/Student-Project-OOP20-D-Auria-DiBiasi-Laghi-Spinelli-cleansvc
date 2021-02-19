@@ -24,7 +24,11 @@ import com.github.lgooddatepicker.components.TimePicker;
 
 import controller.Company;
 import controller.CompanyImpl;
+import model.Appointments;
+import model.AppointmentsImpl;
 import model.users.Clients;
+import model.users.ClientsImpl;
+import model.users.Staff;
 
 public class NewAppointmentView extends JFrame {
     /**
@@ -33,10 +37,13 @@ public class NewAppointmentView extends JFrame {
     private static final long serialVersionUID = 2089945830206989799L;
     private static final String TITLE = "NUOVO APPUNTAMENTO";
     private JComboBox<String> comboClients;
-    //private final JButton btnSubmit;
+    private final JButton btnSubmit;
     private final JButton btnHome;
-    private Company c = CompanyImpl.getInstance();
-    private List<Clients> clientsList = c.getClient();
+    private final DatePicker datepicker;
+    private final TimePicker timepicker;
+    private Company company = CompanyImpl.getInstance();
+    private List<Clients> clientsList = company.getClient();
+    public PopUp popUp = new PopUp();
 
     public NewAppointmentView() {
 
@@ -83,7 +90,7 @@ public class NewAppointmentView extends JFrame {
         pnlSubmit.setMinimumSize(new Dimension(1000, 100));
         mainPanel.add(pnlSubmit, BorderLayout.NORTH);
 
-        JLabel labelCliente = new JLabel("Seleziona un cliente:");
+        JLabel labelCliente = new JLabel("Cliente:");
         labelCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(labelCliente);
 
@@ -93,10 +100,11 @@ public class NewAppointmentView extends JFrame {
         comboClients.setBackground(SystemColor.inactiveCaption);
         comboClients.setForeground(SystemColor.textText);
         comboClients.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        comboClients.addItem("Seleziona un cliente");
         pnlSubmit.add(comboClients);
         Clients cc;
         for (int i = 0; i < clientsList.size(); i++) {
-            cc = c.getClient().get(i);
+            cc = company.getClient().get(i);
             comboClients.addItem(cc.getName() + " " + cc.getAddress());
         }
         /*
@@ -104,29 +112,28 @@ public class NewAppointmentView extends JFrame {
         comboClients.addItem("Luigi Bianchi" + " " + "Via dell'Università 50");
        */
 
-        JLabel labelDatePicker = new JLabel("Seleziona una data:");
+        JLabel labelDatePicker = new JLabel("Data:");
         labelDatePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(labelDatePicker);
 
-        DatePicker datepicker = new DatePicker();
+        datepicker = new DatePicker();
         datepicker.getComponentToggleCalendarButton().setForeground(SystemColor.textText);
         datepicker.getComponentDateTextField().setToolTipText("Data dell'appuntamento");
         datepicker.getComponentToggleCalendarButton().setBackground(SystemColor.activeCaption);
         datepicker.getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         pnlSubmit.add(datepicker);
 
-        JLabel labelTimePicker = new JLabel("Seleziona un orario:");
+        JLabel labelTimePicker = new JLabel("Orario:");
         labelTimePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(labelTimePicker);
 
-        TimePicker timepicker = new TimePicker();
+        timepicker = new TimePicker();
         timepicker.getComponentToggleTimeMenuButton().setForeground(SystemColor.textText);
         timepicker.getComponentTimeTextField().setToolTipText("Orario dell'appuntamento");
         timepicker.getComponentToggleTimeMenuButton().setBackground(SystemColor.activeCaption);
         timepicker.getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
         pnlSubmit.add(timepicker);
 
-        /*
         btnSubmit = new JButton("Conferma");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
@@ -135,23 +142,43 @@ public class NewAppointmentView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                //test
-                String selectedClient = comboClients.getSelectedItem().toString();
-                System.out.println(selectedClient);
-                String dateValue = datepicker.getDate().toString();
-                System.out.println(dateValue);
-                String timeValue = timepicker.getTime().toString();
-                System.out.println(timeValue);
+                //if (!missingField()) {
+                    Appointments a = new AppointmentsImpl(getDate(), getHour());
+                    company.addAppointment(a);
+                    popUp.popUpInfo("Appuntamento inserito con successo.");
+                    //addAppointmentToTable(company.getAppointment().get(appointmentsList.size() - 1));
+                    clearInsertField();
+                //} else {
+                    //popUp.popUpWarning("Ci sono dati mancanti o errati");
+               // }
             }
         });
         pnlSubmit.add(btnSubmit);
         mainPanel.add(pnlSubmit);
-        */
+
     }
 
     public void display() {
         setVisible(true);
         setResizable(true);
+    }
+
+    public String getDate() {
+        return datepicker.getDate().toString();
+    }
+
+    public String getHour() {
+        return timepicker.getTime().toString();
+    }
+
+    public void clearInsertField() {
+        comboClients.setSelectedIndex(0);
+        datepicker.setText("");
+        timepicker.setText("");
+    }
+
+    public Boolean missingField() {
+        return (getDate().isEmpty() || getHour().isEmpty() || comboClients.getSelectedItem().equals("Seleziona un cliente"));
     }
 
 }

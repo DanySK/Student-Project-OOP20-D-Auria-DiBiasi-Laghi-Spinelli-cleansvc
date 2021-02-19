@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 import java.util.Optional;
 
+import model.Appointments;
 import model.Products;
 import model.users.Clients;
 import model.users.Staff;
@@ -24,4 +25,9 @@ public interface Company {
     public void removeProduct(final Products p);
     public Optional<Products> searchProduct(final String nameProduct);
     public List<Products> getProduct();
+
+    void addAppointment(Appointments a);
+    void removeAppointment(Appointments a);
+    Optional<Appointments> searchAppointment(String nameAppointment);
+    List<Appointments> getAppointment();
 }

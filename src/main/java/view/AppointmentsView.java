@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -21,6 +22,8 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Company;
 import controller.CompanyImpl;
+import model.Appointments;
+import model.users.Clients;
 
 public class AppointmentsView extends JFrame {
 
@@ -32,17 +35,17 @@ public class AppointmentsView extends JFrame {
 
     private final JButton btnSubmit;
     private final JButton btnHome;
-    //private Company c = CompanyImpl.getInstance();
-    //private List<Appointments> appointmentsList = c.getAppointment();
+    private Company company = CompanyImpl.getInstance();
+    private List<Appointments> appointmentsList = company.getAppointment();
+    private final String[] cols = new String[] {"Data", "Ora", "Nome", "Indirizzo"};
+    private Object[][] data = new Object[appointmentsList.size()][cols.length];
     /*
      * testing:
      */
-    private final String[] cols = new String[] {"Nome", "Indirizzo", "Data", "Ora"};
-    private Object[][] data = new Object[][] {
+    /*private Object[][] data = new Object[][] {
         {"Mario Rossi", "Via degli omonimi 33", "16/02/2021", "15:30"}, 
         {"Luigi Bianchi", "Via dell'università 50", "22/02/2021", "16:30"}
-    };
-    //private Object[][] data = new Object[appointmentsList.size()][cols.length];
+    };*/
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
 
@@ -87,11 +90,13 @@ public class AppointmentsView extends JFrame {
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
 
-        //Appointments aa;
-        /* for (int i = 0; i < appointmentsList.size(); i++) {
-             aa = c.getAppointment().get(i);
-             model.insertRow(i, new Object[] {aa.getName(), aa.getAddress(), aa.getDate(), aa.getTime()});
-         }*/
+        Appointments a;
+        Clients c;
+        for (int i = 0; i < appointmentsList.size(); i++) {
+             a = company.getAppointment().get(i);
+             c = company.getClient().get(i);
+             model.insertRow(i, new Object[] {a.getDate(), a.getHour(), c.getName(), c.getAddress()});
+         }
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);

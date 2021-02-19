@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import model.Appointments;
 import model.Products;
 import model.users.Clients;
 import model.users.Staff;
@@ -16,6 +17,7 @@ public class CompanyImpl implements Company {
     private final List<Staff> staff = new ArrayList<>();
     private final List<Clients> clients = new ArrayList<>();
     private final List<Products> products = new ArrayList<>();
+    private final List<Appointments> appointments = new ArrayList<>();
 
     public CompanyImpl() {}
     public static CompanyImpl getInstance() {
@@ -105,5 +107,27 @@ public class CompanyImpl implements Company {
     @Override
     public List<Products> getProduct() {
         return Collections.unmodifiableList(this.products);
+    }
+    @Override
+    public void addAppointment(final Appointments a) {
+        this.appointments.add(a);
+    }
+    @Override
+    public void removeAppointment(final Appointments a) {
+        this.appointments.remove(a);
+    }
+    @Override
+    public Optional<Appointments> searchAppointment(final String nameAppointment) {
+        //DA CAMBIARE!!!
+        /*for (final Appointments a : this.appointments) {
+            if (a.getDate().equals(nameAppointment)) {
+                return Optional.of(a);
+            }
+        }*/
+        return Optional.empty();
+    }
+    @Override
+    public List<Appointments> getAppointment() {
+        return Collections.unmodifiableList(appointments);
     }
 }
