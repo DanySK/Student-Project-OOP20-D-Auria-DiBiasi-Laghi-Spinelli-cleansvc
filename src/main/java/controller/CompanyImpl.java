@@ -78,7 +78,7 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public List<Clients> getClient() {
+    public List<Clients> getClients() {
         return Collections.unmodifiableList(this.clients);
     }
 
@@ -103,7 +103,7 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public List<Products> getProduct() {
+    public List<Products> getProducts() {
         return Collections.unmodifiableList(this.products);
     }
 }

@@ -41,7 +41,7 @@ public class StaffView extends JFrame {
      * 
      */
     private static final long serialVersionUID = -6791011571687868971L;
-    private static final String TITLE = "DIPENDENTI";
+    private static final String TITLE = "CLEAN SERVICE MANAGER";
     
     private JTextField txtCFPIVA;
     private JTextField txtName;
@@ -63,13 +63,12 @@ public class StaffView extends JFrame {
      * private List<Staff> staffList = new ArrayList<>(); 
      */
     private Company company = CompanyImpl.getInstance();
-    private List<Staff> staffList = company.getStaff();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF_PIVA"};
-    private Object[][] data = new Object[staffList.size()][cols.length];
+    private Object[][] data = new Object[company.getStaff().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
     
-    public PopUp popUp = new PopUp();
+    private PopUp popUp = new PopUp();
     
     public StaffView() {
         setTitle(StaffView.TITLE);
@@ -130,7 +129,7 @@ public class StaffView extends JFrame {
         
         
         Staff s;
-        for (int i = 0; i < staffList.size(); i++) {
+        for (int i = 0; i < company.getStaff().size(); i++) {
             s = company.getStaff().get(i);
             model.insertRow(i, new Object[] {s.getName(), s.getAddress(), s.getCity(), s.getCAP(), s.getIsAdmin(), s.getTel(), s.getEmail(), s.getCFPIVA()});
         }
@@ -275,13 +274,13 @@ public class StaffView extends JFrame {
                     if (company.searchStaffbyCF(s.getCFPIVA()).isEmpty() && company.searchStaffbyEmail(s.getEmail()).isEmpty()){
                         popUp.popUpInfo("Dipendente inserito con successo.");
                         company.addStaff(s);
-                        addStaffToTable(company.getStaff().get(staffList.size()-1));
+                        addStaffToTable(company.getStaff().get(company.getStaff().size()-1));
                         clearInsertField();
                     } else {
-                        popUp.popUpError("Dipendente già esistente");
+                        popUp.popUpError("Dipendente già esistente!");
                     }
                 } else {
-                    popUp.popUpWarning("Ci sono dati mancanti o errati");
+                    popUp.popUpWarning("Ci sono dati mancanti o errati.");
                 }
             }
             
@@ -299,13 +298,13 @@ public class StaffView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Staff changed = new StaffImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getIsAdmin());
                 if (!missingField()) {
-                    Optional<Staff> older = company.searchStaffbyCF(changed.getCFPIVA());
-                    if (older.isEmpty()) {
+                    Optional<Staff> toModify = company.searchStaffbyCF(changed.getCFPIVA());
+                    if (toModify.isEmpty()) {
                         popUp.popUpWarning("Codice Fiscale inesistente tra i dipendenti. Non puoi modificare il Codice Fiscale.");
                     } else {
                         popUp.popUpInfo("Dipendente modificato con successo.");
-                        company.removeStaff(older.get());
-                        removeStaffToTable(older.get());
+                        company.removeStaff(toModify.get());
+                        removeStaffToTable(toModify.get());
                         company.addStaff(changed);
                         addStaffToTable(changed);
                         clearInsertField();
@@ -314,7 +313,6 @@ public class StaffView extends JFrame {
                     popUp.popUpWarning("Ci sono dati mancanti o errati!");
                 }
             }
-            
         });
         pnlButtons.add(btnChange);
         
@@ -331,19 +329,28 @@ public class StaffView extends JFrame {
                     popUp.popUpWarning("Nessun dipendente specificato.");
                 } else {
                     Optional<Staff> staffToRemove = company.searchStaffbyCF(getCFPIVA());
-                    String email = popUp.popUpInput("Inserisci email:");
-                    if (email!=null) {
-                        Optional<Staff> staffAdmin = company.searchStaffbyEmail(email);
-                        if (staffAdmin.isEmpty()) {
-                            popUp.popUpWarning("L'email non esiste!");
-                        } else if (staffAdmin.isPresent()) {
-                            if (staffAdmin.get().getIsAdmin() == "si") {
-                                popUp.popUpInfo("Dipendente eliminato con successo.");
-                                company.removeStaff(staffToRemove.get());
-                                removeStaffToTable(staffToRemove.get());
-                                clearInsertField();
-                            } else {
-                                popUp.popUpError("Non hai i permessi necessari!");
+                    if (staffToRemove.isEmpty()) {
+                        popUp.popUpWarning("Dipendente non trovato.");;
+                    } else {
+                        String email = popUp.popUpInput("Inserisci email:");
+                        if (email!=null) {
+                            Optional<Staff> staffAdmin = company.searchStaffbyEmail(email);
+                            if (staffAdmin.isEmpty()) {
+                                popUp.popUpWarning("L'email non esiste!");
+                            } else if (staffAdmin.isPresent()) {
+                                if (staffAdmin.get().getIsAdmin() == "si") {
+                                    Boolean confirm = popUp.popUpConfirm("Vuoi eliminare il dipendente " + staffToRemove.get().getName() + "?");
+                                    if (confirm) {
+                                        popUp.popUpInfo("Dipendente eliminato con successo.");
+                                        company.removeStaff(staffToRemove.get());
+                                        removeStaffToTable(staffToRemove.get());
+                                        clearInsertField();
+                                    } else {
+                                        popUp.popUpInfo("Eliminazione annullata.");
+                                    }
+                                } else {
+                                    popUp.popUpError("Non hai i permessi necessari!");
+                                }
                             }
                         }
                     }

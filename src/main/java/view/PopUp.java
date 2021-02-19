@@ -25,5 +25,8 @@ public class PopUp extends JFrame {
     public String popUpInput(String msg) {
         return JOptionPane.showInputDialog(rootPane, msg, "Richiesta dati", JOptionPane.QUESTION_MESSAGE);
     }
-
+    
+    public Boolean popUpConfirm(String msg) {
+        return JOptionPane.showConfirmDialog(rootPane, msg, "Conferma scelta", JOptionPane.YES_NO_OPTION)==0;
+    }
 }

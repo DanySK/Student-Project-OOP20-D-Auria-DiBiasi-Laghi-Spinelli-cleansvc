@@ -18,10 +18,10 @@ public interface Company {
     public void addClient(final Clients c);
     public void removeClient(final Clients c);
     public Optional<Clients> searchClient(final String CF_PIVA);
-    public List<Clients> getClient();
+    public List<Clients> getClients();
 
     public void addProduct(final Products p);
     public void removeProduct(final Products p);
     public Optional<Products> searchProduct(final String nameProduct);
-    public List<Products> getProduct();
+    public List<Products> getProducts();
 }

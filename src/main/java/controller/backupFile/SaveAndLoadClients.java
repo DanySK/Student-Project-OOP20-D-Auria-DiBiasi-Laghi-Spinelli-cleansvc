@@ -29,7 +29,7 @@ public class SaveAndLoadClients implements SaveAndLoad {
     @Override
     public void save() {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_CLIENTS))) {
-            for (final Clients c : this.company.getClient()) {
+            for (final Clients c : this.company.getClients()) {
                 w.write(CFPIVA_STR + c.getCFPIVA());
                 w.newLine();
                 w.write(NAME_STR + c.getName());

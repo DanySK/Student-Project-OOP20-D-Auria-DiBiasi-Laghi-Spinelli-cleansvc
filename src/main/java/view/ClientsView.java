@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
@@ -39,7 +40,7 @@ public class ClientsView extends JFrame {
      * 
      */
     private static final long serialVersionUID = 3375687914483476432L;
-    private static final String TITLE ="CLIENTI";
+    private static final String TITLE ="CLEAN SERVICE MANAGER";
     
     private JTextField txtCFPIVA;
     private JTextField txtName;
@@ -55,16 +56,17 @@ public class ClientsView extends JFrame {
     private final JButton btnChange;
     private final JButton btnRemove;
     private final JButton btnHome;
-    private Company c = CompanyImpl.getInstance();
-    private List<Clients> clientsList = c.getClient();
+    private Company company = CompanyImpl.getInstance();
     /*
      * testing:
      */
     //List<Clients> clientsList = new ArrayList<>();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
-    private Object[][] data = new Object[clientsList.size()][cols.length];
+    private Object[][] data = new Object[company.getClients().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
+    
+    private PopUp popUp = new PopUp();
 
     public ClientsView() {
         
@@ -116,8 +118,8 @@ public class ClientsView extends JFrame {
          */
        
         Clients cc;
-         for (int i = 0; i < clientsList.size(); i++) {
-             cc = c.getClient().get(i);
+         for (int i = 0; i < company.getClients().size(); i++) {
+             cc = company.getClients().get(i);
              model.insertRow(i, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
          }
          
@@ -150,12 +152,14 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO if cf exist set textfield else alert not found
-                
-                JOptionPane.showMessageDialog(rootPane, "Cliente non trovato!", "Alert", JOptionPane.WARNING_MESSAGE);
-                
+                Optional<Clients> c = company.searchClient(getSearchingCFPIVA());
+                if (c.isEmpty()) {
+                    popUp.popUpWarning("Cliente non trovato!");
+                } else {
+                    writeField(c.get());
+                    txtSearch.setText("");
+                }
             }
-            
         });
         pnlSearch.add(btnSearch);
         
@@ -255,11 +259,19 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                c.addClient(new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq()));
-                Clients cc = c.getClient().get(clientsList.size()-1);
-                JOptionPane.showMessageDialog(rootPane, "Cliente inserito con successo.");
-                model.insertRow(clientsList.size()-1, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
-                clearInsertField();
+                if(!missingField()){
+                    Clients c = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                    if (company.searchClient(c.getCFPIVA()).isEmpty()) {
+                        popUp.popUpInfo("Cliente inserito con successo.");
+                        company.addClient(c);
+                        addClientToTable(company.getClients().get(company.getClients().size()-1));
+                        clearInsertField();
+                    } else {
+                        popUp.popUpError("Cliente già esistente!");
+                    }
+                } else {
+                    popUp.popUpWarning("Ci sono dati mancanti o errati.");
+                }
             }
         });
         pnlButtons.add(btnSubmit);
@@ -274,11 +286,22 @@ public class ClientsView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Clients changed = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
-                //TODO if cf exist remove and add, else alert pop-up
-                JOptionPane.showMessageDialog(rootPane, "Cliente modificato con successo.");
-                JOptionPane.showMessageDialog(rootPane, "Ci sono dati mancanti o errati!", "Alert", JOptionPane.WARNING_MESSAGE);
+                if (!missingField()) {
+                    Optional<Clients> toModify = company.searchClient(changed.getCFPIVA());
+                    if (toModify.isEmpty()) {
+                        popUp.popUpWarning("Codice Fiscale o Partita IVA inesistente tra i clienti!");
+                    } else {
+                        popUp.popUpInfo("Cliente modificato con successo.");
+                        company.removeClient(toModify.get());
+                        removeClientToTable(toModify.get());
+                        company.addClient(changed);
+                        addClientToTable(changed);
+                        clearInsertField();
+                    }
+                } else {
+                    popUp.popUpWarning("Ci sono dati mancanti o errati!");
+                }
             }
-            
         });
         pnlButtons.add(btnChange);
         
@@ -291,16 +314,25 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Clients toRemove = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
-                //TODO if cf exist remove else alert
-                int answer = JOptionPane.showConfirmDialog(rootPane, "Vuoi eliminare un cliente?");
-                if (answer==JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(rootPane, "Cliente eliminato con successo!");
+                if (getCFPIVA().isEmpty()) {
+                    popUp.popUpWarning("Nessun cliente specificato");
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, "Cliente non rimosso! Riprovare.", "Alert", JOptionPane.ERROR_MESSAGE);
+                    Optional<Clients> clientToRemove = company.searchClient(getCFPIVA());
+                    if (clientToRemove.isEmpty()) {
+                        popUp.popUpWarning("Cliente non trovato");
+                    } else {
+                        Boolean confirm = popUp.popUpConfirm("Vuoi eliminare il cliente " + clientToRemove.get().getName() + "?");
+                        if (confirm) {
+                            popUp.popUpInfo("Cliente eliminato con successo.");
+                            company.removeClient(clientToRemove.get());
+                            removeClientToTable(clientToRemove.get());
+                            clearInsertField();
+                        } else {
+                            popUp.popUpInfo("Eliminazione annullata.");
+                        }
+                    }
                 }
             }
-            
         });
         pnlButtons.add(btnRemove);
         pnlSubmit.add(pnlButtons, BorderLayout.SOUTH);
@@ -339,6 +371,37 @@ public class ClientsView extends JFrame {
         txtMq.setText("");
         txtTel.setText("");
         txtEmail.setText("");
+    }
+    
+    public void writeField(Clients c) {
+        txtCFPIVA.setText(c.getCFPIVA());
+        txtName.setText(c.getName());
+        txtAddress.setText(c.getAddress());
+        txtCity.setText(c.getCity());
+        txtCAP.setText(c.getCAP());
+        txtMq.setText(String.valueOf(c.getMqStructure()));
+        txtTel.setText(c.getTel());
+        txtEmail.setText(c.getEmail());
+    }
+    
+    public Boolean missingField() {
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP().isEmpty() || String.valueOf(getMq()).isEmpty());
+    }
+    
+    public void addClientToTable(Clients c) {
+        model.insertRow(company.getClients().size()-1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA()});
+    }
+    
+    public void removeClientToTable(Clients c) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getDataVector().elementAt(i).elementAt(7).equals(c.getCFPIVA())) {
+                model.removeRow(i);
+            }
+        }
+    }
+    
+    public String getSearchingCFPIVA() {
+        return txtSearch.getText();
     }
     
     public String getCFPIVA() {
