@@ -1,6 +1,10 @@
 package model.step;
 
 import java.util.List;
+
+import controller.Company;
+import controller.CompanyImpl;
+import model.Products;
 import model.step.enumerations.StepType;
 
 
@@ -9,7 +13,9 @@ public class SubStepsImpl implements SubSteps {
     private int time500mq;
     private String name;
     private String description;
-    
+    private Company company = CompanyImpl.getInstance();
+    private List<Products> productsList = company.getProductsByStepType(this.type);
+
 
     public SubStepsImpl(final StepType type, final int time, final String name, final String description) {
         this.type = type;
@@ -20,7 +26,7 @@ public class SubStepsImpl implements SubSteps {
 
 
     /**
-     * @return
+     * @return the name of subStep.
      */
     @Override
     public String getName() {
@@ -29,7 +35,7 @@ public class SubStepsImpl implements SubSteps {
 
 
     /**
-     * @return
+     * @return the description of subStep.
      */
     @Override
     public String getDescription() {
@@ -38,7 +44,8 @@ public class SubStepsImpl implements SubSteps {
 
 
     /**
-     * @return
+     * Returns the cleaning time of 500 square meters by an employee.
+     * @return the cleaning time.
      */
     @Override
     public int getTime() {
