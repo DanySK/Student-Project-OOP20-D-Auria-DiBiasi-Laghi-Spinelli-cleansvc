@@ -1,9 +1,8 @@
 package model.users;
 
 public interface Staff extends People {
-    
-    Boolean isAdmin();
-    
-    void setIsAdmin(final Boolean value);
+
+    String getIsAdmin();
+    void setIsAdmin(final String value);
  
 }

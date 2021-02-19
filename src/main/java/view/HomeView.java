@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import controller.backupFile.*;
+
 public class HomeView extends JFrame{
 
     /**
@@ -23,6 +25,14 @@ public class HomeView extends JFrame{
     final JButton btnClienti;
     final JButton btnGrafici;
     final JButton btnStaff;
+    final JButton btnProduct;
+    final JButton btnSaveAndExit;
+    
+    private SaveAndLoadClients backupClients = new SaveAndLoadClients();
+    private SaveAndLoadStaff backupStaff = new SaveAndLoadStaff();
+    private SaveAndLoadProducts backupProducts = new SaveAndLoadProducts();
+    
+    
     
     public HomeView() {
         
@@ -35,6 +45,8 @@ public class HomeView extends JFrame{
         //panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(panelTitle, BorderLayout.CENTER);
         panelTitle.setLayout(new FlowLayout());
+        
+        
 
         btnClienti = new JButton("Area Clienti");
         btnClienti.setForeground(SystemColor.textText);
@@ -62,13 +74,30 @@ public class HomeView extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                StaffView cv = new StaffView();
-                cv.display();
+                StaffView sv = new StaffView();
+                sv.display();
                 dispose();
             }
             
         });
         panelTitle.add(btnStaff);
+        
+        btnProduct = new JButton("Area Prodotti");
+        btnProduct.setForeground(SystemColor.textText);
+        btnProduct.setBackground(SystemColor.activeCaption);
+        btnProduct.setPreferredSize(new Dimension(280,70));
+        btnProduct.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnProduct.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ProductView pv = new ProductView();
+                pv.display();
+                dispose();
+            }
+            
+        });
+        panelTitle.add(btnProduct);
 
         btnGrafici = new JButton("Area Grafici");
         btnGrafici.setForeground(SystemColor.textText);
@@ -79,13 +108,31 @@ public class HomeView extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                AdministratorChartsView cv = new AdministratorChartsView();
-                cv.display();
+                AdministratorChartsView av = new AdministratorChartsView();
+                av.display();
                 dispose();
             }
             
         });
         panelTitle.add(btnGrafici);
+        
+        btnSaveAndExit = new JButton("Salva ed Esci");
+        btnSaveAndExit.setForeground(SystemColor.textText);
+        btnSaveAndExit.setBackground(SystemColor.activeCaption);
+        btnSaveAndExit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnSaveAndExit.setPreferredSize(new Dimension(280,70));
+        btnSaveAndExit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backupClients.save();
+                backupStaff.save();
+                backupProducts.save();
+                dispose();
+            }
+            
+        });
+        panelTitle.add(btnSaveAndExit);
     }
 
     public void display() {
