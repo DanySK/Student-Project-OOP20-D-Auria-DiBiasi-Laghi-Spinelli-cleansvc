@@ -9,19 +9,20 @@ import model.users.Staff;
 
 public interface Company {
 
-    public void addStaff(final Staff s);
-    public void removeStaff(final Staff s);
-    public Optional<Staff> searchStaffbyCF(final String CFStaff);
-    public Optional<Staff> searchStaffbyEmail(final String emailStaff);
-    public List<Staff> getStaff();
+    void addStaff(final Staff s);
+    void removeStaff(final Staff s);
+    Optional<Staff> searchStaffbyCF(final String CFStaff);
+    Optional<Staff> searchStaffbyEmail(final String emailStaff);
+    List<Staff> getStaff();
 
-    public void addClient(final Clients c);
-    public void removeClient(final Clients c);
-    public Optional<Clients> searchClient(final String CF_PIVA);
-    public List<Clients> getClients();
+    void addClient(final Clients c);
+    void removeClient(final Clients c);
+    Optional<Clients> searchClient(final String CF_PIVA);
+    List<Clients> getClients();
 
-    public void addProduct(final Products p);
-    public void removeProduct(final Products p);
-    public Optional<Products> searchProduct(final String stepProduct);
-    public List<Products> getProducts();
+    void addProduct(final Products p);
+    void removeProduct(final Products p);
+    Optional<Products> searchProduct(final String codeProduct);
+    List<Products> getProducts();
+    Optional<List<Products>> getProductsByStepType(String stepType);
 }

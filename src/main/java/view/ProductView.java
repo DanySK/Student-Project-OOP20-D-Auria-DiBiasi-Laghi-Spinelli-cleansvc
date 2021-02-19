@@ -43,6 +43,7 @@ public class ProductView extends JFrame {
     private final JButton btnHome;
     private JTextField txtSearch;
     private final JButton btnSearch;
+    private JTextField txtCode;
     private JTextField txtStep;
     private JTextField txtName;
     private JTextField txtDescr;
@@ -50,9 +51,10 @@ public class ProductView extends JFrame {
     private JTextField txtUsage;
     private final JButton btnSubmit;
     private final JButton btnChange;
+    private final JButton btnRemove;
     private Company company = CompanyImpl.getInstance();
     private PopUp popUp = new PopUp();
-    private final String[] cols = new String[] {"Step", "Nome", "Descrizione", "Prezzo/Litro", "Utilizzo L/500mq"};
+    private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo/Litro", "Utilizzo L/500mq", "Fase sanificazione"};
     private Object[][] data = new Object[company.getProducts().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
@@ -60,7 +62,7 @@ public class ProductView extends JFrame {
     public ProductView() {
         
         setTitle(ProductView.TITLE);
-        setMinimumSize(new Dimension(1200, 450));
+        setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         JPanel panelTable = new JPanel();
@@ -117,7 +119,7 @@ public class ProductView extends JFrame {
         Products p;
         for (int i = 0; i < company.getProducts().size(); i++) {
             p = company.getProducts().get(i);
-            model.insertRow(i, new Object[] {p.getStep(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq()});
+            model.insertRow(i, new Object[] {p.getCode(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq(), p.getStepType()});
         }
         
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
@@ -129,10 +131,10 @@ public class ProductView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati prodotto", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 60));
-        pnlSearch.setMinimumSize(new Dimension(1000, 60));
+        pnlSearch.setPreferredSize(new Dimension(1000, 50));
+        pnlSearch.setMinimumSize(new Dimension(1000, 50));
         
-        JLabel lblsearch = new JLabel("Step:"); //TODO list box of existing step
+        JLabel lblsearch = new JLabel("Codice:"); //TODO list box of existing step
         lblsearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearch);
 
@@ -170,9 +172,17 @@ public class ProductView extends JFrame {
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
-        pnlData.setPreferredSize(new Dimension(900, 50));
-        pnlData.setMinimumSize(new Dimension(900, 50));
-        pnlData.setLayout(new GridLayout(3,2,20,2));
+        pnlData.setPreferredSize(new Dimension(900, 60));
+        pnlData.setMinimumSize(new Dimension(900, 60));
+        pnlData.setLayout(new GridLayout(3,2,20,5));
+        
+        JLabel labelCode = new JLabel("Codice:");
+        labelCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlData.add(labelCode);
+        
+        txtCode = new JTextField(15);
+        txtCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlData.add(txtCode);
         
         JLabel labelStep = new JLabel("Step:");
         labelStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -218,9 +228,9 @@ public class ProductView extends JFrame {
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
-        pnlButtons.setPreferredSize(new Dimension(900, 25));
-        pnlButtons.setMinimumSize(new Dimension(900, 25));
-        pnlButtons.setLayout(new GridLayout(1,2,30,20));
+        pnlButtons.setPreferredSize(new Dimension(900, 30));
+        pnlButtons.setMinimumSize(new Dimension(900, 30));
+        pnlButtons.setLayout(new GridLayout(1,2,20,5));
         
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
@@ -231,9 +241,9 @@ public class ProductView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!missingField()){
-                    Products p = new ProductsImpl(getStep(), getName(), getDescription(), getPrice(), getUsage());
-                    if (company.searchProduct(p.getStep()).isEmpty()) {
+                if(!missingField()) {
+                    Products p = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
+                    if (company.searchProduct(p.getCode()).isEmpty()) {
                         popUp.popUpInfo("Prodotto inserito con successo.");
                         company.addProduct(p);
                         addProductToTable(company.getProducts().get(company.getProducts().size()-1));
@@ -257,11 +267,11 @@ public class ProductView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Products changed = new ProductsImpl(getStep(), getName(), getDescription(), getPrice(), getUsage());
+                Products changed = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
                 if (!missingField()) {
-                    Optional<Products> toModify = company.searchProduct(changed.getStep());
+                    Optional<Products> toModify = company.searchProduct(changed.getCode());
                     if (toModify.isEmpty()) {
-                        popUp.popUpWarning("Step inesistente tra i prodotti.");
+                        popUp.popUpWarning("Codice inesistente tra i prodotti.");
                     } else {
                         popUp.popUpInfo("Prodotto modificato con successo.");
                         company.removeProduct(toModify.get());
@@ -276,6 +286,37 @@ public class ProductView extends JFrame {
             }
         });
         pnlButtons.add(btnChange);
+        
+        btnRemove = new JButton("Elimina");
+        btnRemove.setForeground(SystemColor.textText);
+        btnRemove.setBackground(SystemColor.activeCaption);
+        btnRemove.setPreferredSize(new Dimension(200,20));
+        btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (getCode().isEmpty()) {
+                    popUp.popUpWarning("Nessun codice prodotto specificato");
+                } else {
+                    Optional<Products> productToRemove = company.searchProduct(getCode());
+                    if (productToRemove.isEmpty()) {
+                        popUp.popUpWarning("Prodotto non trovato!");
+                    } else {
+                        Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il prodotto " + productToRemove.get().getName() + "?");
+                        if (confirmed) {
+                            popUp.popUpInfo("Prodotto eliminato con successo.");
+                            company.removeProduct(productToRemove.get());
+                            removeProductToTable(productToRemove.get());
+                            clearInsertField();
+                        } else {
+                            popUp.popUpInfo("Eliminazione annullata.");
+                        }
+                    }
+                }
+            }
+        });
+        pnlButtons.add(btnRemove);
         pnlSubmit.add(pnlButtons, BorderLayout.SOUTH);
         
 
@@ -301,63 +342,109 @@ public class ProductView extends JFrame {
                         .addComponent(pnlSubmit))
                 .addGap(0));
     }
-    
+
+    /**
+     * method the returns text.
+     * @return the text.
+     */
     public String getSearching() {
         return txtSearch.getText();
     }
-    
-    public void writeField(Products p) {
-        txtStep.setText(p.getStep());
+    /**
+     * 
+     * @param p
+     */
+    public  void writeField(Products p) {
+        txtCode.setText(p.getCode());
+        txtStep.setText(p.getStepType());
         txtName.setText(p.getName());
         txtDescr.setText(p.getDescription());
         txtPrice.setText(String.valueOf(p.getPricePerLitre()));
         txtUsage.setText(String.valueOf(p.getLitersPer500Mq()));
     }
-    
+    /**
+     * 
+     */
     public void clearInsertField() {
+        txtCode.setText("");
         txtStep.setText("");
         txtName.setText("");
         txtDescr.setText("");
         txtPrice.setText("");
         txtUsage.setText("");
     }
-    
+    /**
+     * 
+     * @return
+     */
     public Boolean missingField() {
-        return (getStep().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || String.valueOf(getPrice()).isEmpty() || String.valueOf(getUsage()).isEmpty());
+        return (getCode().isEmpty() || getStep().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || String.valueOf(getPrice()).isEmpty() || String.valueOf(getUsage()).isEmpty());
     }
-    
+    /**
+     * 
+     * @param p
+     */
     public void addProductToTable(Products p) {
-        model.insertRow(company.getProducts().size()-1, new Object[] {p.getStep(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq()});
+        model.insertRow(company.getProducts().size()-1, new Object[] {p.getCode(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq(), p.getStepType()});
     }
-    
-    public void removeProductToTable(Products p) {
+    /**
+     * 
+     * @param p
+     */
+    public void removeProductToTable(final Products p) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(0).equals(p.getStep())) {
+            if (model.getDataVector().elementAt(i).elementAt(0).equals(p.getCode())) {
                 model.removeRow(i);
             }
         }
     }
-    
+    /**
+     * 
+     * @return
+     */
+    public String getCode() {
+        return txtCode.getText();
+    }
+    /**
+     * 
+     * @return
+     */
     public String getStep() {
         return txtStep.getText();
     }
-    
+    /**
+     * 
+     */
     public String getName() {
         return txtName.getText();
     }
-    
+    /**
+     * 
+     * @return
+     */
     public String getDescription() {
         return txtDescr.getText();
     }
     
+    /**
+     * 
+     * @return
+     */
     public double getPrice() {
         return Double.parseDouble(txtPrice.getText());
     }
     
+    /**
+     * 
+     * @return
+     */
     public double getUsage() {
         return Double.parseDouble(txtUsage.getText());
     }
     
+    /**
+     * 
+     */
     public void display() {
         setVisible(true);
         setResizable(true);

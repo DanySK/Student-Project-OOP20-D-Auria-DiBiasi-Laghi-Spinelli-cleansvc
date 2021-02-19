@@ -42,7 +42,6 @@ public class StaffView extends JFrame {
      */
     private static final long serialVersionUID = -6791011571687868971L;
     private static final String TITLE = "CLEAN SERVICE MANAGER";
-    
     private JTextField txtCFPIVA;
     private JTextField txtName;
     private JTextField txtAddress;
@@ -67,19 +66,18 @@ public class StaffView extends JFrame {
     private Object[][] data = new Object[company.getStaff().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data,cols);
     private JTable table = new JTable(model);
-    
     private PopUp popUp = new PopUp();
-    
+
     public StaffView() {
         setTitle(StaffView.TITLE);
         setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
         JPanel panelTable = new JPanel();
         panelTable.setMinimumSize(new Dimension(1000, 200));
         panelTable.setBackground(SystemColor.activeCaption);
         panelTable.setLayout(new BorderLayout(0, 0));
-        
+
         JPanel panelTitle = new JPanel();
         panelTitle.setMinimumSize(new Dimension(1000, 60));
         panelTitle.setBackground(SystemColor.activeCaption);
@@ -90,7 +88,7 @@ public class StaffView extends JFrame {
         lblTitle.setForeground(SystemColor.textText);
         lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE,20));
         panelTitle.add(lblTitle, BorderLayout.WEST);
-        
+
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
@@ -105,11 +103,10 @@ public class StaffView extends JFrame {
                 cv.display();
                 dispose();
             }
-            
         });
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
-        
+
         /*
          * testing:
          *
@@ -127,7 +124,6 @@ public class StaffView extends JFrame {
          *   }
          */
         
-        
         Staff s;
         for (int i = 0; i < company.getStaff().size(); i++) {
             s = company.getStaff().get(i);
@@ -144,7 +140,7 @@ public class StaffView extends JFrame {
         pnlSearch.setBackground(SystemColor.window);
         pnlSearch.setPreferredSize(new Dimension(1000, 40));
         pnlSearch.setMinimumSize(new Dimension(1000, 40));
-        
+
         JLabel lblsearchCFPIVA = new JLabel("CF/P.IVA:");
         lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearchCFPIVA);
@@ -152,7 +148,7 @@ public class StaffView extends JFrame {
         txtSearch = new JTextField(20);
         txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(txtSearch);
-        
+
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
@@ -170,7 +166,6 @@ public class StaffView extends JFrame {
                     txtSearch.setText("");
                 }
             }
-            
         });
         pnlSearch.add(btnSearch);
         
@@ -180,7 +175,7 @@ public class StaffView extends JFrame {
         pnlSubmit.setPreferredSize(new Dimension(900, 140));
         pnlSubmit.setMinimumSize(new Dimension(900, 140));
         pnlSubmit.setLayout(new BorderLayout(0,0));
-        
+
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
@@ -359,12 +354,12 @@ public class StaffView extends JFrame {
         });
         pnlButtons.add(btnRemove);
         pnlSubmit.add(pnlButtons, BorderLayout.SOUTH);
-        
+
         GroupLayout layout = new GroupLayout(this.getContentPane());
         this.getContentPane().setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-        
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addComponent(panelTable)
@@ -373,7 +368,7 @@ public class StaffView extends JFrame {
                 .addGap(0)
                 .addComponent(pnlSubmit)
                 .addGap(0));
-        
+
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addGroup(layout.createParallelGroup(Alignment.CENTER)
@@ -381,13 +376,20 @@ public class StaffView extends JFrame {
                         .addComponent(pnlSearch)
                         .addComponent(pnlSubmit))
                 .addGap(0));
-        
     }
-    
+
+    /**
+     * 
+     * @param s
+     */
     public void addStaffToTable(Staff s) {
         model.insertRow(company.getStaff().size()-1, new Object[] {s.getName(), s.getAddress(), s.getCity(), s.getCAP(), s.getIsAdmin(), s.getTel(), s.getEmail(), s.getCFPIVA()});
     }
-    
+
+    /**
+     * 
+     * @param s
+     */
     public void removeStaffToTable(Staff s) {
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getDataVector().elementAt(i).elementAt(7).equals(s.getCFPIVA())) {
@@ -395,7 +397,10 @@ public class StaffView extends JFrame {
             }
         }
     }
-    
+
+    /**
+     * 
+     */
     public void clearInsertField() {
         txtCFPIVA.setText("");
         txtName.setText("");
@@ -406,11 +411,19 @@ public class StaffView extends JFrame {
         txtTel.setText("");
         txtEmail.setText("");
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public Boolean missingField() {
         return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP().isEmpty() || getTel().isEmpty() || getEmail().isEmpty());
     }
-    
+
+    /**
+     * 
+     * @param s
+     */
     public void writeField(Staff s) {
         txtCFPIVA.setText(s.getCFPIVA());
         txtName.setText(s.getName());
@@ -421,43 +434,81 @@ public class StaffView extends JFrame {
         txtTel.setText(s.getTel());
         txtEmail.setText(s.getEmail());
     }
-   
+
+    /**
+     * 
+     * @return
+     */
     public String getCFPIVA() {
         return txtCFPIVA.getText();
     }
-    
+
+    /**
+     * 
+     */
     public String getName() {
         return txtName.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getAddress() {
         return txtAddress.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getCity() {
         return txtCity.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getCAP() {
         return txtCAP.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getIsAdmin() {
         return checkAdmin.isSelected() ? "si" : "no";
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getTel() {
         return txtTel.getText();
     }
     
+    /**
+     * 
+     * @return
+     */
     public String getEmail() {
         return txtEmail.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getSearchingCF() {
         return txtSearch.getText();
     }
-    
+
+    /**
+     * 
+     */
     public void display() {
         setVisible(true);
         setResizable(true);

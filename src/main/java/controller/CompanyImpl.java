@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -93,9 +92,9 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<Products> searchProduct(String stepProduct) {
+    public Optional<Products> searchProduct(String codeProduct) {
         for (final Products p : this.products) {
-            if (p.getStep().equals(stepProduct)) {
+            if (p.getCode().equals(codeProduct)) {
                 return Optional.of(p);
             }
         }
@@ -105,5 +104,16 @@ public class CompanyImpl implements Company {
     @Override
     public List<Products> getProducts() {
         return Collections.unmodifiableList(this.products);
+    }
+    
+    @Override
+    public Optional<List<Products>> getProductsByStepType(String stepType) {
+        List<Products> pByStep = new ArrayList<>();
+        for (final Products p : this.products) {
+            if (p.getStepType().equals(stepType)) {
+                pByStep.add(p);
+            }
+        }
+        return (pByStep.isEmpty()) ? Optional.empty() : Optional.of(pByStep);
     }
 }

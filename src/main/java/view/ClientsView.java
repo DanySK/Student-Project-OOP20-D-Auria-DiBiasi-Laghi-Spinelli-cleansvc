@@ -321,8 +321,8 @@ public class ClientsView extends JFrame {
                     if (clientToRemove.isEmpty()) {
                         popUp.popUpWarning("Cliente non trovato");
                     } else {
-                        Boolean confirm = popUp.popUpConfirm("Vuoi eliminare il cliente " + clientToRemove.get().getName() + "?");
-                        if (confirm) {
+                        Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il cliente " + clientToRemove.get().getName() + "?");
+                        if (confirmed) {
                             popUp.popUpInfo("Cliente eliminato con successo.");
                             company.removeClient(clientToRemove.get());
                             removeClientToTable(clientToRemove.get());
@@ -362,6 +362,9 @@ public class ClientsView extends JFrame {
         
     }
 
+    /**
+     * 
+     */
     public void clearInsertField() {
         txtCFPIVA.setText("");
         txtName.setText("");
@@ -372,7 +375,11 @@ public class ClientsView extends JFrame {
         txtTel.setText("");
         txtEmail.setText("");
     }
-    
+
+    /**
+     * 
+     * @param c
+     */
     public void writeField(Clients c) {
         txtCFPIVA.setText(c.getCFPIVA());
         txtName.setText(c.getName());
@@ -383,15 +390,27 @@ public class ClientsView extends JFrame {
         txtTel.setText(c.getTel());
         txtEmail.setText(c.getEmail());
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public Boolean missingField() {
         return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP().isEmpty() || String.valueOf(getMq()).isEmpty());
     }
-    
+
+    /**
+     * 
+     * @param c
+     */
     public void addClientToTable(Clients c) {
         model.insertRow(company.getClients().size()-1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA()});
     }
-    
+
+    /**
+     * 
+     * @param c
+     */
     public void removeClientToTable(Clients c) {
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getDataVector().elementAt(i).elementAt(7).equals(c.getCFPIVA())) {
@@ -399,43 +418,81 @@ public class ClientsView extends JFrame {
             }
         }
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getSearchingCFPIVA() {
         return txtSearch.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getCFPIVA() {
         return txtCFPIVA.getText();
     }
-    
+
+    /**
+     * 
+     */
     public String getName() {
         return txtName.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getAddress() {
         return txtAddress.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getCity() {
         return txtCity.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getCAP() {
         return txtCAP.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public int getMq() {
         return Integer.parseInt(txtMq.getText());
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getTel() {
         return txtTel.getText();
     }
-    
+
+    /**
+     * 
+     * @return
+     */
     public String getEmail() {
         return txtEmail.getText();
     }
 
+    /**
+     * 
+     */
     public void display() {
         setVisible(true);
         setResizable(true);
