@@ -93,9 +93,9 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<Products> searchProduct(String nameProduct) {
+    public Optional<Products> searchProduct(String stepProduct) {
         for (final Products p : this.products) {
-            if (p.getName().equals(nameProduct)) {
+            if (p.getStep().equals(stepProduct)) {
                 return Optional.of(p);
             }
         }

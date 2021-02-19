@@ -175,7 +175,7 @@ public class StaffView extends JFrame {
         pnlSearch.add(btnSearch);
         
         final JPanel pnlSubmit = new JPanel();
-        pnlSubmit.setBorder(new TitledBorder(null, "Dati nuovo dipendente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
+        pnlSubmit.setBorder(new TitledBorder(null, "Dati dipendente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setPreferredSize(new Dimension(900, 140));
         pnlSubmit.setMinimumSize(new Dimension(900, 140));

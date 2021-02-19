@@ -116,13 +116,13 @@ public class ClientsView extends JFrame {
          * clientsList.add(new ClientsImpl("a", "b", "c", "d", "f", "f", "f", 22));
          * clientsList.add(new ClientsImpl("b", "b", "b", "b", "f", "f", "f", 22));
          */
-       
+        
         Clients cc;
-         for (int i = 0; i < company.getClients().size(); i++) {
-             cc = company.getClients().get(i);
-             model.insertRow(i, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
-         }
-         
+        for (int i = 0; i < company.getClients().size(); i++) {
+            cc = company.getClients().get(i);
+            model.insertRow(i, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
+        }
+
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
@@ -165,7 +165,7 @@ public class ClientsView extends JFrame {
         
         
         final JPanel pnlSubmit = new JPanel();
-        pnlSubmit.setBorder(new TitledBorder(null, "Dati nuovo cliente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
+        pnlSubmit.setBorder(new TitledBorder(null, "Dati cliente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setPreferredSize(new Dimension(900, 140));
         pnlSubmit.setMinimumSize(new Dimension(900, 140));

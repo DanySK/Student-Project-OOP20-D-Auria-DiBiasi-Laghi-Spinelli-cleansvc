@@ -6,13 +6,19 @@ public class ProductsImpl implements Products {
     private String description;
     private double priceL;
     private double usage500mq;
-    //private Step step;
+    private String step;
 
-    public ProductsImpl(String name, String description, double priceLitre, double usage500mq) {
+    public ProductsImpl(String step, String name, String description, double priceLitre, double usage500mq) {
+        this.step = step;
         this.name = name;
         this.description = description;
         this.priceL = priceLitre;
         this.usage500mq = usage500mq;
+    }
+    
+    @Override
+    public String getStep() {
+        return this.step;
     }
 
     @Override
@@ -44,4 +50,5 @@ public class ProductsImpl implements Products {
     public void setLitersPer500MQ(double newUsage) {
         this.usage500mq = newUsage;
     }
+
 }

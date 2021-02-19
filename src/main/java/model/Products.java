@@ -1,7 +1,7 @@
 package model;
 
 public interface Products {
-    //public Step getStep();
+    public String getStep(); //TODO change String to Step
     public String getName();
     public String getDescription();
     public double getPricePerLitre();

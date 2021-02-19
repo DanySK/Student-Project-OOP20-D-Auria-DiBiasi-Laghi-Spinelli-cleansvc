@@ -22,6 +22,6 @@ public interface Company {
 
     public void addProduct(final Products p);
     public void removeProduct(final Products p);
-    public Optional<Products> searchProduct(final String nameProduct);
+    public Optional<Products> searchProduct(final String stepProduct);
     public List<Products> getProducts();
 }
