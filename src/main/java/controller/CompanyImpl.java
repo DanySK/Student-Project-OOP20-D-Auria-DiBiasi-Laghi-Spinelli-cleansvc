@@ -117,13 +117,13 @@ public class CompanyImpl implements Company {
         this.appointments.remove(a);
     }
     @Override
-    public Optional<Appointments> searchAppointment(final String nameAppointment) {
+    public Optional<Appointments> searchAppointment(final String date, final String hour) {
         //DA CAMBIARE!!!
-        /*for (final Appointments a : this.appointments) {
-            if (a.getDate().equals(nameAppointment)) {
+        for (final Appointments a : this.appointments) {
+            if (a.getDate().equals(date) && a.getHour().equals(hour)) {
                 return Optional.of(a);
             }
-        }*/
+        }
         return Optional.empty();
     }
     @Override

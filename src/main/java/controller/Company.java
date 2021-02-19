@@ -28,6 +28,6 @@ public interface Company {
 
     void addAppointment(Appointments a);
     void removeAppointment(Appointments a);
-    Optional<Appointments> searchAppointment(String nameAppointment);
+    Optional<Appointments> searchAppointment(String date, String hour);
     List<Appointments> getAppointment();
 }

@@ -7,8 +7,6 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -27,8 +25,6 @@ import controller.CompanyImpl;
 import model.Appointments;
 import model.AppointmentsImpl;
 import model.users.Clients;
-import model.users.ClientsImpl;
-import model.users.Staff;
 
 public class NewAppointmentView extends JFrame {
     /**
@@ -107,10 +103,6 @@ public class NewAppointmentView extends JFrame {
             cc = company.getClient().get(i);
             comboClients.addItem(cc.getName() + " " + cc.getAddress());
         }
-        /*
-        comboClients.addItem("Mario Rossi" + " " + "Via degli omonimi 33");
-        comboClients.addItem("Luigi Bianchi" + " " + "Via dell'Università 50");
-       */
 
         JLabel labelDatePicker = new JLabel("Data:");
         labelDatePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -142,15 +134,19 @@ public class NewAppointmentView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                //if (!missingField()) {
+                if (!missingField()) {
                     Appointments a = new AppointmentsImpl(getDate(), getHour());
-                    company.addAppointment(a);
-                    popUp.popUpInfo("Appuntamento inserito con successo.");
-                    //addAppointmentToTable(company.getAppointment().get(appointmentsList.size() - 1));
-                    clearInsertField();
-                //} else {
-                    //popUp.popUpWarning("Ci sono dati mancanti o errati");
-               // }
+                    if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
+                        company.addAppointment(a);
+                        //Object selectedClient = comboClients.getSelectedItem();
+                        popUp.popUpInfo("Appuntamento inserito con successo.");
+                        clearInsertField();
+                    } else {
+                        popUp.popUpError("Appuntamento già esistente");
+                    }
+                } else {
+                    popUp.popUpWarning("Ci sono dati mancanti o errati");
+                }
             }
         });
         pnlSubmit.add(btnSubmit);
@@ -163,14 +159,6 @@ public class NewAppointmentView extends JFrame {
         setResizable(true);
     }
 
-    public String getDate() {
-        return datepicker.getDate().toString();
-    }
-
-    public String getHour() {
-        return timepicker.getTime().toString();
-    }
-
     public void clearInsertField() {
         comboClients.setSelectedIndex(0);
         datepicker.setText("");
@@ -181,4 +169,11 @@ public class NewAppointmentView extends JFrame {
         return (getDate().isEmpty() || getHour().isEmpty() || comboClients.getSelectedItem().equals("Seleziona un cliente"));
     }
 
+    public String getDate() {
+        return datepicker.getDateStringOrEmptyString();
+    }
+
+    public String getHour() {
+        return timepicker.getText();
+    }
 }
