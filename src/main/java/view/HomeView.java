@@ -26,16 +26,16 @@ public class HomeView extends JFrame{
     final JButton btnGrafici;
     final JButton btnStaff;
     final JButton btnProduct;
+    final JButton btnAppointment;
     final JButton btnSaveAndExit;
-    
+
     private SaveAndLoadClients backupClients = new SaveAndLoadClients();
     private SaveAndLoadStaff backupStaff = new SaveAndLoadStaff();
     private SaveAndLoadProducts backupProducts = new SaveAndLoadProducts();
-    
-    
-    
+    private SaveAndLoadAppointments backupAppointments = new SaveAndLoadAppointments();
+
     public HomeView() {
-        
+
         setTitle(HomeView.TITLE);
         setLayout(new GridLayout(3,3));
         setMinimumSize(new Dimension(1000, 500));
@@ -116,6 +116,23 @@ public class HomeView extends JFrame{
         });
         panelTitle.add(btnGrafici);
         
+        btnAppointment = new JButton("Area Appuntamenti");
+        btnAppointment.setForeground(SystemColor.textText);
+        btnAppointment.setBackground(SystemColor.activeCaption);
+        btnAppointment.setPreferredSize(new Dimension(280,70));
+        btnAppointment.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnAppointment.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AppointmentsView av = new AppointmentsView();
+                av.display();
+                dispose();
+            }
+            
+        });
+        panelTitle.add(btnAppointment);
+        
         btnSaveAndExit = new JButton("Salva ed Esci");
         btnSaveAndExit.setForeground(SystemColor.textText);
         btnSaveAndExit.setBackground(SystemColor.activeCaption);
@@ -128,6 +145,7 @@ public class HomeView extends JFrame{
                 backupClients.save();
                 backupStaff.save();
                 backupProducts.save();
+                backupAppointments.save();
                 dispose();
             }
             
