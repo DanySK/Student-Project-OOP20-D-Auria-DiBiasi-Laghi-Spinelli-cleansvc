@@ -31,13 +31,13 @@ public class AppointmentsView extends JFrame {
      * 
      */
     private static final long serialVersionUID = -6203076048044842383L;
-    private static final String TITLE = "APPUNTAMENTI";
+    private static final String TITLE = "CLEAN SERVICE MANAGER";
 
     private final JButton btnSubmit;
     private final JButton btnHome;
     private Company company = CompanyImpl.getInstance();
     private List<Appointments> appointmentsList = company.getAppointment();
-    private final String[] cols = new String[] {"Data", "Ora", "Nome", "Indirizzo"};
+    private final String[] cols = new String[] {"Data", "Ora", "Nome", "CF o Partita IVA"};
     private Object[][] data = new Object[appointmentsList.size()][cols.length];
     /*
      * testing:
@@ -65,7 +65,7 @@ public class AppointmentsView extends JFrame {
         panelTitle.setBackground(SystemColor.activeCaption);
         panelTitle.setLayout(new BorderLayout(0, 0));
 
-        JLabel lblTitle = new JLabel("Richieste Sanificazione");
+        JLabel lblTitle = new JLabel("Elenco appuntamenti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
         lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE, 20));
@@ -91,11 +91,9 @@ public class AppointmentsView extends JFrame {
         panelTable.add(panelTitle, BorderLayout.NORTH);
 
         Appointments a;
-        Clients c;
         for (int i = 0; i < appointmentsList.size(); i++) {
              a = company.getAppointment().get(i);
-             c = company.getClients().get(i);
-             model.insertRow(i, new Object[] {a.getDate(), a.getHour(), c.getName(), c.getAddress()});
+             model.insertRow(i, new Object[] {a.getDate(), a.getHour(), a.getClient().getName(), a.getClient().getCFPIVA()});
          }
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));

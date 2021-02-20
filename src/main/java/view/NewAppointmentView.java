@@ -31,7 +31,7 @@ public class NewAppointmentView extends JFrame {
      * 
      */
     private static final long serialVersionUID = 2089945830206989799L;
-    private static final String TITLE = "NUOVO APPUNTAMENTO";
+    private static final String TITLE = "CLEAN SERVICE MANAGER";
     private JComboBox<String> comboClients;
     private final JButton btnSubmit;
     private final JButton btnHome;
@@ -53,7 +53,7 @@ public class NewAppointmentView extends JFrame {
         getContentPane().add(panelTitle, BorderLayout.NORTH);
         panelTitle.setLayout(new BorderLayout(0, 0));
 
-        JLabel lblTitle = new JLabel("Richieste sanificazione");
+        JLabel lblTitle = new JLabel("Nuovo Appuntamento");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
         lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE, 20));
@@ -96,12 +96,11 @@ public class NewAppointmentView extends JFrame {
         comboClients.setBackground(SystemColor.inactiveCaption);
         comboClients.setForeground(SystemColor.textText);
         comboClients.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        comboClients.addItem("Seleziona un cliente");
         pnlSubmit.add(comboClients);
         Clients cc;
         for (int i = 0; i < clientsList.size(); i++) {
             cc = company.getClients().get(i);
-            comboClients.addItem(cc.getName() + " " + cc.getAddress());
+            comboClients.addItem(cc.getName() + " " + cc.getCFPIVA());
         }
 
         JLabel labelDatePicker = new JLabel("Data:");
@@ -135,14 +134,15 @@ public class NewAppointmentView extends JFrame {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    Appointments a = new AppointmentsImpl(getDate(), getHour());
+                    Clients c = company.getClients().get(comboClients.getSelectedIndex());
+                    Appointments a = new AppointmentsImpl(getDate(), getHour(), c);
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
                         company.addAppointment(a);
-                        //Object selectedClient = comboClients.getSelectedItem();
                         popUp.popUpInfo("Appuntamento inserito con successo.");
-                        clearInsertField();
+                        new AppointmentsView().display();
+                        setVisible(false);
                     } else {
-                        popUp.popUpError("Appuntamento già esistente");
+                        popUp.popUpError("Data e ora già prenotate");
                     }
                 } else {
                     popUp.popUpWarning("Ci sono dati mancanti o errati");
@@ -159,14 +159,8 @@ public class NewAppointmentView extends JFrame {
         setResizable(true);
     }
 
-    public void clearInsertField() {
-        comboClients.setSelectedIndex(0);
-        datepicker.setText("");
-        timepicker.setText("");
-    }
-
     public Boolean missingField() {
-        return (getDate().isEmpty() || getHour().isEmpty() || comboClients.getSelectedItem().equals("Seleziona un cliente"));
+        return (getDate().isEmpty() || getHour().isEmpty());
     }
 
     public String getDate() {

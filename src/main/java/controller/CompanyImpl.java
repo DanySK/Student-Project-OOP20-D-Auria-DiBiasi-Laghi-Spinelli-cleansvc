@@ -107,7 +107,7 @@ public class CompanyImpl implements Company {
     public List<Products> getProducts() {
         return Collections.unmodifiableList(this.products);
     }
-    
+
     @Override
     public Optional<List<Products>> getProductsByStepType(String stepType) {
         List<Products> pByStep = new ArrayList<>();
@@ -117,15 +117,18 @@ public class CompanyImpl implements Company {
             }
         }
         return (pByStep.isEmpty()) ? Optional.empty() : Optional.of(pByStep);
-    }  
+    }
+
     @Override
     public void addAppointment(final Appointments a) {
         this.appointments.add(a);
     }
+
     @Override
     public void removeAppointment(final Appointments a) {
         this.appointments.remove(a);
     }
+
     @Override
     public Optional<Appointments> searchAppointment(final String date, final String hour) {
         for (final Appointments a : this.appointments) {
@@ -135,6 +138,7 @@ public class CompanyImpl implements Company {
         }
         return Optional.empty();
     }
+
     @Override
     public List<Appointments> getAppointment() {
         return Collections.unmodifiableList(appointments);
