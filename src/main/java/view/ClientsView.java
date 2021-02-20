@@ -158,7 +158,7 @@ public class ClientsView extends JFrame {
                 if (getSearchingCFPIVA().isEmpty()) {
                     popUp.popUpErrorOrMissing();
                 } else {
-                    Optional<Clients> c = company.searchClient(getSearchingCFPIVA());
+                    Optional<Clients> c = company.searchClient(getSearchingCFPIVA().toUpperCase());
                     if (c.isEmpty()) {
                         popUp.popUpWarning("Cliente non trovato!");
                     } else {
@@ -266,7 +266,7 @@ public class ClientsView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!missingField()){
-                    Clients client = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                    Clients client = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     if (company.searchClient(client.getCFPIVA()).isEmpty()) {
                         popUp.popUpInfo("Cliente inserito con successo.");
                         company.addClient(client);
@@ -291,7 +291,7 @@ public class ClientsView extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Clients changed = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                Clients changed = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                 if (!missingField()) {
                     Optional<Clients> toModify = company.searchClient(changed.getCFPIVA());
                     if (toModify.isEmpty()) {
@@ -323,7 +323,7 @@ public class ClientsView extends JFrame {
                 if (missingField()) {
                     popUp.popUpErrorOrMissing();
                 } else {
-                    Optional<Clients> clientToRemove = company.searchClient(getCFPIVA());
+                    Optional<Clients> clientToRemove = company.searchClient(getCFPIVA().toUpperCase());
                     if (clientToRemove.isEmpty()) {
                         popUp.popUpWarning("Cliente non trovato");
                     } else {
@@ -400,7 +400,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public Boolean missingField() {
-        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP()==Integer.MIN_VALUE || getMq()==Integer.MIN_VALUE || getTel()==Integer.MIN_VALUE || getEmail().isEmpty());
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty());//  || getCAP()==Integer.MIN_VALUE || getMq()==Integer.MIN_VALUE || getTel()==Integer.MIN_VALUE || getEmail().isEmpty());
     }
 
     /**
@@ -428,7 +428,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getSearchingCFPIVA() {
-        return validator.isName(txtSearch.getText()) ? txtSearch.getText() : null;
+        return validator.isCFPIVA(txtSearch.getText().toUpperCase()) ? txtSearch.getText().toUpperCase() : "";
     }
 
     /**
@@ -436,14 +436,14 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getCFPIVA() {
-        return validator.isCFPIVA(txtCFPIVA.getText()) ? txtCFPIVA.getText() : null;
+        return validator.isCFPIVA(txtCFPIVA.getText().toUpperCase()) ? txtCFPIVA.getText().toUpperCase() : "";
     }
 
     /**
      * 
      */
     public String getName() {
-        return validator.isName(txtName.getText()) ? txtName.getText() : null;
+        return validator.isName(txtName.getText()) ? txtName.getText() : "";
     }
 
     /**
@@ -451,7 +451,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getAddress() {
-        return validator.isName(txtAddress.getText()) ? txtAddress.getText() : null;
+        return validator.isName(txtAddress.getText()) ? txtAddress.getText() : "";
     }
 
     /**
@@ -459,7 +459,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getCity() {
-        return validator.isName(txtCity.getText()) ? txtCity.getText() : null;
+        return validator.isName(txtCity.getText()) ? txtCity.getText() : "";
     }
 
     /**
@@ -491,7 +491,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getEmail() {
-        return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : null;
+        return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : "";
     }
 
     /**

@@ -448,14 +448,14 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getCFPIVA() {
-        return validator.isCFPIVA(txtCFPIVA.getText()) ? txtCFPIVA.getText() : null;
+        return validator.isCFPIVA(txtCFPIVA.getText().toUpperCase()) ? txtCFPIVA.getText().toUpperCase() : "";
     }
 
     /**
      * 
      */
     public String getName() {
-        return validator.isName(txtName.getText()) ? txtName.getText() : null;
+        return validator.isName(txtName.getText()) ? txtName.getText() : "";
     }
 
     /**
@@ -463,7 +463,7 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getAddress() {
-        return validator.isName(txtAddress.getText()) ? txtAddress.getText() : null;
+        return validator.isName(txtAddress.getText()) ? txtAddress.getText() : "";
     }
 
     /**
@@ -471,7 +471,7 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getCity() {
-        return validator.isName(txtCity.getText()) ? txtCity.getText() : null;
+        return validator.isName(txtCity.getText()) ? txtCity.getText() : "";
     }
 
     /**
@@ -503,7 +503,7 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getEmail() {
-        return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : null;
+        return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : "";
     }
 
     /**
@@ -511,7 +511,7 @@ public class StaffView extends JFrame {
      * @return
      */
     public String getSearchingCF() {
-        return validator.isCFPIVA(txtSearch.getText()) ? txtSearch.getText() : null;
+        return validator.isCFPIVA(txtSearch.getText().toUpperCase()) ? txtSearch.getText().toUpperCase() : "";
     }
 
     /**

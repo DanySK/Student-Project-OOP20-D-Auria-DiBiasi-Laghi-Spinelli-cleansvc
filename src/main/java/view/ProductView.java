@@ -357,7 +357,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public String getSearching() {
-        return validator.isName(txtSearch.getText()) ? txtSearch.getText() : null;
+        return validator.isCode(txtSearch.getText()) ? txtSearch.getText() : "";
     }
     /**
      * 
@@ -412,7 +412,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public String getCode() {
-        return validator.isName(txtCode.getText()) ? txtCode.getText() : null;
+        return validator.isCode(txtCode.getText()) ? txtCode.getText() : "";
     }
     /**
      * 
@@ -425,14 +425,14 @@ public class ProductView extends JFrame {
      * 
      */
     public String getName() {
-        return validator.isName(txtName.getText()) ? txtName.getText() : null;
+        return validator.isName(txtName.getText()) ? txtName.getText() : "";
     }
     /**
      * 
      * @return
      */
     public String getDescription() {
-        return validator.isName(txtDescr.getText()) ? txtDescr.getText() : null;
+        return validator.isName(txtDescr.getText()) ? txtDescr.getText() : "";
     }
     
     /**
