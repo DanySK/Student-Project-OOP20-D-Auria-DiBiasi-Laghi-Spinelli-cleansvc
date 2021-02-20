@@ -7,16 +7,13 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,12 +24,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import model.users.Clients;
-import model.users.ClientsImpl;
 import model.users.Staff;
-
 import controller.Company;
 import controller.CompanyImpl;
-import model.users.Staff;
 import model.users.StaffImpl;
 
 public class StaffView extends JFrame {
@@ -50,12 +44,12 @@ public class StaffView extends JFrame {
     private JTextField txtTel;
     private JTextField txtEmail;
     private JCheckBox checkAdmin;
-    private JTextField txtSearch;
     private final JButton btnSearch;
     private final JButton btnSubmit;
     private final JButton btnChange;
     private final JButton btnRemove;
     private final JButton btnHome;
+    private JComboBox<String> staffCFs;
     /*
      * List<Staff> create for testing table
      *
@@ -142,38 +136,36 @@ public class StaffView extends JFrame {
         pnlSearch.setPreferredSize(new Dimension(1000, 40));
         pnlSearch.setMinimumSize(new Dimension(1000, 40));
 
-        JLabel lblsearchCFPIVA = new JLabel("CF/P.IVA:");
+        JLabel lblsearchCFPIVA = new JLabel("Codici Fiscali staff: ");
         lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearchCFPIVA);
 
-        txtSearch = new JTextField(20);
-        txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSearch.add(txtSearch);
+        staffCFs = new JComboBox<>();
+        staffCFs.setPreferredSize(new Dimension(120, 20));
+        staffCFs.setBackground(SystemColor.activeCaption);
+        staffCFs.setForeground(SystemColor.textText);
+        staffCFs.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        updateSearchingCFs(staffCFs);
+        pnlSearch.add(staffCFs);
 
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(120, 20));
+        btnSearch.setPreferredSize(new Dimension(200, 20));
         btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                if (getSearchingCF().isEmpty()) {
+                if (getIndexStaffSearched() == -1) {
                     popUp.popUpErrorOrMissing();
                 } else {
-                    Optional<Staff> staffSearched = company.searchStaffbyCF(getSearchingCF().toUpperCase());
-                    if (staffSearched.isEmpty()) {
-                        popUp.popUpWarning("Dipendente non trovato!");
-                    } else {
-                        writeField(staffSearched.get());
-                        txtSearch.setText("");
-                    }
+                    writeField(company.getStaff().get(getIndexStaffSearched()));
                 }
             }
         });
         pnlSearch.add(btnSearch);
-        
+
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati dipendente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
@@ -187,79 +179,79 @@ public class StaffView extends JFrame {
         pnlData.setPreferredSize(new Dimension(900, 60));
         pnlData.setMinimumSize(new Dimension(900, 60));
         pnlData.setLayout(new GridLayout(4, 4, 20, 2));
-        
+
         JLabel labelCFPIVA = new JLabel("CF:");
         labelCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelCFPIVA);
-        
+
         txtCFPIVA = new JTextField(18);
         txtCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtCFPIVA);
-        
+
         JLabel labelName = new JLabel("Nome:");
         labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelName);
-        
+
         txtName = new JTextField(14);
         txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtName);
-        
+
         JLabel labelAddress = new JLabel("Indirizzo:");
         labelAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelAddress);
-        
+
         txtAddress = new JTextField(20);
         txtAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtAddress);
-        
+
         JLabel labelCity = new JLabel("Città:");
         labelCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelCity);
-        
+
         txtCity = new JTextField(10);
         txtCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtCity);
-        
+
         JLabel labelCAP = new JLabel("CAP:");
         labelCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelCAP);
-        
+
         txtCAP = new JTextField(5);
         txtCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtCAP);
-        
+
         JLabel labelmq = new JLabel("Amministratore:");
         labelmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelmq);
-        
+
         checkAdmin = new JCheckBox("");
         checkAdmin.setBackground(SystemColor.window);
         pnlData.add(checkAdmin);
-        
+
         JLabel labeltel = new JLabel("Telefono:");
         labeltel.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labeltel);
-        
+
         txtTel = new JTextField(10);
         txtTel.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtTel);
-        
+
         JLabel labelemail = new JLabel("Email:");
         labelemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelemail);
-        
+
         txtEmail = new JTextField(15);
         txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtEmail);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
-        
+
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
         pnlButtons.setPreferredSize(new Dimension(900, 30));
         pnlButtons.setMinimumSize(new Dimension(900, 30));
         pnlButtons.setLayout(new GridLayout(1, 3, 20, 20));
-        
+
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
@@ -275,6 +267,7 @@ public class StaffView extends JFrame {
                         popUp.popUpInfo("Dipendente inserito con successo.");
                         company.addStaff(staff);
                         addStaffToTable(company.getStaff().get(company.getStaff().size() - 1));
+                        updateSearchingCFs(staffCFs);
                         clearInsertField();
                     } else {
                         popUp.popUpError("Dipendente già esistente!");
@@ -295,8 +288,8 @@ public class StaffView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                Staff changed = new StaffImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  isAdmin());
                 if (!missingField()) {
+                    Staff changed = new StaffImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  isAdmin());
                     Optional<Staff> toModify = company.searchStaffbyCF(changed.getCFPIVA());
                     if (toModify.isEmpty()) {
                         popUp.popUpWarning("Codice Fiscale inesistente tra i dipendenti. Non puoi modificare il Codice Fiscale.");
@@ -306,6 +299,7 @@ public class StaffView extends JFrame {
                         removeStaffToTable(toModify.get());
                         company.addStaff(changed);
                         addStaffToTable(changed);
+                        updateSearchingCFs(staffCFs);
                         clearInsertField();
                     }
                 } else {
@@ -314,7 +308,7 @@ public class StaffView extends JFrame {
             }
         });
         pnlButtons.add(btnChange);
-        
+
         btnRemove = new JButton("Elimina dipendente");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
@@ -343,6 +337,7 @@ public class StaffView extends JFrame {
                                         popUp.popUpInfo("Dipendente eliminato con successo.");
                                         company.removeStaff(staffToRemove.get());
                                         removeStaffToTable(staffToRemove.get());
+                                        updateSearchingCFs(staffCFs);
                                         clearInsertField();
                                     } else {
                                         popUp.popUpInfo("Eliminazione annullata.");
@@ -420,7 +415,7 @@ public class StaffView extends JFrame {
     }
 
     /**
-     * Check if all input field are filled
+     * Check if all input field are fill
      * @return true
      */
     public Boolean missingField() {
@@ -497,7 +492,7 @@ public class StaffView extends JFrame {
     public int getTel() {
         return validator.isPhone(txtTel.getText()) ? Integer.parseInt(txtTel.getText()) : Integer.MIN_VALUE;
     }
-    
+
     /**
      * 
      * @return
@@ -510,10 +505,16 @@ public class StaffView extends JFrame {
      * 
      * @return
      */
-    public String getSearchingCF() {
-        return validator.isCFPIVA(txtSearch.getText().toUpperCase()) ? txtSearch.getText().toUpperCase() : "";
+    public int getIndexStaffSearched() {
+        return staffCFs.getSelectedIndex();
     }
 
+    public void updateSearchingCFs(JComboBox<String> staffCFs) {
+        staffCFs.removeAllItems();
+        for (Staff staff : company.getStaff()){
+            staffCFs.addItem(staff.getCFPIVA());
+        }
+    }
     /**
      * 
      */

@@ -1,19 +1,17 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,14 +27,7 @@ import controller.Company;
 import controller.CompanyImpl;
 import model.Products;
 import model.ProductsImpl;
-import model.users.Clients;
-import model.users.ClientsImpl;
-/**
- * Graphic view to handle products
- * 
- * @author Vanessa Di Biasi
- *
- */
+
 public class ProductView extends JFrame {
 
     /**
@@ -44,9 +35,7 @@ public class ProductView extends JFrame {
      */
     private static final long serialVersionUID = 3438738368807932420L;
     private static final String TITLE = "CLEAN SERVICE MANAGER";
-    
     private final JButton btnHome;
-    private JTextField txtSearch;
     private final JButton btnSearch;
     private JTextField txtCode;
     private JTextField txtStep;
@@ -62,50 +51,50 @@ public class ProductView extends JFrame {
     private InputValidator validator = new InputValidator();
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo/Litro", "Utilizzo L/500mq", "Fase sanificazione"};
     private Object[][] data = new Object[company.getProducts().size()][cols.length];
-    private DefaultTableModel model = new DefaultTableModel(data,cols);
+    private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
-    
+    private JComboBox<String> productCodes;
+
     public ProductView() {
-        
+
         setTitle(ProductView.TITLE);
         setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
         JPanel panelTable = new JPanel();
         panelTable.setMinimumSize(new Dimension(1000, 200));
         panelTable.setBackground(SystemColor.activeCaption);
         panelTable.setLayout(new BorderLayout(0, 0));
-        
+
         JPanel panelTitle = new JPanel();
         panelTitle.setMinimumSize(new Dimension(1000, 60));
         panelTitle.setBackground(SystemColor.activeCaption);
         panelTitle.setLayout(new BorderLayout(0, 0));
-        
+
         JLabel lblTitle = new JLabel("Elenco prodotti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
         lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE,20));
         panelTitle.add(lblTitle, BorderLayout.WEST);
-        
+
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120,20));
+        btnHome.setPreferredSize(new Dimension(120, 20));
         btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnHome.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 model.setRowCount(0);
                 HomeView cv = new HomeView();
                 cv.display();
                 dispose();
             }
-            
         });
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
-        
+
         /*
          * test
          *
@@ -122,16 +111,14 @@ public class ProductView extends JFrame {
          * }
          */
 
-        Products p;
         for (int i = 0; i < company.getProducts().size(); i++) {
-            p = company.getProducts().get(i);
-            model.insertRow(i, new Object[] {p.getCode(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq(), p.getStepType()});
-        }
-        
+            Products product = company.getProducts().get(i);
+            model.insertRow(i, new Object[] {product.getCode(), product.getName(), product.getDescription(), product.getPricePerLitre(), product.getLitersPer500Mq(), product.getStepType()});
+        } 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
-        panelTable.add(table,BorderLayout.CENTER);
+        panelTable.add(table, BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
 
         final JPanel pnlSearch = new JPanel();
@@ -140,33 +127,38 @@ public class ProductView extends JFrame {
         pnlSearch.setPreferredSize(new Dimension(1000, 50));
         pnlSearch.setMinimumSize(new Dimension(1000, 50));
         
-        JLabel lblsearch = new JLabel("Codice:"); //TODO list box of existing step
+        JLabel lblsearch = new JLabel("Codice:"); //TODO list box of existing codes
         lblsearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearch);
-
-        txtSearch = new JTextField(20);
-        txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlSearch.add(txtSearch);
         
+        productCodes = new JComboBox<>();
+        productCodes.setPreferredSize(new Dimension(200, 20));
+        productCodes.setBackground(SystemColor.activeCaption);
+        productCodes.setForeground(SystemColor.textText);
+        productCodes.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        updateSearchingCodes(productCodes);
+        pnlSearch.add(productCodes);
+
+
+        /**
+         * txtSearch = new JTextField(20);
+         * txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
+         * pnlSearch.add(txtSearch);
+         */
+
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(120,20));
+        btnSearch.setPreferredSize(new Dimension(120, 20));
         btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (getSearching().isEmpty()) {
+            public void actionPerformed(final ActionEvent e) {
+                if (getIndexProductSearched() == -1) {
                     popUp.popUpErrorOrMissing();
                 } else {
-                    Optional<Products> p = company.searchProduct(getSearching());
-                    if (p.isEmpty()) {
-                        popUp.popUpWarning("Prodotto non trovato!");
-                    } else {
-                        writeField(p.get());
-                        txtSearch.setText("");
-                    }
+                    writeField(company.getProducts().get(getIndexProductSearched()));
                 }
             }
         });
@@ -177,35 +169,35 @@ public class ProductView extends JFrame {
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setPreferredSize(new Dimension(900, 120));
         pnlSubmit.setMinimumSize(new Dimension(900, 120));
-        pnlSubmit.setLayout(new BorderLayout(0,0));
+        pnlSubmit.setLayout(new BorderLayout(0, 0));
         
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
         pnlData.setPreferredSize(new Dimension(900, 60));
         pnlData.setMinimumSize(new Dimension(900, 60));
-        pnlData.setLayout(new GridLayout(3,2,20,5));
-        
+        pnlData.setLayout(new GridLayout(3, 2, 20, 5));
+
         JLabel labelCode = new JLabel("Codice:");
         labelCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelCode);
-        
+
         txtCode = new JTextField(15);
         txtCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtCode);
-        
+
         JLabel labelStep = new JLabel("Step:");
         labelStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelStep);
-        
+
         txtStep = new JTextField(15);
         txtStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtStep);
-        
+
         JLabel labelName = new JLabel("Nome:");
         labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelName);
-        
+
         txtName = new JTextField(15);
         txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtName);
@@ -213,50 +205,51 @@ public class ProductView extends JFrame {
         JLabel labelDescr = new JLabel("Descrizione:");
         labelDescr.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelDescr);
-        
+
         txtDescr = new JTextField(15);
         txtDescr.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtDescr);
-        
+
         JLabel labelPrice = new JLabel("Prezzo al litro:");
         labelPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelPrice);
-        
+
         txtPrice = new JTextField(15);
         txtPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtPrice);
-        
+
         JLabel labelUsage = new JLabel("Utilizzo L/500mq:");
         labelUsage.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelUsage);
-        
+
         txtUsage = new JTextField(15);
         txtUsage.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtUsage);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
-        
+
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
         pnlButtons.setPreferredSize(new Dimension(900, 30));
         pnlButtons.setMinimumSize(new Dimension(900, 30));
-        pnlButtons.setLayout(new GridLayout(1,2,20,5));
-        
+        pnlButtons.setLayout(new GridLayout(1, 2, 20, 5));
+
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setPreferredSize(new Dimension(120,20));
+        btnSubmit.setPreferredSize(new Dimension(120, 20));
         btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!missingField()) {
-                    Products p = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
-                    if (company.searchProduct(p.getCode()).isEmpty()) {
+            public void actionPerformed(final ActionEvent e) {
+                if (!missingField()) {
+                    Products newProduct = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
+                    if (company.searchProduct(newProduct.getCode()).isEmpty()) {
                         popUp.popUpInfo("Prodotto inserito con successo.");
-                        company.addProduct(p);
-                        addProductToTable(company.getProducts().get(company.getProducts().size()-1));
+                        company.addProduct(newProduct);
+                        addProductToTable(company.getProducts().get(company.getProducts().size() - 1));
+                        updateSearchingCodes(productCodes);
                         clearInsertField();
                     } else {
                         popUp.popUpError("Prodotto già esistente!");
@@ -271,12 +264,12 @@ public class ProductView extends JFrame {
         btnChange = new JButton("Modifica esistente");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setPreferredSize(new Dimension(200,20));
+        btnChange.setPreferredSize(new Dimension(200, 20));
         btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnChange.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
                     Products changed = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
                     Optional<Products> toModify = company.searchProduct(changed.getCode());
@@ -288,6 +281,7 @@ public class ProductView extends JFrame {
                         removeProductToTable(toModify.get());
                         company.addProduct(changed);
                         addProductToTable(changed);
+                        updateSearchingCodes(productCodes);
                         clearInsertField();
                     }
                 } else {
@@ -300,12 +294,12 @@ public class ProductView extends JFrame {
         btnRemove = new JButton("Elimina prodotto");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setPreferredSize(new Dimension(200,20));
+        btnRemove.setPreferredSize(new Dimension(200, 20));
         btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnRemove.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 if (missingField()) {
                     popUp.popUpErrorOrMissing();
                 } else {
@@ -318,6 +312,7 @@ public class ProductView extends JFrame {
                             popUp.popUpInfo("Prodotto eliminato con successo.");
                             company.removeProduct(productToRemove.get());
                             removeProductToTable(productToRemove.get());
+                            updateSearchingCodes(productCodes);
                             clearInsertField();
                         } else {
                             popUp.popUpInfo("Eliminazione annullata.");
@@ -333,7 +328,7 @@ public class ProductView extends JFrame {
         this.getContentPane().setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-        
+
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addComponent(panelTable)
@@ -356,14 +351,14 @@ public class ProductView extends JFrame {
      * 
      * @return
      */
-    public String getSearching() {
-        return validator.isNameAndNum(txtSearch.getText()) ? txtSearch.getText() : "";
+    public int getIndexProductSearched() {
+        return productCodes.getSelectedIndex();
     }
     /**
      * 
      * @param p
      */
-    public  void writeField(Products p) {
+    public  void writeField(final Products p) {
         txtCode.setText(p.getCode());
         txtStep.setText(p.getStepType());
         txtName.setText(p.getName());
@@ -393,8 +388,8 @@ public class ProductView extends JFrame {
      * 
      * @param p
      */
-    public void addProductToTable(Products p) {
-        model.insertRow(company.getProducts().size()-1, new Object[] {p.getCode(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq(), p.getStepType()});
+    public void addProductToTable(final Products p) {
+        model.insertRow(company.getProducts().size() - 1, new Object[] {p.getCode(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq(), p.getStepType()});
     }
     /**
      * 
@@ -405,6 +400,13 @@ public class ProductView extends JFrame {
             if (model.getDataVector().elementAt(i).elementAt(0).equals(p.getCode())) {
                 model.removeRow(i);
             }
+        }
+    }
+    
+    public void updateSearchingCodes(JComboBox<String> productCodes) {
+        productCodes.removeAllItems();
+        for (Products product : company.getProducts()){
+            productCodes.addItem(product.getCode());
         }
     }
     /**
@@ -434,7 +436,7 @@ public class ProductView extends JFrame {
     public String getDescription() {
         return validator.isName(txtDescr.getText()) ? txtDescr.getText() : "";
     }
-    
+
     /**
      * 
      * @return
@@ -442,7 +444,7 @@ public class ProductView extends JFrame {
     public double getPrice() {
         return validator.isDouble(txtPrice.getText()) ? Double.parseDouble(txtPrice.getText()) : Double.NaN;
     }
-    
+
     /**
      * 
      * @return
@@ -450,7 +452,7 @@ public class ProductView extends JFrame {
     public double getUsage() {
         return validator.isDouble(txtUsage.getText()) ? Double.parseDouble(txtUsage.getText()) : Double.NaN;
     }
-    
+
     /**
      * 
      */
@@ -458,5 +460,4 @@ public class ProductView extends JFrame {
         setVisible(true);
         setResizable(true);
     }
-    
 }
