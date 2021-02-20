@@ -23,7 +23,7 @@ public class PopUp extends JFrame {
     }
     
     public void popUpErrorOrMissing() {
-        this.popUpError("Ci sono dati mancanti o errati");
+        this.popUpWarning("Dati mancanti o errati. Riprovare.");
     }
     
     public String popUpInput(String msg) {

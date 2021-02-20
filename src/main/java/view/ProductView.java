@@ -357,7 +357,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public String getSearching() {
-        return validator.isCode(txtSearch.getText()) ? txtSearch.getText() : "";
+        return validator.isNameAndNum(txtSearch.getText()) ? txtSearch.getText() : "";
     }
     /**
      * 
@@ -412,7 +412,7 @@ public class ProductView extends JFrame {
      * @return
      */
     public String getCode() {
-        return validator.isCode(txtCode.getText()) ? txtCode.getText() : "";
+        return validator.isNameAndNum(txtCode.getText()) ? txtCode.getText() : "";
     }
     /**
      * 

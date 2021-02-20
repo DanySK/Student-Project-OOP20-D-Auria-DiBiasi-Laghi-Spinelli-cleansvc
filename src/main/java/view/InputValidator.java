@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 
 public class InputValidator {
 
-    private String code = "^[A-Za-z0-9]*$";
-    private String name = "^[A-Za-z ]*$";
+    private String nameAndNum = "^[A-Za-z0-9-_./\\\',\s]+$";
+    private String name = "^[A-Za-z-.'\s]+$";
     private String phone = "^[0-9]{3,12}$";
-    private String email = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private String email = "^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
     private String CF = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$";
     private String PIVA = "^[0-9]{11}$";
     private String CAP = "^[0-9]{5}$";
@@ -23,8 +23,8 @@ public class InputValidator {
      * @param txtField
      * @return
      */
-    public Boolean isCode(String txtField) {
-        return Pattern.matches(this.code, txtField);
+    public Boolean isNameAndNum(String txtField) {
+        return Pattern.matches(this.nameAndNum, txtField);
     }
     /**
      * Check if the parameter is in alphabetic format

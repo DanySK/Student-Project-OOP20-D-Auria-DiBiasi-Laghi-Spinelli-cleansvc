@@ -33,18 +33,14 @@ import controller.CompanyImpl;
 import controller.backupFile.SaveAndLoadClients;
 import model.users.Clients;
 import model.users.ClientsImpl;
-/**
- * Graphic view to handle clients
- * @author Vanessa Di Biasi
- *
- */
+
 public class ClientsView extends JFrame {
 
     /**
      * 
      */
     private static final long serialVersionUID = 3375687914483476432L;
-    private static final String TITLE ="CLEAN SERVICE MANAGER";
+    private static final String TITLE = "CLEAN SERVICE MANAGER";
     private JTextField txtCFPIVA;
     private JTextField txtName;
     private JTextField txtAddress;
@@ -66,52 +62,50 @@ public class ClientsView extends JFrame {
     //List<Clients> clientsList = new ArrayList<>();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
     private Object[][] data = new Object[company.getClients().size()][cols.length];
-    private DefaultTableModel model = new DefaultTableModel(data,cols);
+    private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private InputValidator validator = new InputValidator();
     private PopUp popUp = new PopUp();
 
     public ClientsView() {
-        
         setTitle(ClientsView.TITLE);
         setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        
+
         JPanel panelTable = new JPanel();
         panelTable.setMinimumSize(new Dimension(1000, 200));
         panelTable.setBackground(SystemColor.activeCaption);
         panelTable.setLayout(new BorderLayout(0, 0));
-        
+
         JPanel panelTitle = new JPanel();
         panelTitle.setMinimumSize(new Dimension(1000, 60));
         panelTitle.setBackground(SystemColor.activeCaption);
         panelTitle.setLayout(new BorderLayout(0, 0));
-        
+
         JLabel lblTitle = new JLabel("Elenco clienti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
         lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE,20));
         panelTitle.add(lblTitle, BorderLayout.WEST);
-        
+
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120,20));
+        btnHome.setPreferredSize(new Dimension(120, 20));
         btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnHome.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 model.setRowCount(0);
                 HomeView cv = new HomeView();
                 cv.display();
                 dispose();
             }
-            
         });
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
-        
+
         /*
          * testing:
          *
@@ -119,17 +113,17 @@ public class ClientsView extends JFrame {
          * clientsList.add(new ClientsImpl("a", "b", "c", "d", "f", "f", "f", 22));
          * clientsList.add(new ClientsImpl("b", "b", "b", "b", "f", "f", "f", 22));
          */
-        
-        Clients client;
+
+
         for (int i = 0; i < company.getClients().size(); i++) {
-            client = company.getClients().get(i);
+            Clients client = company.getClients().get(i);
             model.insertRow(i, new Object[] {client.getName(), client.getAddress(), client.getCity(), client.getCAP(), client.getMqStructure(), client.getTel(), client.getEmail(), client.getCFPIVA()});
         }
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
-        panelTable.add(table,BorderLayout.CENTER);
+        panelTable.add(table, BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
 
         final JPanel pnlSearch = new JPanel();
@@ -137,7 +131,7 @@ public class ClientsView extends JFrame {
         pnlSearch.setBackground(SystemColor.window);
         pnlSearch.setPreferredSize(new Dimension(1000, 40));
         pnlSearch.setMinimumSize(new Dimension(1000, 40));
-        
+
         JLabel lblsearchCFPIVA = new JLabel("CF/P.IVA:");
         lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearchCFPIVA);
@@ -145,24 +139,24 @@ public class ClientsView extends JFrame {
         txtSearch = new JTextField(20);
         txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(txtSearch);
-        
+
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(120,20));
+        btnSearch.setPreferredSize(new Dimension(120, 20));
         btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 if (getSearchingCFPIVA().isEmpty()) {
                     popUp.popUpErrorOrMissing();
                 } else {
-                    Optional<Clients> c = company.searchClient(getSearchingCFPIVA().toUpperCase());
-                    if (c.isEmpty()) {
+                    Optional<Clients> clientSearched = company.searchClient(getSearchingCFPIVA().toUpperCase());
+                    if (clientSearched.isEmpty()) {
                         popUp.popUpWarning("Cliente non trovato!");
                     } else {
-                        writeField(c.get());
+                        writeField(clientSearched.get());
                         txtSearch.setText("");
                     }
                 }
@@ -175,97 +169,97 @@ public class ClientsView extends JFrame {
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setPreferredSize(new Dimension(900, 140));
         pnlSubmit.setMinimumSize(new Dimension(900, 140));
-        pnlSubmit.setLayout(new BorderLayout(0,0));
-        
+        pnlSubmit.setLayout(new BorderLayout(0, 0));
+
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
         pnlData.setPreferredSize(new Dimension(900, 60));
         pnlData.setMinimumSize(new Dimension(900, 60));
-        pnlData.setLayout(new GridLayout(4,4,20,2));
-        
+        pnlData.setLayout(new GridLayout(4, 4, 20, 2));
+
         JLabel labelCFPIVA = new JLabel("CF/P.IVA:");
         labelCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelCFPIVA);
-        
+
         txtCFPIVA = new JTextField(20);
         txtCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtCFPIVA);
-        
+
         JLabel labelName = new JLabel("Nome:");
         labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelName);
-        
+
         txtName = new JTextField(10);
         txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtName);
-        
+
         JLabel labelAddress = new JLabel("Indirizzo:");
         labelAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelAddress);
-        
+
         txtAddress = new JTextField(20);
         txtAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtAddress);
-        
+
         JLabel labelCity = new JLabel("Città:");
         labelCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelCity);
-        
+
         txtCity = new JTextField(10);
         txtCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtCity);
-        
+
         JLabel labelCAP = new JLabel("CAP:");
         labelCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelCAP);
-        
+
         txtCAP = new JTextField(5);
         txtCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtCAP);
-        
+
         JLabel labelmq = new JLabel("Struttura (mq):");
         labelmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelmq);
-        
+
         txtMq = new JTextField(5);
         txtMq.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtMq);
-        
+
         JLabel labeltel = new JLabel("Telefono:");
         labeltel.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labeltel);
-        
+
         txtTel = new JTextField(10);
         txtTel.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtTel);
-        
+
         JLabel labelemail = new JLabel("Email:");
         labelemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelemail);
-        
+
         txtEmail = new JTextField(15);
         txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtEmail);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
-        
+
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
         pnlButtons.setPreferredSize(new Dimension(900, 30));
         pnlButtons.setMinimumSize(new Dimension(900, 30));
-        pnlButtons.setLayout(new GridLayout(1,3,20,20));
-        
+        pnlButtons.setLayout(new GridLayout(1, 3, 20, 20));
+
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setPreferredSize(new Dimension(120,20));
+        btnSubmit.setPreferredSize(new Dimension(120, 20));
         btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!missingField()){
+            public void actionPerformed(final ActionEvent e) {
+                if (!missingField()) {
                     Clients client = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     if (company.searchClient(client.getCFPIVA()).isEmpty()) {
                         popUp.popUpInfo("Cliente inserito con successo.");
@@ -281,16 +275,16 @@ public class ClientsView extends JFrame {
             }
         });
         pnlButtons.add(btnSubmit);
-        
+
         btnChange = new JButton("Modifica esistente");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setPreferredSize(new Dimension(120,20));
+        btnChange.setPreferredSize(new Dimension(120, 20));
         btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnChange.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 Clients changed = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                 if (!missingField()) {
                     Optional<Clients> toModify = company.searchClient(changed.getCFPIVA());
@@ -310,16 +304,16 @@ public class ClientsView extends JFrame {
             }
         });
         pnlButtons.add(btnChange);
-        
+
         btnRemove = new JButton("Elimina cliente");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setPreferredSize(new Dimension(120,20));
+        btnRemove.setPreferredSize(new Dimension(120, 20));
         btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnRemove.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 if (missingField()) {
                     popUp.popUpErrorOrMissing();
                 } else {
@@ -400,7 +394,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public Boolean missingField() {
-        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty());//  || getCAP()==Integer.MIN_VALUE || getMq()==Integer.MIN_VALUE || getTel()==Integer.MIN_VALUE || getEmail().isEmpty());
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP()==Integer.MIN_VALUE || getMq()==Integer.MIN_VALUE || getTel()==Integer.MIN_VALUE || getEmail().isEmpty());
     }
 
     /**
@@ -451,7 +445,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public String getAddress() {
-        return validator.isName(txtAddress.getText()) ? txtAddress.getText() : "";
+        return validator.isNameAndNum(txtAddress.getText()) ? txtAddress.getText() : "";
     }
 
     /**
