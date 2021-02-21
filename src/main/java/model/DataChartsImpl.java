@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,17 +10,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import org.knowm.xchart.XYChart;
 
 public class DataChartsImpl implements DataCharts {
      
     private final static Integer DAY = 1;
     //private static final String SEP = System.getProperties().getProperty(File.pathSeparator);
-
-    public DataChartsImpl() {
-        
-    }
     
     public List<Double> buildChartsFromData(LocalDate dateStart, LocalDate dateEnd, Integer choose) {       
         try {
@@ -44,7 +38,7 @@ public class DataChartsImpl implements DataCharts {
     private List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
         
         List<Double> entrateList = new ArrayList<>();
-        Double money = 0.0;
+        Double money = 13.70;
         LocalDate auxDate = dateStart;
         entrateList.add(money);
         while(!auxDate.isEqual(dateEnd)) {
@@ -60,7 +54,7 @@ public class DataChartsImpl implements DataCharts {
         
         List<Double> lavoroList = new ArrayList<>();
         LocalDate auxDate = dateStart;
-        Double job = 8.5;
+        Double job = 8.0;
         lavoroList.add(job);
         
         while(!auxDate.isEqual(dateEnd)) {
@@ -73,7 +67,7 @@ public class DataChartsImpl implements DataCharts {
     
     //Siccome ad ogni giorno corrisponde un tipo di dato che bisogna tracciare è necessario quindi calcolarsi ogni giorno fino allda dateEnd
     // per poterli poi associare al tipo di dato nel rispettivo giorno
-    public List<Date> getDaysDate(LocalDate dateStart, LocalDate dateEnd){
+    public List<Date> getDaysDate(final LocalDate dateStart, final LocalDate dateEnd){
         List<Date> successiveDate = new ArrayList<>();    //necessita di convertire da localDate a date perché XYChart non accetta LocalDate;
         LocalDate auxDate = dateStart;
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
@@ -104,7 +98,7 @@ public class DataChartsImpl implements DataCharts {
     @Override
     public void deleteLastItem(XYChart chart) {   //cancella l'ultimo elemento, da migliorare
         // TODO Auto-generated method stub
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         System.out.println(chart.getSeriesMap().keySet());
         list.addAll(chart.getSeriesMap().keySet().stream().collect(Collectors.toList()));
         list.remove(list.size()-1);

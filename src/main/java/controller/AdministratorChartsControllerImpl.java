@@ -29,8 +29,8 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         final LocalDate dataPartenza, dataArrivo;
         final Integer scelta = choice;
         
-                if((dateStart.getText().isBlank() || dateStart.getText().isEmpty())
-                        || (dateEnd.getText().isBlank() || dateEnd.getText().isBlank())) {
+        try {
+                if(dateStart.getText().isBlank() || dateEnd.getText().isBlank()) {
                     this.dateExc.warning(panel);
                     throw this.dateExc;
                 }    
@@ -49,9 +49,14 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 DataChartsImpl dataChart = new DataChartsImpl();
                 chart.addSeries( this.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
                                         dataChart.getDaysDate(dataPartenza, dataArrivo), 
-                                            dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta)).setMarker(SeriesMarkers.NONE);
-                chart.getStyler().setXAxisTicksVisible(true);
+                                            dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta))
+                                                        .setMarker(SeriesMarkers.NONE);
+                    chart.getStyler().setXAxisTicksVisible(true);
+                
                 chart.getStyler().setYAxisTicksVisible(true);
+        }catch(IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(panel, "Impossibile aggiungere al grafico");
+        }
                 this.updatePanelChart(panel);
         }
     

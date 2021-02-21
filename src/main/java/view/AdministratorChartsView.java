@@ -6,9 +6,7 @@ import model.DateException;
 import model.DatiDaVisualizzareEnum;
 import javax.swing.*;
 import com.github.lgooddatepicker.components.DatePicker;
-
 import controller.AdministratorChartsControllerImpl;
-
 import org.knowm.xchart.*;
 import org.knowm.xchart.style.Styler.ChartTheme;
 import org.knowm.xchart.style.Styler.LegendPosition;
@@ -199,7 +197,7 @@ public class AdministratorChartsView extends JFrame {
         chart.getStyler().setAxisTicksMarksVisible(false);
         chart.getStyler().setXAxisTicksVisible(false);
         chart.getStyler().setYAxisTicksVisible(false);
-        chart.getStyler().setDecimalPattern("#");
+        chart.getStyler().setDecimalPattern("€/m #.##");
         chart.getStyler().setDatePattern("dd/MMM/yyyy");
  }
 }
