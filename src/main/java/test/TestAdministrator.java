@@ -2,6 +2,7 @@ package test;
 
 import java.time.LocalDate;
 import javax.swing.JPanel;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
@@ -12,24 +13,27 @@ import model.DateException;
 import view.AdministratorChartsView;
 
 public class TestAdministrator {
+    private final JPanel panel = new JPanel();
+    private final XYChart chart = new XYChartBuilder().build();
+    private DatePicker dateStart = new DatePicker();
+    private DatePicker dateEnd = new DatePicker();
     @Test
     public void dateControllerDateStartBefore() throws DateException {
-        DatePicker dateStart = new DatePicker();
-        DatePicker dateEnd = new DatePicker();
-        JPanel panel = new JPanel();
-        XYChart chart = new XYChartBuilder().build();
+        
         dateStart.setDate(LocalDate.now());
-        dateEnd.setDate(LocalDate.of(2021,8,18));
-         new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 1,panel,chart);
+        dateEnd.setDate(LocalDate.of(2031,8,18));
+        Assertions.assertThrows(DateException.class, ()->{
+            new AdministratorChartsControllerImpl().addLine(dateStart, dateEnd, 1, panel,chart);
+        });
     }    /*Ok*/
 
     @Test
-    public void dateControllerDateEmpty() throws DateException {
-        DatePicker dateStart = new DatePicker();
-        DatePicker dateEnd = new DatePicker();
-        JPanel panel = new JPanel();
-        XYChart chart = new XYChartBuilder().build();
-        new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 2, panel,chart);
+    public void dateControllerDateEmpty() throws DateException{
+        dateStart.setDate(null);
+        dateEnd.setDate(null);
+        Assertions.assertThrows(DateException.class, ()->{
+            new AdministratorChartsControllerImpl().addLine(dateStart, dateEnd, 2, panel,chart);
+        });
     }   /*Ok*/
     
     @Test
@@ -42,7 +46,7 @@ public class TestAdministrator {
     public void dataChartTest() {
         DataChartsImpl data = new DataChartsImpl();
         System.out.println(data.buildChartsFromData(LocalDate.of(2020,8,20), LocalDate.of(2020,8, 24),2));
-    }/*Ok*///Non girava perché mettevo un numero in meno nelle Y
+    }/*Ok*/
 
     @Test 
     public void isVisible() {

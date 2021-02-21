@@ -29,21 +29,21 @@ public class AdministratorChartsView extends JFrame {
     private static final double PERCENT = 0.6;
     private static final String TITLE = "Grafici amministratore";
     final AdministratorChartsControllerImpl ctrl;
-    private JPanel panelTitle;
-    private JLabel lblNewLabel;
-    private JLabel lblTitle;
-    private JButton btnNewButton;
-    private JPanel mainPanel;
-    private JPanel datePanel;
-    private JPanel chartPanel;
-    private JLabel labelDatePickerFirst;
-    private DatePicker datepickerFirst;
-    private JLabel labelDatePickerLast;
-    private DatePicker datepickerLast;
-    private JComboBox<String> comboBoxDatiGrafico;
-    private JButton btnVisualizzaDati;
-    private JButton btnReset;
-    private JButton btnDeleteLine;
+    final private JPanel panelTitle;
+    final private JLabel lblNewLabel;
+    final private JLabel lblTitle;
+    final private JButton btnNewButton;
+    final private JPanel mainPanel;
+    final private JPanel datePanel;
+    final private JPanel chartPanel;
+    final private JLabel labelDatePickerFirst;
+    final private DatePicker datepickerFirst;
+    final private JLabel labelDatePickerLast;
+    final private DatePicker datepickerLast;
+    final private JComboBox<String> comboBoxDatiGrafico;
+    final private JButton btnVisualizzaDati;
+    final private JButton btnReset;
+    final private JButton btnDeleteLine;
     
     public AdministratorChartsView() {   
        
@@ -149,7 +149,7 @@ public class AdministratorChartsView extends JFrame {
         btnVisualizzaDati.addActionListener(e->{
                
             try {
-                ctrl.onButtonPressed(datepickerFirst, datepickerLast, (comboBoxDatiGrafico.getSelectedIndex())+1, mainPanel,chart);
+                ctrl.addLine(datepickerFirst, datepickerLast, (comboBoxDatiGrafico.getSelectedIndex())+1, mainPanel,chart);
             } catch (DateException dateExc) {
                 // TODO Auto-generated catch block
                    System.out.println(dateExc.getMessage());
@@ -159,18 +159,17 @@ public class AdministratorChartsView extends JFrame {
         
         btnReset.addActionListener(e->{
             try {
-           Integer option = JOptionPane.showConfirmDialog(chartPanel, "Sei Sicuro di effettuare il reset del grafico?", "ATTENZIONE!", 2);
-           if(option.equals(JOptionPane.YES_NO_OPTION))
-                   ctrl.resetChart(chart, mainPanel);
-            }catch(ChartException chExc) {
-                System.out.println(chExc.getMessage() + "in Reset.");
-            }
-           
-        });
-        
+                   Integer option = JOptionPane.showConfirmDialog(chartPanel, "Sei Sicuro di effettuare il reset del grafico?", "ATTENZIONE!", 2);
+                   if(option.equals(JOptionPane.YES_NO_OPTION))
+                       ctrl.resetChart(chart, mainPanel);
+                    }catch(ChartException chExc) {
+                       System.out.println(chExc.getMessage() + "in Reset.");
+                }
+            });
+            
         btnDeleteLine.addActionListener(e->{
             try {
-            ctrl.deleteLast(chart, chartPanel);
+                ctrl.deleteLast(chart, chartPanel);
             }
             catch(ChartException chExc) {
                 System.out.println(chExc.getMessage() + "in deleteLine.");

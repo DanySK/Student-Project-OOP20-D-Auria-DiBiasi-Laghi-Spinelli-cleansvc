@@ -15,12 +15,20 @@ public class DateException extends IllegalArgumentException {
     
     private final static String ERROR = "Errore formato data!";
     private final static String WARNING = "Formato data non valido!";
+    private final static String DATEMISMATCH = "Errore di corrispondenza nelle date"
+                                                + ", verifica di non aver inserito una data superiore ad oggi"
+                                                + " o inferiore a quella di partenza";
+   
     public DateException() {
         super(DateException.ERROR);
     }
     
     public void warning(JPanel panel){
         JOptionPane.showMessageDialog(panel,DateException.WARNING);
+    }
+    
+    public void dateBefore(JPanel panel) {
+        JOptionPane.showMessageDialog(panel, DateException.DATEMISMATCH);
     }
     
 }

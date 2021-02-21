@@ -17,21 +17,20 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
     private final ChartException chExc;
     private final DateException dateExc;
 
-
     public AdministratorChartsControllerImpl() {
         this.chExc = new ChartException();
         this.dateExc= new DateException();
     }
     
     @Override
-    public void onButtonPressed(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel, XYChart chart) throws DateException {
-      
-        // TODO Auto-generated method stub 
+    public void addLine(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel, XYChart chart) 
+            throws DateException {
+        
         final LocalDate dataPartenza, dataArrivo;
         final Integer scelta = choice;
-        try {
+        
                 if((dateStart.getText().isBlank() || dateStart.getText().isEmpty())
-                        || (dateEnd.getText().isBlank() || dateEnd.getText().isBlank())) {  //lancia un warning se le date sono vuote
+                        || (dateEnd.getText().isBlank() || dateEnd.getText().isBlank())) {
                     this.dateExc.warning(panel);
                     throw this.dateExc;
                 }    
@@ -39,8 +38,11 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 dataPartenza = dateStart.getDate();
                 dataArrivo = dateEnd.getDate();
                     
-                if(dataArrivo.isBefore(dataPartenza)) {
-                        this.dateExc.warning(panel);            //lancia un warning se la data di arrivo è prima della data di partenza
+                if(dataArrivo.isBefore(dataPartenza)
+                        || dataPartenza.isAfter(LocalDate.now())
+                            || dataArrivo.isAfter(LocalDate.now())) {
+                    
+                        this.dateExc.dateBefore(panel);            
                         throw this.dateExc;
                     }
         
@@ -51,11 +53,6 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 chart.getStyler().setXAxisTicksVisible(true);
                 chart.getStyler().setYAxisTicksVisible(true);
                 this.updatePanelChart(panel);
-        }       
-            catch(IllegalArgumentException e){
-                JOptionPane.showMessageDialog(panel, "Formato dati non valido, riprova.");
-                throw e;
-            }
         }
     
     
