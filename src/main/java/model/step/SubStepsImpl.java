@@ -1,25 +1,18 @@
 package model.step;
 
-import java.util.List;
-
-import controller.Company;
-import controller.CompanyImpl;
-import model.Products;
-import model.step.enumerations.StepType;
-
+//import model.Products;
 
 public class SubStepsImpl implements SubSteps {
-    private StepType type;
+    //private StepType type;
     private int time500mq;
     private String name;
     private String description;
-    private Company company = CompanyImpl.getInstance();
-    private List<Products> productsList = company.getProductsByStepType(this.type);
-    
+    //private List<Products> productsList = company.getProductsByStepType(this.type);
 
 
-    public SubStepsImpl(final StepType type, final int time, final String name, final String description) {
-        this.type = type;
+
+    public SubStepsImpl(/*final StepType type,*/ final int time, final String name, final String description) {
+        //this.type = type;
         this.time500mq = time;
         this.name = name;
         this.description = description;

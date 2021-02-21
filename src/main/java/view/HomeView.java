@@ -67,24 +67,7 @@ public class HomeView extends JFrame{
             
         });
         panelTitle.add(btnClienti);
-        
-        /*btnApp = new JButton("Area App");
-        btnApp.setForeground(SystemColor.textText);
-        btnApp.setBackground(SystemColor.activeCaption);
-        btnApp.setPreferredSize(new Dimension(280,70));
-        btnApp.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-        btnApp.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AppointmentsView cv = new AppointmentsView();
-                cv.display();
-                dispose();
-            }
-            
-        });
-        panelTitle.add(btnApp);*/
-        
         btnStaff = new JButton("Area Dipendenti");
         btnStaff.setForeground(SystemColor.textText);
         btnStaff.setBackground(SystemColor.activeCaption);
@@ -128,8 +111,8 @@ public class HomeView extends JFrame{
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                SubStepView pv = new SubStepView();
-                pv.display();
+                SubStepView stv = new SubStepView();
+                stv.display();
                 dispose();
             }
 

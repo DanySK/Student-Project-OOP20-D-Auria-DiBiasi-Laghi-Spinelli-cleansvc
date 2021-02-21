@@ -10,26 +10,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controller.Process;
 import controller.ProcessImpl;
 import model.step.Step;
 import model.step.SubSteps;
+import model.step.SubStepsImpl;
 import model.step.enumerations.StepType;
-import model.users.Clients;
-import model.users.ClientsImpl;
-import controller.Process;
+
 
 public class SubStepView extends JFrame {
 
@@ -39,15 +40,15 @@ public class SubStepView extends JFrame {
     private static final long serialVersionUID = -2999321210083459030L;
     private static final String TITLE = "Inserimento nuova sottofase";
     private final JButton btnSubmit;
-    private final JButton btnRemove;
+    //private final JButton btnRemove;
     private final JButton btnHome;
     private JTextField txtName;
     private JTextField txtDescription;
     private JTextField txtTime;
-    private JTextField txtStep;
-    private JComboBox<String> steps;
+    private JComboBox<String> comboSteps;
     private Process p = ProcessImpl.getInstance();
-    private List<Step<StepType, SubSteps>> subStepsList = p.getSubStepsList();
+    private List<SubSteps> subStepsList = p.getSubStepsList();
+    private List<StepType> stepTypeList = p.getStepTypeList();
 
     private final String[] col = new String[] {"Nome", "Descrizione", "Tempo", "Fase"};
     private Object[][] data = new Object[subStepsList.size()][col.length];
@@ -95,15 +96,17 @@ public class SubStepView extends JFrame {
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
 
-        Step<StepType, SubSteps> subStep;
+        SubSteps subStep;
+        StepType stepType;
         for (int i = 0; i < subStepsList.size(); i++) {
             subStep = p.getSubStepsList().get(i);
-            model.insertRow(i, new Object[] {subStep.getSubSteps().getName(), subStep.getSubSteps().getDescription(), subStep.getSubSteps().getTime()});
+            stepType = p.getStepTypeList().get(i);
+            model.insertRow(i, new Object[] {subStep.getName(), subStep.getDescription(), subStep.getTime(), stepType.getType()});
         }
  
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
-        table.setAutoCreateRowSorter(true); //sort by the column header clicked
+        table.setAutoCreateRowSorter(true);
         panelTable.add(table, BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
 
@@ -148,29 +151,29 @@ public class SubStepView extends JFrame {
         JLabel labelStep = new JLabel("Step:");
         labelStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelStep);
-        
-        txtStep = new JTextField(5);
-        txtStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlData.add(txtStep);
-        
-        steps = new JComboBox<>();
-        steps.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        steps.setToolTipText("Step");
-        steps.setBackground(SystemColor.inactiveCaption);
-        steps.setForeground(SystemColor.textText);
-        steps.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        pnlSubmit.add(steps);
-        steps.addItem("CLEANING");
-        steps.addItem("CLEANSING");
-        
+
+        comboSteps = new JComboBox<>();
+        comboSteps.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        comboSteps.setToolTipText("Step");
+        comboSteps.setBackground(SystemColor.inactiveCaption);
+        comboSteps.setForeground(SystemColor.textText);
+        comboSteps.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        pnlData.add(comboSteps);
+
+        StepType st;
+        for (int i = 0; i < stepTypeList.size(); i++) {
+            st = p.getStepTypeList().get(i);
+            comboSteps.addItem(st.getType());
+        }
+ 
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
         pnlButtons.setPreferredSize(new Dimension(900, 30));
         pnlButtons.setMinimumSize(new Dimension(900, 30));
         pnlButtons.setLayout(new GridLayout(1,3,20,20));
-        
-        btnSubmit = new JButton("Inserisci nuovo");
+
+        btnSubmit = new JButton("Conferma");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
         btnSubmit.setPreferredSize(new Dimension(120,20));
@@ -178,17 +181,77 @@ public class SubStepView extends JFrame {
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                c.addClient(new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq()));
-                Clients cc = c.getClient().get(clientsList.size()-1);
-                JOptionPane.showMessageDialog(rootPane, "Cliente inserito con successo.");
-                model.insertRow(clientsList.size()-1, new Object[] {cc.getName(),cc.getAddress(),cc.getCity(),cc.getCAP(),cc.getMqStructure(),cc.getTel(),cc.getEmail(),cc.getCFPIVA()});
-                clearInsertField();
+            public void actionPerformed(final ActionEvent e) {
+                    SubSteps s  = new SubStepsImpl(getTime(), getName(), getDescription());
+                    p.addStep(s);
             }
         });
         pnlButtons.add(btnSubmit);
+        pnlSubmit.add(pnlButtons, BorderLayout.SOUTH);
+
+        GroupLayout layout = new GroupLayout(this.getContentPane());
+        this.getContentPane().setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setVerticalGroup(layout.createSequentialGroup()
+                .addGap(0)
+                .addComponent(panelTable)
+                .addGap(0)
+                .addComponent(pnlSubmit)
+                .addGap(0));
+
+        layout.setHorizontalGroup(layout.createSequentialGroup()
+                .addGap(0)
+                .addGroup(layout.createParallelGroup(Alignment.CENTER)
+                        .addComponent(panelTable)
+                        .addComponent(pnlSubmit))
+                .addGap(0));
+
     }
 
+
+    /**
+     * 
+     */
+    public void clearInsertField() {
+        comboSteps.setSelectedIndex(0);
+        txtTime.setText("");
+        txtName.setText("");
+        txtDescription.setText("");
+    }
+
+    /**
+     * 
+     * @return 0 if there is an empty textArea.
+     */
+
+    public Boolean missingField() {
+        return (Boolean.parseBoolean(txtTime.getText()) || getName().isEmpty() || getDescription().isEmpty() || comboSteps.getSelectedItem().equals("Seleziona step"));
+    }
+
+    /**
+     * 
+     * @return time.
+     */
+    public int getTime() {
+        return Integer.parseInt(txtTime.getText());
+    }
+
+    /**
+     * 
+     * @return name.
+     */
+    public String getName() {
+        return txtName.getText();
+    }
+
+    /**
+     * @return description.
+     */
+    public String getDescription() {
+        return txtDescription.getText();
+    }
 
     /**
      * 
@@ -198,5 +261,6 @@ public class SubStepView extends JFrame {
         setResizable(true);
 
     }
+
 
 }

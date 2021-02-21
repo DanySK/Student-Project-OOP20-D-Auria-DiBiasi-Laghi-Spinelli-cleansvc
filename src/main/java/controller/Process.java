@@ -10,11 +10,13 @@ import model.step.enumerations.StepType;
 
 public interface Process {
 
-    List<Step<StepType, SubSteps>> getSubStepsList();
+    List<SubSteps> getSubStepsList();
 
-    void addStep(Step<StepType, SubSteps> step);
+    List<StepType> getStepTypeList();
 
-    void removeStep(Step<StepType, SubSteps> step);
+    void addStep(SubSteps s);
+
+    void removeStep(SubSteps s);
 
 
 }
