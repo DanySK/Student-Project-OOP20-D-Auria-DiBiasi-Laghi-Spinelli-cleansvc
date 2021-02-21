@@ -15,6 +15,7 @@ public class SubStepsImpl implements SubSteps {
     private String description;
     private Company company = CompanyImpl.getInstance();
     private List<Products> productsList = company.getProductsByStepType(this.type);
+    
 
 
     public SubStepsImpl(final StepType type, final int time, final String name, final String description) {
