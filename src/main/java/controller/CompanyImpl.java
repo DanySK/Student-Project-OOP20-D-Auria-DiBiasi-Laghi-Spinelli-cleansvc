@@ -1,11 +1,11 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import model.Appointments;
 import model.Products;
 import model.users.Clients;
 import model.users.Staff;
@@ -16,6 +16,7 @@ public class CompanyImpl implements Company {
     private final List<Staff> staff = new ArrayList<>();
     private final List<Clients> clients = new ArrayList<>();
     private final List<Products> products = new ArrayList<>();
+    private final List<Appointments> appointments = new ArrayList<>();
 
     public CompanyImpl() {}
     public static CompanyImpl getInstance() {
@@ -78,7 +79,7 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public List<Clients> getClient() {
+    public List<Clients> getClients() {
         return Collections.unmodifiableList(this.clients);
     }
 
@@ -93,9 +94,9 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<Products> searchProduct(String nameProduct) {
+    public Optional<Products> searchProduct(String codeProduct) {
         for (final Products p : this.products) {
-            if (p.getName().equals(nameProduct)) {
+            if (p.getCode().equals(codeProduct)) {
                 return Optional.of(p);
             }
         }
@@ -103,7 +104,39 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public List<Products> getProduct() {
+    public List<Products> getProducts() {
         return Collections.unmodifiableList(this.products);
+    }
+    
+    @Override
+    public Optional<List<Products>> getProductsByStepType(String stepType) {
+        List<Products> pByStep = new ArrayList<>();
+        for (final Products p : this.products) {
+            if (p.getStepType().equals(stepType)) {
+                pByStep.add(p);
+            }
+        }
+        return (pByStep.isEmpty()) ? Optional.empty() : Optional.of(pByStep);
+    }  
+    @Override
+    public void addAppointment(final Appointments a) {
+        this.appointments.add(a);
+    }
+    @Override
+    public void removeAppointment(final Appointments a) {
+        this.appointments.remove(a);
+    }
+    @Override
+    public Optional<Appointments> searchAppointment(final String date, final String hour) {
+        for (final Appointments a : this.appointments) {
+            if (a.getDate().equals(date) && a.getHour().equals(hour)) {
+                return Optional.of(a);
+            }
+        }
+        return Optional.empty();
+    }
+    @Override
+    public List<Appointments> getAppointment() {
+        return Collections.unmodifiableList(appointments);
     }
 }

@@ -21,7 +21,7 @@ public class SaveAndLoadProducts implements SaveAndLoad {
     @Override
     public void save() {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_PRODUCTS))) {
-            for (final Products p : this.company.getProduct()) {
+            for (final Products p : this.company.getProducts()) {
                 w.write(CODE_STR + p.getName());
                 w.newLine();
             }
