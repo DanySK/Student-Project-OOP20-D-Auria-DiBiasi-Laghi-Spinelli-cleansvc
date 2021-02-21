@@ -4,10 +4,7 @@ import java.time.*;
 
 public class TimeToCleanValuation {
     
-    /*private final static Duration LAVAGGIO = Duration.ofSeconds(60);        //Il tempo è per metroquadro.
-    private final static Duration DISINFEZIONE = Duration.ofSeconds(20);
-    private final static Duration RISCIACQUO = Duration.ofSeconds(30);
-   */
+
     private Integer numFasi;
     private Integer numDipendenti;
     private Integer mqStanza;
