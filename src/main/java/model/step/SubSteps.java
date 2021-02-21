@@ -9,4 +9,6 @@ public interface SubSteps {
 
     int getTime();
 
+    int getCode();
+
 }
