@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import com.github.lgooddatepicker.components.DatePicker;
-
 import controller.AdministratorChartsControllerImpl;
 import model.DataChartsImpl;
 import model.DateException;
 import view.AdministratorChartsView;
+
 public class TestAdministrator {
     @Test
     public void dateControllerDateStartBefore() throws DateException {
@@ -18,10 +18,8 @@ public class TestAdministrator {
         DatePicker dateEnd = new DatePicker();
         JPanel panel = new JPanel();
         XYChart chart = new XYChartBuilder().build();
-
-
         dateStart.setDate(LocalDate.now());
-        dateEnd.setDate(LocalDate.of(2020,8,18));
+        dateEnd.setDate(LocalDate.of(2021,8,18));
          new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 1,panel,chart);
     }    /*Ok*/
 
@@ -31,7 +29,6 @@ public class TestAdministrator {
         DatePicker dateEnd = new DatePicker();
         JPanel panel = new JPanel();
         XYChart chart = new XYChartBuilder().build();
-
         new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 2, panel,chart);
     }   /*Ok*/
     

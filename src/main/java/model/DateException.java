@@ -13,14 +13,14 @@ public class DateException extends IllegalArgumentException {
      * 
      */
     
-    private final static String ERROR = "Errore formato data";
-    
+    private final static String ERROR = "Errore formato data!";
+    private final static String WARNING = "Formato data non valido!";
     public DateException() {
         super(DateException.ERROR);
     }
     
     public void warning(JPanel panel){
-        JOptionPane.showMessageDialog(panel,"Formato data non valido!");
+        JOptionPane.showMessageDialog(panel,DateException.WARNING);
     }
     
 }

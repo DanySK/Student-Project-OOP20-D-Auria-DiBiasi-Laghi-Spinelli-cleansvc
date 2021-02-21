@@ -13,6 +13,7 @@ import model.DatiDaVisualizzareEnum;
 
 
 public class AdministratorChartsControllerImpl implements AdministratorChartsController{
+    
     private final ChartException chExc;
     private final DateException dateExc;
 
@@ -49,10 +50,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                                             dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta)).setMarker(SeriesMarkers.NONE);
                 chart.getStyler().setXAxisTicksVisible(true);
                 chart.getStyler().setYAxisTicksVisible(true);
-                
-                
-                panel.revalidate();
-                panel.repaint();
+                this.updatePanelChart(panel);
         }       
             catch(IllegalArgumentException e){
                 JOptionPane.showMessageDialog(panel, "Formato dati non valido, riprova.");
@@ -66,10 +64,8 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
             this.chExc.warning(panel); 
             throw chExc;
         }
-                        chart.getSeriesMap().clear();
-                        panel.revalidate();
-                        panel.repaint();
-     
+        chart.getSeriesMap().clear();
+        this.updatePanelChart(panel);
     }
 
 
@@ -79,9 +75,8 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
             throw chExc;
             
         }
-            new DataChartsImpl().deleteLastItem(chart);
-               panel.revalidate();
-               panel.repaint();   
+        new DataChartsImpl().deleteLastItem(chart);
+        this.updatePanelChart(panel);
     }
        
 
@@ -91,4 +86,8 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         return new String("Da: " + dataPar + " a: " + dataArr + ", "+ choose);
     }
     
+    private void updatePanelChart(JPanel panel){
+        panel.revalidate();
+        panel.repaint();   
+    }
 }
