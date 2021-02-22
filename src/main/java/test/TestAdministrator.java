@@ -12,6 +12,7 @@ import model.DataChartsImpl;
 import model.DateException;
 import view.AdministratorChartsView;
 public class TestAdministrator {
+
     @Test
     public void dateControllerDateStartBefore() throws DateException {
         DatePicker dateStart = new DatePicker();
@@ -21,8 +22,9 @@ public class TestAdministrator {
 
 
         dateStart.setDate(LocalDate.now());
-        dateEnd.setDate(LocalDate.of(2020,8,18));
-         new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 1,panel,chart);
+        dateEnd.setDate(LocalDate.of(2020, 8, 18));
+        new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 1, panel, chart);
+
     }    /*Ok*/
 
     @Test
@@ -32,20 +34,24 @@ public class TestAdministrator {
         JPanel panel = new JPanel();
         XYChart chart = new XYChartBuilder().build();
 
-        new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 2, panel,chart);
+
+        new AdministratorChartsControllerImpl().onButtonPressed(dateStart, dateEnd, 2, panel, chart);
+
     }   /*Ok*/
-    
+
     @Test
     public void dateListTest() { 
         DataChartsImpl datRange = new DataChartsImpl();
-        System.out.println(datRange.getDaysDate(LocalDate.of(2020,8,20), LocalDate.of(2020, 9,1)));
+        System.out.println(datRange.getDaysDate(LocalDate.of(2020,8,20), LocalDate.of(2020, 9, 1)));
     } /*Ok*/
-    
+
     @Test
     public void dataChartTest() {
         DataChartsImpl data = new DataChartsImpl();
-        System.out.println(data.buildChartsFromData(LocalDate.of(2020,8,20), LocalDate.of(2020,8, 24),2));
-    }/*Ok*///Non girava perché mettevo un numero in meno nelle Y
+
+        System.out.println(data.buildChartsFromData(LocalDate.of(2020, 8, 20), LocalDate.of(2020, 8, 24), 2));
+    } /*Ok*///Non girava perché mettevo un numero in meno nelle Y
+
 
     @Test 
     public void isVisible() {

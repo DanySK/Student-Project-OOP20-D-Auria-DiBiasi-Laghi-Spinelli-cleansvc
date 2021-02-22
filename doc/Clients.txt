@@ -6,3 +6,11 @@ CAP: 47014
 TEL: 3467529933
 EMAIL: emporiodamario@libero.it
 MQSTRUCTURE: 150
+CFPIVA: lghrra97e69h199x
+NAME: aurora laghi
+ADDRESS: via fratelli bandiera, 7
+CITY: Forlimpopoli
+CAP: 47034
+TEL: 3884727388
+EMAIL: aurora.laghi@studio.unibo.it
+MQSTRUCTURE: 1000

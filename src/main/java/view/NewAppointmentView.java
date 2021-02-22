@@ -40,7 +40,7 @@ public class NewAppointmentView extends JFrame {
     private final TimePicker timepicker;
     private Company company = CompanyImpl.getInstance();
     private List<Clients> clientsList = company.getClients();
-    public PopUp popUp = new PopUp();
+    private PopUp popUp = new PopUp();
 
     public NewAppointmentView() {
 

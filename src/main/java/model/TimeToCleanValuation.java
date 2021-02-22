@@ -20,7 +20,7 @@ public class TimeToCleanValuation {
         
     }
     
-    public long coreValuation() {                     
+    public long coreValuation() {
         Duration timeToRoom =  TimeToCleanValuation.LAVAGGIO.multipliedBy(this.getMqStanza())
                                                                 .dividedBy(this.getNumDipendenti());
         
