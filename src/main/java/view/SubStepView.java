@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -9,7 +8,6 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +31,6 @@ import controller.ProcessImpl;
 import model.step.SubSteps;
 import model.step.SubStepsImpl;
 import model.step.enumerations.StepType;
-import model.users.Clients;
 
 
 public class SubStepView extends JFrame {
@@ -47,11 +44,13 @@ public class SubStepView extends JFrame {
     private JTextField txtName;
     private JTextField txtDescription;
     private JTextField txtTime;
-    List<JTextField> tfList = new ArrayList<>();
+    private JTextField txtDelete;
     private JComboBox<String> comboSteps;
+    private List<JTextField> tfList = new ArrayList<>();
     private PopUp popUp = new PopUp();
 
     private final JButton btnSubmit;
+    private final JButton btnRemove;
     private final JButton btnHome;
 
     private Process process = ProcessImpl.getInstance();
@@ -121,7 +120,7 @@ public class SubStepView extends JFrame {
         pnlData.setBackground(SystemColor.window);
         pnlData.setPreferredSize(new Dimension(400, 400));
         pnlData.setMinimumSize(new Dimension(400, 400));
-        pnlData.setLayout(new GridLayout(5,2,0,70));
+        pnlData.setLayout(new GridLayout(5,2,0,45));
  
         JLabel labelCode = new JLabel("Codice:");
         labelCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -160,8 +159,8 @@ public class SubStepView extends JFrame {
         comboSteps.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(comboSteps);
 
-        for (StepType myVar : StepType.values()) {
-            comboSteps.addItem(myVar.getType());
+        for (StepType step : process.getStepTypeList()) {
+            comboSteps.addItem(step.getType());
         }
 
         JLabel labelTime = new JLabel("Tempo:");
@@ -178,11 +177,11 @@ public class SubStepView extends JFrame {
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
-        pnlButtons.setPreferredSize(new Dimension(400, 50));
-        pnlButtons.setMinimumSize(new Dimension(400, 50));
+        pnlButtons.setPreferredSize(new Dimension(400, 30));
+        pnlButtons.setMinimumSize(new Dimension(400, 30));
         pnlButtons.setLayout(new GridLayout(1,1,2,2));
 
-        btnSubmit = new JButton("Inserisci nuovo");
+        btnSubmit = new JButton("Inserimento");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
         btnSubmit.setPreferredSize(new Dimension(120,20));
@@ -194,7 +193,7 @@ public class SubStepView extends JFrame {
                 if (!missingField()) {
                     SubSteps c = new SubStepsImpl(getCode(), getTime(), getName(), getDescription());
                     process.addStep(c);
-                    popUp.popUpInfo("Appuntamento inserito con successo.");
+                    popUp.popUpInfo("Sottofase inserita con successo.");
                     addSubStepToTable(process.getSubStepsList().get(process.getSubStepsList().size() - 1));
                     clearInsertField();
                 } else {
@@ -204,6 +203,55 @@ public class SubStepView extends JFrame {
         });
         pnlButtons.add(btnSubmit);
         pnlSubmit.add(pnlButtons, BorderLayout.SOUTH);
+
+        final JPanel pnlRemove = new JPanel();
+        pnlRemove.setBorder(new TitledBorder(null, "Elimina Sottofase", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
+        pnlRemove.setBackground(SystemColor.window);
+        pnlRemove.setPreferredSize(new Dimension(400, 100));
+        pnlRemove.setMinimumSize(new Dimension(400, 100));
+
+        JLabel lblsearchCode = new JLabel("Codice:");
+        lblsearchCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlRemove.add(lblsearchCode);
+
+        txtDelete = new JTextField(20);
+        txtDelete.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        pnlRemove.add(txtDelete);
+        tfList.add(txtCode);
+ 
+        final JPanel pnlButtons2 = new JPanel();
+        pnlButtons2.setBackground(SystemColor.window);
+        pnlButtons2.setBorder(null);
+        pnlButtons2.setPreferredSize(new Dimension(400, 30));
+        pnlButtons2.setMinimumSize(new Dimension(400, 30));
+        pnlButtons2.setLayout(new GridLayout(1,1,2,2));
+
+        btnRemove = new JButton("Elimina");
+        btnRemove.setForeground(SystemColor.textText);
+        btnRemove.setBackground(SystemColor.activeCaption);
+        btnRemove.setPreferredSize(new Dimension(120,20));
+        btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                Optional<SubSteps> subStepRemove = process.searchSubStep(getSearchingCode());
+                if (subStepRemove.isEmpty()) {
+                    popUp.popUpWarning("Nessuna sottofase specificata");
+                } else {
+                    Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare la sottofase " + subStepRemove.get().getName() + "?");
+                    if (confirmed) {
+                        popUp.popUpInfo("Sottofase eliminata con successo.");
+                        removeSubStepToTable(subStepRemove.get());
+                        process.removeStep(subStepRemove.get());
+                        clearInsertField();
+                    } else {
+                        popUp.popUpInfo("Eliminazione annullata.");
+                        }
+                    }
+            }
+        });
+        pnlRemove.add(btnRemove);
 
 
         GroupLayout layout = new GroupLayout(this.getContentPane());
@@ -217,7 +265,10 @@ public class SubStepView extends JFrame {
                 .addGap(0)
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                         .addComponent(panelTable)
-                        .addComponent(pnlSubmit))
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(pnlSubmit)
+                                .addGap(0)
+                                .addComponent(pnlRemove)))
                 .addGap(0));
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
@@ -227,7 +278,9 @@ public class SubStepView extends JFrame {
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(panelTable)
                                 .addGap(0)
-                                .addComponent(pnlSubmit)))
+                                .addGroup(layout.createParallelGroup(Alignment.CENTER)
+                                        .addComponent(pnlSubmit)
+                                        .addComponent(pnlRemove))))
                 .addGap(0));
 
     }
@@ -247,7 +300,7 @@ public class SubStepView extends JFrame {
      * @return 0 if there is an empty textArea.
      */
     public Boolean missingField() {
-        return (Boolean.parseBoolean(txtCode.getText()) || Boolean.parseBoolean(txtTime.getText()) || getName().isEmpty() || getDescription().isEmpty() || comboSteps.getSelectedItem().equals("Seleziona step"));
+        return (getCode().isEmpty() || Boolean.parseBoolean(txtTime.getText()) || getName().isEmpty() || getDescription().isEmpty() || comboSteps.getSelectedItem().equals("Seleziona step"));
     }
 
     /**
@@ -257,12 +310,32 @@ public class SubStepView extends JFrame {
     public void addSubStepToTable(final SubSteps subStep) {
         model.insertRow(process.getSubStepsList().size() - 1, new Object[] {subStep.getCode(), subStep.getName(), subStep.getDescription(), comboSteps.getSelectedItem(), subStep.getTime()});
     }
+    /**
+     * 
+     * @param subStep
+     */
+    public void removeSubStepToTable(final SubSteps subStep) {
+        for (int j = 0; j < model.getRowCount(); j++) {
+            if (model.getDataVector().elementAt(j).elementAt(0).equals(subStep.getCode())) {
+                model.removeRow(j);
+            }
+        }
+    }
+
+
+    /**
+     * 
+     * @return  code.
+     */
+    public String getSearchingCode() {
+        return txtDelete.getText();
+    }
 
     /**
      * @return name. 
      */
-    public int getCode() {
-        return Integer.parseInt(txtCode.getText());
+    public String getCode() {
+        return txtCode.getText();
     }
 
     /**

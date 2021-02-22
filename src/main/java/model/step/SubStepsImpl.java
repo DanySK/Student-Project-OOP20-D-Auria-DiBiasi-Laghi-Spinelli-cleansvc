@@ -4,7 +4,7 @@ package model.step;
 
 public class SubStepsImpl implements SubSteps {
     //private StepType type;
-    private int code;
+    private String code;
     private int time500mq;
     private String name;
     private String description;
@@ -12,7 +12,7 @@ public class SubStepsImpl implements SubSteps {
 
 
 
-    public SubStepsImpl(final int code, final int time, final String name, final String description) {
+    public SubStepsImpl(final String code, final int time, final String name, final String description) {
         this.code = code;
         this.time500mq = time;
         this.name = name;
@@ -51,7 +51,7 @@ public class SubStepsImpl implements SubSteps {
      * @return the code.
      */
     @Override
-    public int getCode() {
+    public String getCode() {
         return this.code;
     }
 

@@ -2,8 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.checkerframework.framework.qual.SubtypeOf;
+import java.util.Optional;
 
 import model.step.Step;
 import model.step.SubSteps;
@@ -52,7 +51,23 @@ public class ProcessImpl implements Process {
      */
     @Override
     public List<StepType> getStepTypeList() {
+        for (StepType step : StepType.values()) {
+            stepTypeList.add(step);
+        }
         return this.stepTypeList;
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public Optional<SubSteps> searchSubStep(final String code) {
+        for (final SubSteps st : this.stepList) {
+            if (st.getCode().equals(code)) {
+                return Optional.of(st);
+            }
+        }
+        return Optional.empty();
     }
 
 }
