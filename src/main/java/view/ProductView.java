@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -27,8 +26,11 @@ import controller.Company;
 import controller.CompanyImpl;
 import model.Products;
 import model.ProductsImpl;
+import model.step.enumerations.StepType;
 import utility.InputValidator;
 import utility.PopUp;
+import controller.Process;
+import controller.ProcessImpl;
 
 public class ProductView extends JFrame {
 
@@ -40,7 +42,6 @@ public class ProductView extends JFrame {
     private final JButton btnHome;
     private final JButton btnSearch;
     private JTextField txtCode;
-    private JTextField txtStep;
     private JTextField txtName;
     private JTextField txtDescr;
     private JTextField txtPrice;
@@ -56,6 +57,8 @@ public class ProductView extends JFrame {
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private JComboBox<String> productCodes;
+    private Process process = ProcessImpl.getInstance(); 
+    private JComboBox<String> comboStep;
 
     public ProductView() {
 
@@ -115,7 +118,7 @@ public class ProductView extends JFrame {
 
         for (int i = 0; i < company.getProducts().size(); i++) {
             Products product = company.getProducts().get(i);
-            model.insertRow(i, new Object[] {product.getCode(), product.getName(), product.getDescription(), product.getPricePerLitre(), product.getLitersPer500Mq(), product.getStepType()});
+            model.insertRow(i, new Object[] {product.getCode(), product.getName(), product.getDescription(), product.getPricePerLitre(), product.getLitersPer500Mq(), product.getStepType().getType()});
         } 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
         table.setFillsViewportHeight(true);
@@ -172,7 +175,7 @@ public class ProductView extends JFrame {
         pnlSubmit.setPreferredSize(new Dimension(900, 120));
         pnlSubmit.setMinimumSize(new Dimension(900, 120));
         pnlSubmit.setLayout(new BorderLayout(0, 0));
-        
+
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
@@ -192,10 +195,15 @@ public class ProductView extends JFrame {
         labelStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelStep);
 
-        txtStep = new JTextField(15);
-        txtStep.setText("Pulizia");
-        txtStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlData.add(txtStep);
+        comboStep = new JComboBox<>();
+        comboStep.setPreferredSize(new Dimension(200, 20));
+        comboStep.setBackground(SystemColor.activeCaption);
+        comboStep.setForeground(SystemColor.textText);
+        comboStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        for (StepType steps : process.getStepTypeList()) {
+            comboStep.addItem(steps.getType());
+        }
+        pnlData.add(comboStep);
 
         JLabel labelName = new JLabel("Nome:");
         labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -247,7 +255,7 @@ public class ProductView extends JFrame {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    Products newProduct = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
+                    Products newProduct = new ProductsImpl(getCode(), process.getStepTypeList().get(getIndexSelectedStep()), getName(), getDescription(), getPrice(), getUsage());
                     if (company.searchProduct(newProduct.getCode()).isEmpty()) {
                         popUp.popUpInfo("Prodotto inserito con successo.");
                         company.addProduct(newProduct);
@@ -274,7 +282,7 @@ public class ProductView extends JFrame {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    Products changed = new ProductsImpl(getCode(), getStep(), getName(), getDescription(), getPrice(), getUsage());
+                    Products changed = new ProductsImpl(getCode(), process.getStepTypeList().get(getIndexSelectedStep()), getName(), getDescription(), getPrice(), getUsage());
                     Optional<Products> toModify = company.searchProduct(changed.getCode());
                     if (toModify.isEmpty()) {
                         popUp.popUpWarning("Codice inesistente tra i prodotti.");
@@ -362,8 +370,12 @@ public class ProductView extends JFrame {
      * @param p
      */
     public  void writeField(final Products p) {
+        for (StepType steps : process.getStepTypeList()) {
+            if (steps.getType().equals(p.getStepType().getType())) {
+                comboStep.setSelectedItem(steps.getType());
+            }
+        }
         txtCode.setText(p.getCode());
-        txtStep.setText(p.getStepType());
         txtName.setText(p.getName());
         txtDescr.setText(p.getDescription());
         txtPrice.setText(String.valueOf(p.getPricePerLitre()));
@@ -374,7 +386,7 @@ public class ProductView extends JFrame {
      */
     public void clearInsertField() {
         txtCode.setText("");
-        txtStep.setText("");
+        comboStep.setSelectedIndex(0);
         txtName.setText("");
         txtDescr.setText("");
         txtPrice.setText("");
@@ -385,14 +397,14 @@ public class ProductView extends JFrame {
      * @return
      */
     public Boolean missingField() {
-        return (getCode().isEmpty() || getStep().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || Double.isNaN(getPrice()) || Double.isNaN(getUsage()));
+        return (getCode().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || Double.isNaN(getPrice()) || Double.isNaN(getUsage()));
     }
     /**
      * 
      * @param p
      */
     public void addProductToTable(final Products p) {
-        model.insertRow(company.getProducts().size() - 1, new Object[] {p.getCode(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq(), p.getStepType()});
+        model.insertRow(company.getProducts().size() - 1, new Object[] {p.getCode(), p.getName(), p.getDescription(), p.getPricePerLitre(), p.getLitersPer500Mq(), p.getStepType().getType()});
     }
     /**
      * 
@@ -423,8 +435,8 @@ public class ProductView extends JFrame {
      * 
      * @return
      */
-    public String getStep() {
-        return txtStep.getText();
+    public int getIndexSelectedStep() {
+        return comboStep.getSelectedIndex();
     }
     /**
      * 

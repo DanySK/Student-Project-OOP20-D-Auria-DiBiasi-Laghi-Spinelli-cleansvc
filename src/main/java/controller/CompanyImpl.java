@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import model.Appointments;
 import model.Products;
+import model.step.enumerations.StepType;
 import model.users.Clients;
 import model.users.Staff;
 
@@ -109,14 +110,14 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<List<Products>> getProductsByStepType(String stepType) {
-        List<Products> pByStep = new ArrayList<>();
-        for (final Products p : this.products) {
-            if (p.getStepType().equals(stepType)) {
-                pByStep.add(p);
+    public Optional<List<Products>> getProductsByStepType(StepType stepType) {
+        List<Products> productByStep = new ArrayList<>();
+        for (final Products product : this.products) {
+            if (product.getStepType().equals(stepType)) {
+                productByStep.add(product);
             }
         }
-        return (pByStep.isEmpty()) ? Optional.empty() : Optional.of(pByStep);
+        return (productByStep.isEmpty()) ? Optional.empty() : Optional.of(productByStep);
     }
 
     @Override

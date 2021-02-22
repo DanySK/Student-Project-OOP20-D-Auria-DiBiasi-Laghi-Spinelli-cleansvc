@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -56,7 +57,7 @@ public class ClientsView extends JFrame {
      *
      * List<Clients> clientsList = new ArrayList<>();
      */
-    private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
+    private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura (mq)", "Telefono", "Email", "CF o P.IVA"};
     private Object[][] data = new Object[company.getClients().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
@@ -113,7 +114,7 @@ public class ClientsView extends JFrame {
 
         for (int i = 0; i < company.getClients().size(); i++) {
             Clients client = company.getClients().get(i);
-            model.insertRow(i, new Object[] {client.getName(), client.getAddress(), client.getCity(), client.getCAP(), client.getMqStructure(), client.getTel(), client.getEmail(), client.getCFPIVA()});
+            model.insertRow(i, new Object[] {client.getName(), client.getAddress(), client.getCity(), client.getCAP(), client.getMqStructure(), client.getTel(), client.getEmail(), client.getCFPIVA().toUpperCase()});
         }
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
@@ -125,7 +126,7 @@ public class ClientsView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati clienti", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 40));
+        pnlSearch.setPreferredSize(new Dimension(1000, 50));
         pnlSearch.setMinimumSize(new Dimension(1000, 40));
 
         JLabel lblsearchCFPIVA = new JLabel("CF/P.IVA clienti:");
@@ -254,11 +255,11 @@ public class ClientsView extends JFrame {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    Clients newClient = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                    Clients newClient = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     if (company.searchClient(newClient.getCFPIVA()).isEmpty()) {
                         popUp.popUpInfo("Cliente inserito con successo.");
-                        company.addClient(newClient);
                         addClientToTable(company.getClients().get(company.getClients().size() - 1));
+                        company.addClient(newClient);
                         updateSearchingCFPIVAs(clientCFPIVAs);
                         clearInsertField();
                     } else {
@@ -281,16 +282,16 @@ public class ClientsView extends JFrame {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    Clients changed = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                    Clients changed = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     Optional<Clients> toModify = company.searchClient(changed.getCFPIVA());
                     if (toModify.isEmpty()) {
                         popUp.popUpWarning("Codice Fiscale o Partita IVA inesistente tra i clienti!");
                     } else {
                         popUp.popUpInfo("Cliente modificato con successo.");
-                        company.removeClient(toModify.get());
                         removeClientToTable(toModify.get());
-                        company.addClient(changed);
                         addClientToTable(changed);
+                        company.removeClient(toModify.get());
+                        company.addClient(changed);
                         updateSearchingCFPIVAs(clientCFPIVAs);
                         clearInsertField();
                     }
@@ -320,8 +321,8 @@ public class ClientsView extends JFrame {
                         Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il cliente '" + clientToRemove.get().getName() + "' ?");
                         if (confirmed) {
                             popUp.popUpInfo("Cliente eliminato con successo.");
-                            company.removeClient(clientToRemove.get());
                             removeClientToTable(clientToRemove.get());
+                            company.removeClient(clientToRemove.get());
                             updateSearchingCFPIVAs(clientCFPIVAs);
                             clearInsertField();
                         } else {
@@ -376,7 +377,7 @@ public class ClientsView extends JFrame {
      * @param c
      */
     public void writeField(final Clients c) {
-        txtCFPIVA.setText(c.getCFPIVA());
+        txtCFPIVA.setText(c.getCFPIVA().toUpperCase());
         txtName.setText(c.getName());
         txtAddress.setText(c.getAddress());
         txtCity.setText(c.getCity());
@@ -399,7 +400,7 @@ public class ClientsView extends JFrame {
      * @param c
      */
     public void addClientToTable(final Clients c) {
-        model.insertRow(company.getClients().size() - 1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA()});
+        model.insertRow(company.getClients().size() - 1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA().toUpperCase()});
     }
 
     /**
@@ -410,6 +411,7 @@ public class ClientsView extends JFrame {
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getDataVector().elementAt(i).elementAt(7).equals(c.getCFPIVA())) {
                 model.removeRow(i);
+                return;
             }
         }
     }
@@ -425,7 +427,7 @@ public class ClientsView extends JFrame {
     public void updateSearchingCFPIVAs(JComboBox<String> clientCFPIVAs) {
         clientCFPIVAs.removeAllItems();
         for (Clients client : company.getClients()){
-            clientCFPIVAs.addItem(client.getCFPIVA());
+            clientCFPIVAs.addItem(client.getCFPIVA().toUpperCase());
         }
     }
 
