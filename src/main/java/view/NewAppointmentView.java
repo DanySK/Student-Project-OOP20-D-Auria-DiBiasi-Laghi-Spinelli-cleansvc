@@ -38,7 +38,7 @@ public class NewAppointmentView extends JFrame {
     private final JButton btnHome;
     private final DatePicker datepicker;
     private final TimePicker timepicker;
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     private List<Clients> clientsList = company.getClients();
     private PopUp popUp = new PopUp();
 

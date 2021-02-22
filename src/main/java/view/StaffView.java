@@ -57,9 +57,9 @@ public class StaffView extends JFrame {
      *
      * private List<Staff> staffList = new ArrayList<>(); 
      */
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF/PIVA"};
-    private Object[][] data = new Object[company.getStaff().size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private PopUp popUp = new PopUp();

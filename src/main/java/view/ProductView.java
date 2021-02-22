@@ -48,11 +48,11 @@ public class ProductView extends JFrame {
     private final JButton btnSubmit;
     private final JButton btnChange;
     private final JButton btnRemove;
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     private PopUp popUp = new PopUp();
     private InputValidator validator = new InputValidator();
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo €/Litro", "Utilizzo Litro/500mq", "Fase sanificazione"};
-    private Object[][] data = new Object[company.getProducts().size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private JComboBox<String> productCodes;

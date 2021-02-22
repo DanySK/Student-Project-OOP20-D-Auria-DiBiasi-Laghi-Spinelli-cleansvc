@@ -25,17 +25,13 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-
-import controller.Process;
 import controller.ProcessImpl;
 import model.step.SubSteps;
 import model.step.SubStepsImpl;
 import model.step.enumerations.StepType;
 
-import model.users.Clients;
 import utility.PopUp;
-
-
+import utility.InputValidator;
 
 public class SubStepView extends JFrame {
 
@@ -52,16 +48,17 @@ public class SubStepView extends JFrame {
     private JComboBox<String> comboSteps;
     private List<JTextField> tfList = new ArrayList<>();
     private PopUp popUp = new PopUp();
+    private InputValidator validator = new InputValidator();
 
     private final JButton btnSubmit;
     private final JButton btnRemove;
     private final JButton btnHome;
 
-    private Process process = ProcessImpl.getInstance();
-    private List<SubSteps> subStepsList = process.getSubStepsList();
+    private ProcessImpl process = ProcessImpl.getInstance();
+    //private List<SubSteps> subStepsList = process.getSubStepsList();
 
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Fase", "Tempo"};
-    private Object[][] data = new Object[subStepsList.size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
 
@@ -211,29 +208,38 @@ public class SubStepView extends JFrame {
         final JPanel pnlRemove = new JPanel();
         pnlRemove.setBorder(new TitledBorder(null, "Elimina Sottofase", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlRemove.setBackground(SystemColor.window);
-        pnlRemove.setPreferredSize(new Dimension(400, 100));
+        pnlRemove.setPreferredSize(new Dimension(400, 500));
         pnlRemove.setMinimumSize(new Dimension(400, 100));
+
+        final JPanel pnlCode = new JPanel();
+        pnlCode.setBorder(null);
+        pnlCode.setBackground(SystemColor.window);
+        pnlCode.setPreferredSize(new Dimension(390, 40));
+        pnlCode.setMinimumSize(new Dimension(390, 40));
+        pnlCode.setLayout(new GridLayout(1,1,0,20));
 
         JLabel lblsearchCode = new JLabel("Codice:");
         lblsearchCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlRemove.add(lblsearchCode);
+        pnlCode.add(lblsearchCode);
 
         txtDelete = new JTextField(20);
         txtDelete.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlRemove.add(txtDelete);
-        tfList.add(txtCode);
+        pnlCode.add(txtDelete);
+        tfList.add(txtDelete);
+
+        pnlRemove.add(pnlCode, BorderLayout.CENTER);
  
         final JPanel pnlButtons2 = new JPanel();
         pnlButtons2.setBackground(SystemColor.window);
         pnlButtons2.setBorder(null);
-        pnlButtons2.setPreferredSize(new Dimension(400, 30));
-        pnlButtons2.setMinimumSize(new Dimension(400, 30));
+        pnlButtons2.setPreferredSize(new Dimension(390, 45));
+        pnlButtons2.setMinimumSize(new Dimension(390, 45));
         pnlButtons2.setLayout(new GridLayout(1,1,2,2));
 
         btnRemove = new JButton("Elimina");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setPreferredSize(new Dimension(120,20));
+        btnRemove.setPreferredSize(new Dimension(100,20));
         btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
         btnRemove.addActionListener(new ActionListener() {
 
@@ -255,7 +261,8 @@ public class SubStepView extends JFrame {
                     }
             }
         });
-        pnlRemove.add(btnRemove);
+        pnlButtons2.add(btnRemove);
+        pnlRemove.add(pnlButtons2, BorderLayout.SOUTH);
 
 
         GroupLayout layout = new GroupLayout(this.getContentPane());
@@ -304,7 +311,7 @@ public class SubStepView extends JFrame {
      * @return 0 if there is an empty textArea.
      */
     public Boolean missingField() {
-        return (getCode().isEmpty() || Boolean.parseBoolean(txtTime.getText()) || getName().isEmpty() || getDescription().isEmpty() || comboSteps.getSelectedItem().equals("Seleziona step"));
+        return (getCode().isEmpty() || getTime() == Integer.MIN_VALUE || getName().isEmpty() || getDescription().isEmpty() || comboSteps.getSelectedItem().equals("Seleziona step"));
     }
 
     /**
@@ -326,43 +333,40 @@ public class SubStepView extends JFrame {
         }
     }
 
-
     /**
      * 
      * @return  code.
      */
     public String getSearchingCode() {
-        return txtDelete.getText();
+        return validator.isNameAndNum(txtDelete.getText()) ? txtDelete.getText() : "";
     }
 
     /**
-     * @return name. 
+     * @return code. 
      */
     public String getCode() {
-        return txtCode.getText();
+        return validator.isNameAndNum(txtCode.getText()) ? txtCode.getText() : "";
     }
 
     /**
      * @return name. 
      */
     public String getName() {
-        return txtName.getText();
+        return validator.isName(txtName.getText()) ? txtName.getText() : "";
     }
-
 
     /**
      * @return time. 
      */
     public int getTime() {
-        return Integer.parseInt(txtTime.getText());
+        return validator.isInteger(txtTime.getText()) ? Integer.parseInt(txtTime.getText()) : Integer.MIN_VALUE;
     }
-
 
     /**
      * @return description.
      */
     public String getDescription() {
-        return txtDescription.getText();
+        return validator.isName(txtDescription.getText()) ? txtDescription.getText() : "";
     }
 
     /**

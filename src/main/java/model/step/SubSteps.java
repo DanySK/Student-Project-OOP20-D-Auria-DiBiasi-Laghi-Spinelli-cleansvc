@@ -1,6 +1,5 @@
 package model.step;
 
-
 public interface SubSteps {
 
     String getName();
@@ -10,6 +9,4 @@ public interface SubSteps {
     int getTime();
 
     String getCode();
-
-
 }

@@ -35,10 +35,10 @@ public class AppointmentsView extends JFrame {
 
     private final JButton btnSubmit;
     private final JButton btnHome;
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     private List<Appointments> appointmentsList = company.getAppointment();
     private final String[] cols = new String[] {"Data", "Ora", "Nome", "CF o Partita IVA"};
-    private Object[][] data = new Object[appointmentsList.size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
 

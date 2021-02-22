@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import model.step.Step;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
-
 
 public class ProcessImpl implements Process {
 
@@ -69,5 +67,4 @@ public class ProcessImpl implements Process {
         }
         return Optional.empty();
     }
-
 }

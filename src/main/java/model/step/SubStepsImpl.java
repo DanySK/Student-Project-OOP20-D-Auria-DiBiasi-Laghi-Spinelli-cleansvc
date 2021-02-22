@@ -1,16 +1,12 @@
 package model.step;
 
-//import model.Products;
 
 public class SubStepsImpl implements SubSteps {
-    //private StepType type;
     private String code;
     private int time500mq;
     private String name;
     private String description;
     //private List<Products> productsList = company.getProductsByStepType(this.type);
-
-
 
     public SubStepsImpl(final String code, final int time, final String name, final String description) {
         this.code = code;
@@ -36,7 +32,6 @@ public class SubStepsImpl implements SubSteps {
         return this.description;
     }
 
-
     /**
      * Returns the cleaning time of 500 square meters by an employee.
      * @return the cleaning time.
@@ -54,5 +49,4 @@ public class SubStepsImpl implements SubSteps {
     public String getCode() {
         return this.code;
     }
-
 }
