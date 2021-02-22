@@ -32,6 +32,10 @@ import model.step.SubSteps;
 import model.step.SubStepsImpl;
 import model.step.enumerations.StepType;
 
+import model.users.Clients;
+import utility.PopUp;
+
+
 
 public class SubStepView extends JFrame {
 

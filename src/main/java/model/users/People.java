@@ -6,13 +6,13 @@ public interface People {
     String getCFPIVA();
     String getAddress();
     String getCity();
-    String getCAP();
+    int getCAP();
     String getTel();
     String getEmail();
 
     void setAddress(String newAddress);
     void setCity(String newCity);
-    void setCAP(String newCAP);
+    void setCAP(int newCAP);
     void setTel(String newTel);
     void setEmail(String newEmail);
 }

@@ -6,11 +6,11 @@ public class PeopleImpl implements People {
     private String name;
     private String address;
     private String city;
-    private String cap;
+    private int cap;
     private String tel;
     private String email;
 
-    public PeopleImpl(String CF_PIVA, String name, String address, String city, String cap, String tel, String email) {
+    public PeopleImpl(String CF_PIVA, String name, String address, String city, int cap, String tel, String email) {
         this.CF_PIVA = CF_PIVA;
         this.name = name;
         this.address = address;
@@ -37,7 +37,7 @@ public class PeopleImpl implements People {
         return this.city;
     }
     @Override
-    public String getCAP() {
+    public int getCAP() {
         return this.cap;
     }
     @Override
@@ -60,7 +60,7 @@ public class PeopleImpl implements People {
         this.city = newCity;
     }
     @Override
-    public void setCAP(String newCAP) {
+    public void setCAP(int newCAP) {
         this.cap = newCAP;
     }
     @Override
