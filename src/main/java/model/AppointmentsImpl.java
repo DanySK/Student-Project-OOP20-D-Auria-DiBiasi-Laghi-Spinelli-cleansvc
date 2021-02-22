@@ -13,11 +13,18 @@ public class AppointmentsImpl implements Appointments {
         this.hour = hour;
         this.client = client;
     }
+    /**
+     * 
+     */
 
     @Override
     public String getDate() {
         return this.date;
     }
+
+    /**
+     * 
+     */
 
     @Override
     public String getHour() {

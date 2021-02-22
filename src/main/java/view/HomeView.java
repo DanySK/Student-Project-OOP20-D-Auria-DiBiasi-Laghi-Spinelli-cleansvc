@@ -26,7 +26,11 @@ public class HomeView extends JFrame{
     final JButton btnGrafici;
     final JButton btnStaff;
     final JButton btnProduct;
+
+    final JButton btnProcess;
+
     final JButton btnAppointment;
+
     final JButton btnSaveAndExit;
 
     private SaveAndLoadClients backupClients = new SaveAndLoadClients();
@@ -45,8 +49,7 @@ public class HomeView extends JFrame{
         //panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(panelTitle, BorderLayout.CENTER);
         panelTitle.setLayout(new FlowLayout());
-        
-        
+
 
         btnClienti = new JButton("Area Clienti");
         btnClienti.setForeground(SystemColor.textText);
@@ -64,7 +67,7 @@ public class HomeView extends JFrame{
             
         });
         panelTitle.add(btnClienti);
-        
+
         btnStaff = new JButton("Area Dipendenti");
         btnStaff.setForeground(SystemColor.textText);
         btnStaff.setBackground(SystemColor.activeCaption);
@@ -98,6 +101,23 @@ public class HomeView extends JFrame{
             
         });
         panelTitle.add(btnProduct);
+        
+        btnProcess = new JButton("Area Processo");
+        btnProcess.setForeground(SystemColor.textText);
+        btnProcess.setBackground(SystemColor.activeCaption);
+        btnProcess.setPreferredSize(new Dimension(280,70));
+        btnProcess.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnProcess.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                SubStepView stv = new SubStepView();
+                stv.display();
+                dispose();
+            }
+
+        });
+        panelTitle.add(btnProcess);
 
         btnGrafici = new JButton("Area Grafici");
         btnGrafici.setForeground(SystemColor.textText);
@@ -112,7 +132,7 @@ public class HomeView extends JFrame{
                 av.display();
                 dispose();
             }
-            
+
         });
         panelTitle.add(btnGrafici);
         
