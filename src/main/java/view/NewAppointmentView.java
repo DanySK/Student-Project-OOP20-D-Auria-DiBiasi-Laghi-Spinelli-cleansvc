@@ -101,7 +101,7 @@ public class NewAppointmentView extends JFrame {
         Clients cc;
         for (int i = 0; i < clientsList.size(); i++) {
             cc = company.getClients().get(i);
-            comboClients.addItem(cc.getName() + " " + cc.getCFPIVA());
+            comboClients.addItem(cc.getName() + " " + cc.getCFPIVA().toUpperCase());
         }
 
         JLabel labelDatePicker = new JLabel("Data:");
@@ -146,7 +146,7 @@ public class NewAppointmentView extends JFrame {
                         popUp.popUpError("Data e ora già prenotate");
                     }
                 } else {
-                    popUp.popUpWarning("Ci sono dati mancanti o errati");
+                    popUp.popUpErrorOrMissing();
                 }
             }
         });

@@ -38,7 +38,7 @@ public class AppointmentsView extends JFrame {
     private Company company = CompanyImpl.getInstance();
     private List<Appointments> appointmentsList = company.getAppointment();
     private final String[] cols = new String[] {"Data", "Ora", "Nome", "CF o Partita IVA"};
-    private Object[][] data = new Object[appointmentsList.size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
 
@@ -86,7 +86,7 @@ public class AppointmentsView extends JFrame {
         Appointments a;
         for (int i = 0; i < appointmentsList.size(); i++) {
              a = company.getAppointment().get(i);
-             model.insertRow(i, new Object[] {a.getDate(), a.getHour(), a.getClient().getName(), a.getClient().getCFPIVA()});
+             model.insertRow(i, new Object[] {a.getDate(), a.getHour(), a.getClient().getName(), a.getClient().getCFPIVA().toUpperCase()});
          }
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
