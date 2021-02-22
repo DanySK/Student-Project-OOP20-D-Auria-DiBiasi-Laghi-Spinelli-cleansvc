@@ -26,6 +26,8 @@ import controller.Company;
 import controller.CompanyImpl;
 import model.users.Clients;
 import model.users.ClientsImpl;
+import utility.InputValidator;
+import utility.PopUp;
 
 public class ClientsView extends JFrame {
 
@@ -380,7 +382,7 @@ public class ClientsView extends JFrame {
         txtCity.setText(c.getCity());
         txtCAP.setText(String.valueOf(c.getCAP()));
         txtMq.setText(String.valueOf(c.getMqStructure()));
-        txtTel.setText(String.valueOf(c.getTel()));
+        txtTel.setText(c.getTel());
         txtEmail.setText(c.getEmail());
     }
 
@@ -389,7 +391,7 @@ public class ClientsView extends JFrame {
      * @return
      */
     public Boolean missingField() {
-        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP()==Integer.MIN_VALUE || getMq()==Integer.MIN_VALUE || getTel()==Integer.MIN_VALUE || getEmail().isEmpty());
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP() == Integer.MIN_VALUE || getMq() == Integer.MIN_VALUE || getTel().isEmpty() || getEmail().isEmpty());
     }
 
     /**
@@ -478,8 +480,8 @@ public class ClientsView extends JFrame {
      * 
      * @return
      */
-    public int getTel() {
-        return validator.isPhone(txtTel.getText()) ? Integer.parseInt(txtTel.getText()) : Integer.MIN_VALUE;
+    public String getTel() {
+        return validator.isPhone(txtTel.getText()) ? txtTel.getText() : "";
     }
 
     /**

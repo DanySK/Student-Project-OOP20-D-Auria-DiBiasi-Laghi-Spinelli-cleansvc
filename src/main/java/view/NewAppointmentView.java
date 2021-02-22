@@ -25,6 +25,7 @@ import controller.CompanyImpl;
 import model.Appointments;
 import model.AppointmentsImpl;
 import model.users.Clients;
+import utility.PopUp;
 
 public class NewAppointmentView extends JFrame {
     /**

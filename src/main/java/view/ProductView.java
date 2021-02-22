@@ -27,6 +27,8 @@ import controller.Company;
 import controller.CompanyImpl;
 import model.Products;
 import model.ProductsImpl;
+import utility.InputValidator;
+import utility.PopUp;
 
 public class ProductView extends JFrame {
 
@@ -49,7 +51,7 @@ public class ProductView extends JFrame {
     private Company company = CompanyImpl.getInstance();
     private PopUp popUp = new PopUp();
     private InputValidator validator = new InputValidator();
-    private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo/Litro", "Utilizzo L/500mq", "Fase sanificazione"};
+    private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo €/Litro", "Utilizzo Litro/500mq", "Fase sanificazione"};
     private Object[][] data = new Object[company.getProducts().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
@@ -191,6 +193,7 @@ public class ProductView extends JFrame {
         pnlData.add(labelStep);
 
         txtStep = new JTextField(15);
+        txtStep.setText("Pulizia");
         txtStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtStep);
 
@@ -210,7 +213,7 @@ public class ProductView extends JFrame {
         txtDescr.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(txtDescr);
 
-        JLabel labelPrice = new JLabel("Prezzo al litro:");
+        JLabel labelPrice = new JLabel("Prezzo €/Litro:");
         labelPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlData.add(labelPrice);
 

@@ -1,0 +1,8 @@
+CFPIVA: 01772160402
+NAME: Emporio da Mario
+ADDRESS: Via Antonio Montanari 11/13
+CITY: Meldola
+CAP: 47014
+TEL: 3467529933
+EMAIL: emporiodamario@libero.it
+MQSTRUCTURE: 150

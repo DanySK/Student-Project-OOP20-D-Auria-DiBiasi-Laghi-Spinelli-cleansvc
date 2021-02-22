@@ -28,6 +28,8 @@ import model.users.Staff;
 import controller.Company;
 import controller.CompanyImpl;
 import model.users.StaffImpl;
+import utility.InputValidator;
+import utility.PopUp;
 
 public class StaffView extends JFrame {
 
@@ -56,7 +58,7 @@ public class StaffView extends JFrame {
      * private List<Staff> staffList = new ArrayList<>(); 
      */
     private Company company = CompanyImpl.getInstance();
-    private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF_PIVA"};
+    private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF/PIVA"};
     private Object[][] data = new Object[company.getStaff().size()][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
@@ -136,12 +138,12 @@ public class StaffView extends JFrame {
         pnlSearch.setPreferredSize(new Dimension(1000, 40));
         pnlSearch.setMinimumSize(new Dimension(1000, 40));
 
-        JLabel lblsearchCFPIVA = new JLabel("Codici Fiscali staff: ");
+        JLabel lblsearchCFPIVA = new JLabel("CF dipendenti: ");
         lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearchCFPIVA);
 
         staffCFs = new JComboBox<>();
-        staffCFs.setPreferredSize(new Dimension(120, 20));
+        staffCFs.setPreferredSize(new Dimension(400, 20));
         staffCFs.setBackground(SystemColor.activeCaption);
         staffCFs.setForeground(SystemColor.textText);
         staffCFs.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
@@ -161,6 +163,8 @@ public class StaffView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     writeField(company.getStaff().get(getIndexStaffSearched()));
+                    btnChange.setEnabled(true);
+                    btnRemove.setEnabled(true);
                 }
             }
         });
@@ -279,11 +283,12 @@ public class StaffView extends JFrame {
         });
         pnlButtons.add(btnSubmit);
 
-        btnChange = new JButton("Modifica esistente");
+        btnChange = new JButton("Aggiorna modifiche");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
         btnChange.setPreferredSize(new Dimension(120, 20));
         btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnChange.setEnabled(false);
         btnChange.addActionListener(new ActionListener() {
 
             @Override
@@ -301,6 +306,7 @@ public class StaffView extends JFrame {
                         addStaffToTable(changed);
                         updateSearchingCFs(staffCFs);
                         clearInsertField();
+                        btnChange.setEnabled(false);
                     }
                 } else {
                     popUp.popUpErrorOrMissing();
@@ -314,6 +320,7 @@ public class StaffView extends JFrame {
         btnRemove.setBackground(SystemColor.activeCaption);
         btnRemove.setPreferredSize(new Dimension(120, 20));
         btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
 
             @Override
@@ -339,6 +346,7 @@ public class StaffView extends JFrame {
                                         removeStaffToTable(staffToRemove.get());
                                         updateSearchingCFs(staffCFs);
                                         clearInsertField();
+                                        btnRemove.setEnabled(false);
                                     } else {
                                         popUp.popUpInfo("Eliminazione annullata.");
                                     }
@@ -373,9 +381,13 @@ public class StaffView extends JFrame {
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addGroup(layout.createParallelGroup(Alignment.CENTER)
+                        .addGap(0)
                         .addComponent(panelTable)
+                        .addGap(0)
                         .addComponent(pnlSearch)
-                        .addComponent(pnlSubmit))
+                        .addGap(0)
+                        .addComponent(pnlSubmit)
+                        .addGap(0))
                 .addGap(0));
     }
 
@@ -419,7 +431,7 @@ public class StaffView extends JFrame {
      * @return true
      */
     public Boolean missingField() {
-        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP() == Integer.MIN_VALUE || getTel() == Integer.MIN_VALUE || getEmail().isEmpty());
+        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP() == Integer.MIN_VALUE || getTel().isEmpty() || getEmail().isEmpty());
     }
 
     /**
@@ -433,7 +445,7 @@ public class StaffView extends JFrame {
         txtCity.setText(s.getCity());
         txtCAP.setText(String.valueOf(s.getCAP()));
         checkAdmin.setSelected(s.isAdmin());
-        txtTel.setText(String.valueOf(s.getTel()));
+        txtTel.setText(s.getTel());
         txtEmail.setText(s.getEmail());
     }
 
@@ -489,8 +501,8 @@ public class StaffView extends JFrame {
      * 
      * @return
      */
-    public int getTel() {
-        return validator.isPhone(txtTel.getText()) ? Integer.parseInt(txtTel.getText()) : Integer.MIN_VALUE;
+    public String getTel() {
+        return validator.isPhone(txtTel.getText()) ? txtTel.getText() : "";
     }
 
     /**
@@ -509,10 +521,14 @@ public class StaffView extends JFrame {
         return staffCFs.getSelectedIndex();
     }
 
-    public void updateSearchingCFs(JComboBox<String> staffCFs) {
+    /**
+     * 
+     * @param staffCFs
+     */
+    public void updateSearchingCFs(final JComboBox<String> staffCFs) {
         staffCFs.removeAllItems();
-        for (Staff staff : company.getStaff()){
-            staffCFs.addItem(staff.getCFPIVA());
+        for (Staff staff : company.getStaff()) {
+            staffCFs.addItem(staff.getCFPIVA() + " - " + staff.getName());
         }
     }
     /**

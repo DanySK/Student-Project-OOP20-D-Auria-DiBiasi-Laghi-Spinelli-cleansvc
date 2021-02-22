@@ -92,7 +92,7 @@ public class SaveAndLoadStaff implements SaveAndLoad {
             for (int i = 0; i < cfPIvaList.size(); i++) {
                 Boolean admin = (adminList.get(i)=="si");
                 this.company.addStaff(new StaffImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
-                        Integer.valueOf(capList.get(i)), Integer.valueOf(telList.get(i)), emailList.get(i), admin));
+                        Integer.valueOf(capList.get(i)), telList.get(i), emailList.get(i), admin));
             }
         } catch (final IOException e) {
             System.err.println(e.getMessage());

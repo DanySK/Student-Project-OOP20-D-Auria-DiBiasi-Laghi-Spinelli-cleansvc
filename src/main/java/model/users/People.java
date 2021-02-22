@@ -7,12 +7,12 @@ public interface People {
     String getAddress();
     String getCity();
     int getCAP();
-    int getTel();
+    String getTel();
     String getEmail();
 
     void setAddress(String newAddress);
     void setCity(String newCity);
     void setCAP(int newCAP);
-    void setTel(int newTel);
+    void setTel(String newTel);
     void setEmail(String newEmail);
 }
