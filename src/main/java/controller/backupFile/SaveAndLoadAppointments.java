@@ -8,11 +8,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import controller.Company;
 import controller.CompanyImpl;
 import model.Appointments;
 import model.AppointmentsImpl;
+import model.users.Clients;
 
 public class SaveAndLoadAppointments implements SaveAndLoad {
     private Company company = CompanyImpl.getInstance();
@@ -56,7 +58,10 @@ public class SaveAndLoadAppointments implements SaveAndLoad {
                 }
             });
             for (int i = 0; i < dateList.size(); i++) {
-                this.company.addAppointment(new AppointmentsImpl(dateList.get(i), hourList.get(i), this.company.searchClient(clientsList.get(i)).get()));
+                Optional<Clients> c = this.company.searchClient(clientsList.get(i));
+                if (!c.isEmpty()) {
+                    this.company.addAppointment(new AppointmentsImpl(dateList.get(i), hourList.get(i), c.get()));
+                }
             }
         } catch (final IOException e) {
             System.err.println(e.getMessage());
