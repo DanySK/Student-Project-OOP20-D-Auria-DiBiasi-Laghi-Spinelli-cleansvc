@@ -2,6 +2,7 @@ package controller.backupFile;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,7 +16,8 @@ import model.users.StaffImpl;
 
 public class SaveAndLoadStaff implements SaveAndLoad {
     private Company company = CompanyImpl.getInstance();
-    private static final String FILE_STAFF = "doc/Staff.txt";
+    private static final String SEP = File.separator;
+    private static final String FILE_STAFF = "doc" + SEP + "Staff.txt";
     private static final String CFPIVA_STR = "CFPIVA: ";
     private static final String NAME_STR = "NAME: ";
     private static final String ADDRESS_STR = "ADDRESS: ";

@@ -2,6 +2,7 @@ package controller.backupFile;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,11 +13,11 @@ import controller.Company;
 import controller.CompanyImpl;
 import model.Appointments;
 import model.AppointmentsImpl;
-import model.users.Clients;
 
 public class SaveAndLoadAppointments implements SaveAndLoad {
     private Company company = CompanyImpl.getInstance();
-    private static final String FILE_APPOINTMENTS = "doc/Appointments.txt";
+    private static final String SEP = File.separator;
+    private static final String FILE_APPOINTMENTS = "doc" + SEP + "Appointments.txt";
     private static final String DATE_STR = "DATE: ";
     private static final String HOUR_STR = "HOUR: ";
     private static final String CLIENT_STR = "CLIENT: ";

@@ -39,13 +39,6 @@ public class AppointmentsView extends JFrame {
     private List<Appointments> appointmentsList = company.getAppointment();
     private final String[] cols = new String[] {"Data", "Ora", "Nome", "CF o Partita IVA"};
     private Object[][] data = new Object[appointmentsList.size()][cols.length];
-    /*
-     * testing:
-     */
-    /*private Object[][] data = new Object[][] {
-        {"Mario Rossi", "Via degli omonimi 33", "16/02/2021", "15:30"}, 
-        {"Luigi Bianchi", "Via dell'università 50", "22/02/2021", "16:30"}
-    };*/
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
 

@@ -2,6 +2,7 @@ package controller.backupFile;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,7 +17,8 @@ import controller.CompanyImpl;
 public class SaveAndLoadClients implements SaveAndLoad {
 
     private Company company = CompanyImpl.getInstance();
-    private static final String FILE_CLIENTS = "doc/Clients.txt";
+    private static final String SEP = File.separator;
+    private static final String FILE_CLIENTS = "doc" + SEP + "Clients.txt";
     private static final String CFPIVA_STR = "CFPIVA: ";
     private static final String NAME_STR = "NAME: ";
     private static final String ADDRESS_STR = "ADDRESS: ";

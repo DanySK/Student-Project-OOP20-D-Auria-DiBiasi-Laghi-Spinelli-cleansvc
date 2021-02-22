@@ -68,8 +68,8 @@ public class NewAppointmentView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                HomeView cv = new HomeView();
-                cv.display();
+                HomeView hv = new HomeView();
+                hv.display();
                 dispose();
             }
         });
