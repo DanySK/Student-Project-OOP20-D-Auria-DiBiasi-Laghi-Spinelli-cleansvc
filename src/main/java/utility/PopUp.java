@@ -1,4 +1,4 @@
-package view;
+package utility;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,6 +20,10 @@ public class PopUp extends JFrame {
     
     public void popUpError(String msg) {
         JOptionPane.showMessageDialog(rootPane, msg, "Errore", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void popUpErrorOrMissing() {
+        this.popUpWarning("Dati mancanti o errati. Riprovare.");
     }
     
     public String popUpInput(String msg) {
