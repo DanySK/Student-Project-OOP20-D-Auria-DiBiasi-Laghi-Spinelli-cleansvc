@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.knowm.xchart.XYChart;
@@ -16,10 +17,11 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
     
     private final ChartException chExc;
     private final DateException dateExc;
-
+    private DataChartsImpl dataChart;
     public AdministratorChartsControllerImpl() {
         this.chExc = new ChartException();
         this.dateExc= new DateException();
+        this.dataChart = new DataChartsImpl();
     }
     
     @Override
@@ -46,14 +48,11 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                         throw this.dateExc;
                     }
         
-                DataChartsImpl dataChart = new DataChartsImpl();
-                chart.addSeries( this.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
-                                        dataChart.getDaysDate(dataPartenza, dataArrivo), 
-                                            dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta))
-                                                        .setMarker(SeriesMarkers.NONE);
+                List<Double> auxList = this.dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta);
+                chart.addSeries( this.dataChart.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
+                                                            this.dataChart.getDateList(), auxList);
                     chart.getStyler().setXAxisTicksVisible(true);
-                
-                chart.getStyler().setYAxisTicksVisible(true);
+                    chart.getStyler().setYAxisTicksVisible(true);
         }catch(IllegalArgumentException e) {
             JOptionPane.showMessageDialog(panel, "Impossibile aggiungere al grafico");
         }
@@ -61,12 +60,16 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         }
     
     
-    public void resetChart(XYChart chart, JPanel panel) throws ChartException {        //elimina il grafico.   
+    public void resetChart(XYChart chart, JPanel panel) throws ChartException {       
+        
         if(chart.getSeriesMap().isEmpty()) {
             this.chExc.warning(panel); 
             throw chExc;
         }
+        
         chart.getSeriesMap().clear();
+        chart.getStyler().setXAxisTicksVisible(false);
+        chart.getStyler().setYAxisTicksVisible(false);
         this.updatePanelChart(panel);
     }
 
@@ -77,15 +80,8 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
             throw chExc;
             
         }
-        new DataChartsImpl().deleteLastItem(chart);
+        this.dataChart.deleteLastItem(chart);
         this.updatePanelChart(panel);
-    }
-       
-
-    private String newLegendString(String dataArr, String dataPar, Integer scelta) {
-        String choose = scelta.equals(DatiDaVisualizzareEnum.ENTRATE.getIndex()) ?  DatiDaVisualizzareEnum.ENTRATE.getItemName()
-                                                                                 : DatiDaVisualizzareEnum.TEMPOLAVORO.getItemName();
-        return new String("Da: " + dataPar + " a: " + dataArr + ", "+ choose);
     }
     
     private void updatePanelChart(JPanel panel){

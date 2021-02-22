@@ -37,12 +37,6 @@ public class TestAdministrator {
     }   /*Ok*/
     
     @Test
-    public void dateListTest() { 
-        DataChartsImpl datRange = new DataChartsImpl();
-        System.out.println(datRange.getDaysDate(LocalDate.of(2020,8,20), LocalDate.of(2020, 9,1)));
-    } /*Ok*/
-    
-    @Test
     public void dataChartTest() {
         DataChartsImpl data = new DataChartsImpl();
         System.out.println(data.buildChartsFromData(LocalDate.of(2020,8,20), LocalDate.of(2020,8, 24),2));
