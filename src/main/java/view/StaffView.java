@@ -23,9 +23,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import model.users.Clients;
 import model.users.Staff;
-import controller.Company;
 import controller.CompanyImpl;
 import model.users.StaffImpl;
 import utility.InputValidator;
@@ -57,9 +55,9 @@ public class StaffView extends JFrame {
      *
      * private List<Staff> staffList = new ArrayList<>(); 
      */
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF/PIVA"};
-    private Object[][] data = new Object[company.getStaff().size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private PopUp popUp = new PopUp();
@@ -153,8 +151,9 @@ public class StaffView extends JFrame {
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(200, 20));
+        btnSearch.setPreferredSize(new Dimension(120, 20));
         btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per modificarli e per eliminare il dipendente");
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
@@ -269,8 +268,8 @@ public class StaffView extends JFrame {
                     Staff staff = new StaffImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(), isAdmin());
                     if (company.searchStaffbyCF(staff.getCFPIVA()).isEmpty() && company.searchStaffbyEmail(staff.getEmail()).isEmpty()) {
                         popUp.popUpInfo("Dipendente inserito con successo.");
-                        company.addStaff(staff);
                         addStaffToTable(company.getStaff().get(company.getStaff().size() - 1));
+                        company.addStaff(staff);
                         updateSearchingCFs(staffCFs);
                         clearInsertField();
                     } else {
@@ -300,13 +299,14 @@ public class StaffView extends JFrame {
                         popUp.popUpWarning("Codice Fiscale inesistente tra i dipendenti. Non puoi modificare il Codice Fiscale.");
                     } else {
                         popUp.popUpInfo("Dipendente modificato con successo.");
-                        company.removeStaff(toModify.get());
                         removeStaffToTable(toModify.get());
-                        company.addStaff(changed);
+                        company.removeStaff(toModify.get());
                         addStaffToTable(changed);
+                        company.addStaff(changed);
                         updateSearchingCFs(staffCFs);
                         clearInsertField();
                         btnChange.setEnabled(false);
+                        btnRemove.setEnabled(false);
                     }
                 } else {
                     popUp.popUpErrorOrMissing();
@@ -342,10 +342,11 @@ public class StaffView extends JFrame {
                                     Boolean confirm = popUp.popUpConfirm("Vuoi eliminare il dipendente " + staffToRemove.get().getName() + "?");
                                     if (confirm) {
                                         popUp.popUpInfo("Dipendente eliminato con successo.");
-                                        company.removeStaff(staffToRemove.get());
                                         removeStaffToTable(staffToRemove.get());
+                                        company.removeStaff(staffToRemove.get());
                                         updateSearchingCFs(staffCFs);
                                         clearInsertField();
+                                        btnChange.setEnabled(false);
                                         btnRemove.setEnabled(false);
                                     } else {
                                         popUp.popUpInfo("Eliminazione annullata.");

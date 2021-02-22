@@ -1,0 +1,8 @@
+CFPIVA: DBSVSS96S62D704U
+NAME: Vanessa Di Biasi
+ADDRESS: Strada Gualdo-Ribatta 16
+CITY: Rico'
+CAP: 47014
+TEL: 3311068731
+EMAIL: vanessa@unibo.it
+ADMIN: no

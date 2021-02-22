@@ -22,14 +22,12 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.Company;
 import controller.CompanyImpl;
 import model.Products;
 import model.ProductsImpl;
 import model.step.enumerations.StepType;
 import utility.InputValidator;
 import utility.PopUp;
-import controller.Process;
 import controller.ProcessImpl;
 
 public class ProductView extends JFrame {
@@ -49,15 +47,15 @@ public class ProductView extends JFrame {
     private final JButton btnSubmit;
     private final JButton btnChange;
     private final JButton btnRemove;
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     private PopUp popUp = new PopUp();
     private InputValidator validator = new InputValidator();
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo €/Litro", "Utilizzo Litro/500mq", "Fase sanificazione"};
-    private Object[][] data = new Object[company.getProducts().size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private JComboBox<String> productCodes;
-    private Process process = ProcessImpl.getInstance(); 
+    private ProcessImpl process = ProcessImpl.getInstance(); 
     private JComboBox<String> comboStep;
 
     public ProductView() {
@@ -132,7 +130,7 @@ public class ProductView extends JFrame {
         pnlSearch.setPreferredSize(new Dimension(1000, 50));
         pnlSearch.setMinimumSize(new Dimension(1000, 50));
         
-        JLabel lblsearch = new JLabel("Codice:"); //TODO list box of existing codes
+        JLabel lblsearch = new JLabel("Codice prodotti:");
         lblsearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(lblsearch);
         
@@ -156,6 +154,7 @@ public class ProductView extends JFrame {
         btnSearch.setBackground(SystemColor.activeCaption);
         btnSearch.setPreferredSize(new Dimension(120, 20));
         btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per modificarli e per eliminare il prodotto");
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
@@ -164,6 +163,8 @@ public class ProductView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     writeField(company.getProducts().get(getIndexProductSearched()));
+                    btnChange.setEnabled(true);
+                    btnRemove.setEnabled(true);
                 }
             }
         });
@@ -258,8 +259,8 @@ public class ProductView extends JFrame {
                     Products newProduct = new ProductsImpl(getCode(), process.getStepTypeList().get(getIndexSelectedStep()), getName(), getDescription(), getPrice(), getUsage());
                     if (company.searchProduct(newProduct.getCode()).isEmpty()) {
                         popUp.popUpInfo("Prodotto inserito con successo.");
-                        company.addProduct(newProduct);
                         addProductToTable(company.getProducts().get(company.getProducts().size() - 1));
+                        company.addProduct(newProduct);
                         updateSearchingCodes(productCodes);
                         clearInsertField();
                     } else {
@@ -277,6 +278,7 @@ public class ProductView extends JFrame {
         btnChange.setBackground(SystemColor.activeCaption);
         btnChange.setPreferredSize(new Dimension(200, 20));
         btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnChange.setEnabled(false);
         btnChange.addActionListener(new ActionListener() {
 
             @Override
@@ -288,15 +290,17 @@ public class ProductView extends JFrame {
                         popUp.popUpWarning("Codice inesistente tra i prodotti.");
                     } else {
                         popUp.popUpInfo("Prodotto modificato con successo.");
-                        company.removeProduct(toModify.get());
                         removeProductToTable(toModify.get());
-                        company.addProduct(changed);
+                        company.removeProduct(toModify.get());
                         addProductToTable(changed);
+                        company.addProduct(changed);
                         updateSearchingCodes(productCodes);
                         clearInsertField();
+                        btnChange.setEnabled(false);
+                        btnRemove.setEnabled(false);
                     }
                 } else {
-                    popUp.popUpErrorOrMissing();;
+                    popUp.popUpErrorOrMissing();
                 }
             }
         });
@@ -307,6 +311,7 @@ public class ProductView extends JFrame {
         btnRemove.setBackground(SystemColor.activeCaption);
         btnRemove.setPreferredSize(new Dimension(200, 20));
         btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
 
             @Override
@@ -321,10 +326,12 @@ public class ProductView extends JFrame {
                         Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il prodotto '" + productToRemove.get().getName() + "' ?");
                         if (confirmed) {
                             popUp.popUpInfo("Prodotto eliminato con successo.");
-                            company.removeProduct(productToRemove.get());
                             removeProductToTable(productToRemove.get());
+                            company.removeProduct(productToRemove.get());
                             updateSearchingCodes(productCodes);
                             clearInsertField();
+                            btnChange.setEnabled(false);
+                            btnRemove.setEnabled(false);
                         } else {
                             popUp.popUpInfo("Eliminazione annullata.");
                         }
@@ -417,11 +424,11 @@ public class ProductView extends JFrame {
             }
         }
     }
-    
+
     public void updateSearchingCodes(JComboBox<String> productCodes) {
         productCodes.removeAllItems();
         for (Products product : company.getProducts()){
-            productCodes.addItem(product.getCode());
+            productCodes.addItem(product.getCode() + " - " + product.getName());
         }
     }
     /**

@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
@@ -23,7 +22,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.Company;
 import controller.CompanyImpl;
 import model.users.Clients;
 import model.users.ClientsImpl;
@@ -51,14 +49,14 @@ public class ClientsView extends JFrame {
     private final JButton btnRemove;
     private final JButton btnHome;
     private JComboBox<String> clientCFPIVAs;
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     /*
      * testing:
      *
      * List<Clients> clientsList = new ArrayList<>();
      */
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura (mq)", "Telefono", "Email", "CF o P.IVA"};
-    private Object[][] data = new Object[company.getClients().size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private InputValidator validator = new InputValidator();
@@ -134,7 +132,7 @@ public class ClientsView extends JFrame {
         pnlSearch.add(lblsearchCFPIVA);
 
         clientCFPIVAs = new JComboBox<>();
-        clientCFPIVAs.setPreferredSize(new Dimension(200, 20));
+        clientCFPIVAs.setPreferredSize(new Dimension(400, 20));
         clientCFPIVAs.setBackground(SystemColor.activeCaption);
         clientCFPIVAs.setForeground(SystemColor.textText);
         clientCFPIVAs.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
@@ -146,6 +144,7 @@ public class ClientsView extends JFrame {
         btnSearch.setBackground(SystemColor.activeCaption);
         btnSearch.setPreferredSize(new Dimension(120, 20));
         btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per modificarli e per eliminare il cliente");
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
@@ -154,6 +153,8 @@ public class ClientsView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     writeField(company.getClients().get(getIndexClientSearched()));
+                    btnChange.setEnabled(true);
+                    btnRemove.setEnabled(true);
                 }
             }
         });
@@ -258,8 +259,8 @@ public class ClientsView extends JFrame {
                     Clients newClient = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     if (company.searchClient(newClient.getCFPIVA()).isEmpty()) {
                         popUp.popUpInfo("Cliente inserito con successo.");
-                        addClientToTable(company.getClients().get(company.getClients().size() - 1));
                         company.addClient(newClient);
+                        addClientToTable(company.getClients().get(company.getClients().size() - 1));
                         updateSearchingCFPIVAs(clientCFPIVAs);
                         clearInsertField();
                     } else {
@@ -277,6 +278,7 @@ public class ClientsView extends JFrame {
         btnChange.setBackground(SystemColor.activeCaption);
         btnChange.setPreferredSize(new Dimension(120, 20));
         btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnChange.setEnabled(false);
         btnChange.addActionListener(new ActionListener() {
 
             @Override
@@ -289,11 +291,13 @@ public class ClientsView extends JFrame {
                     } else {
                         popUp.popUpInfo("Cliente modificato con successo.");
                         removeClientToTable(toModify.get());
-                        addClientToTable(changed);
                         company.removeClient(toModify.get());
+                        addClientToTable(changed);
                         company.addClient(changed);
                         updateSearchingCFPIVAs(clientCFPIVAs);
                         clearInsertField();
+                        btnChange.setEnabled(false);
+                        btnRemove.setEnabled(false);
                     }
                 } else {
                     popUp.popUpErrorOrMissing();
@@ -307,6 +311,7 @@ public class ClientsView extends JFrame {
         btnRemove.setBackground(SystemColor.activeCaption);
         btnRemove.setPreferredSize(new Dimension(120, 20));
         btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
 
             @Override
@@ -325,6 +330,8 @@ public class ClientsView extends JFrame {
                             company.removeClient(clientToRemove.get());
                             updateSearchingCFPIVAs(clientCFPIVAs);
                             clearInsertField();
+                            btnChange.setEnabled(false);
+                            btnRemove.setEnabled(false);
                         } else {
                             popUp.popUpInfo("Eliminazione annullata.");
                         }
@@ -427,7 +434,7 @@ public class ClientsView extends JFrame {
     public void updateSearchingCFPIVAs(JComboBox<String> clientCFPIVAs) {
         clientCFPIVAs.removeAllItems();
         for (Clients client : company.getClients()){
-            clientCFPIVAs.addItem(client.getCFPIVA().toUpperCase());
+            clientCFPIVAs.addItem(client.getCFPIVA().toUpperCase() + " - " + client.getName());
         }
     }
 

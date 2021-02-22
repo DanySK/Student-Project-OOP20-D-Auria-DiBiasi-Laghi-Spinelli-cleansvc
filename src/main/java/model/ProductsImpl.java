@@ -11,7 +11,7 @@ public class ProductsImpl implements Products {
     private double usage500mq;
     private StepType step;
 
-    public ProductsImpl(String code, StepType step, String name, String description, double priceLitre, double usage500mq) {
+    public ProductsImpl(final String code, final StepType step, final String name, final String description, final double priceLitre, final double usage500mq) {
         this.code = code;
         this.step = step;
         this.name = name;
@@ -51,33 +51,32 @@ public class ProductsImpl implements Products {
     }
 
     @Override
-    public void setCode(String code) {
+    public void setCode(final String code) {
         this.code = code;
-        
     }
     
     @Override
-    public void setStepType(StepType stepType) {
+    public void setStepType(final StepType stepType) {
         this.step = stepType;
     }
 
     @Override
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
     @Override
-    public void setDescription(String descr) {
+    public void setDescription(final String descr) {
         this.description = descr;
     }
 
     @Override
-    public void setPricePerLitre(double newPrice) {
+    public void setPricePerLitre(final double newPrice) {
         this.priceL = newPrice;
     }
 
     @Override
-    public void setLitersPer500MQ(double newUsage) {
+    public void setLitersPer500MQ(final double newUsage) {
         this.usage500mq = newUsage;
     }
 }

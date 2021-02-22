@@ -1,6 +1,6 @@
 package model.users;
 
-public class PeopleImpl implements People {
+public abstract class PeopleImpl implements People {
 
     private String CF_PIVA;
     private String name;
@@ -10,7 +10,7 @@ public class PeopleImpl implements People {
     private String tel;
     private String email;
 
-    public PeopleImpl(String CF_PIVA, String name, String address, String city, int cap, String tel, String email) {
+    public PeopleImpl(final String CF_PIVA, final String name, final String address, final String city, final int cap, final String tel, final String email) {
         this.CF_PIVA = CF_PIVA;
         this.name = name;
         this.address = address;
@@ -52,23 +52,23 @@ public class PeopleImpl implements People {
      * methods for the change of client/employee's contacts
      */
     @Override
-    public void setAddress(String newAddress) {
+    public void setAddress(final String newAddress) {
         this.address = newAddress;
     }
     @Override
-    public void setCity(String newCity) {
+    public void setCity(final String newCity) {
         this.city = newCity;
     }
     @Override
-    public void setCAP(int newCAP) {
+    public void setCAP(final int newCAP) {
         this.cap = newCAP;
     }
     @Override
-    public void setTel(String newTel) {
+    public void setTel(final String newTel) {
         this.tel = newTel;
     }
     @Override
-    public void setEmail(String newEmail) {
+    public void setEmail(final String newEmail) {
         this.email = newEmail;
     }
 }
