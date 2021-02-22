@@ -59,7 +59,7 @@ public class SubStepView extends JFrame {
     private List<SubSteps> subStepsList = process.getSubStepsList();
 
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Fase", "Tempo"};
-    private Object[][] data = new Object[subStepsList.size()][cols.length];
+    private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
 
