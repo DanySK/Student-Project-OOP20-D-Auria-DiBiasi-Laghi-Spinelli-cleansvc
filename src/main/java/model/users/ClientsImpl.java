@@ -9,6 +9,9 @@ public class ClientsImpl extends PeopleImpl implements Clients {
         this.mqStructure = mqStructure;
     }
 
+    /**
+     * @return dimension of client's structure in square meters
+     */
     @Override
     public int getMqStructure() {
         return this.mqStructure;

@@ -2,13 +2,12 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.checkerframework.framework.qual.SubtypeOf;
-
-import model.step.Step;
+import model.Products;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
-
+import model.users.Clients;
 
 public class ProcessImpl implements Process {
 
@@ -60,4 +59,46 @@ public class ProcessImpl implements Process {
         return this.stepTypeList;
     }
 
+    /**
+     * 
+     */
+    @Override
+    public Optional<SubSteps> searchSubStep(final String code) {
+        for (final SubSteps st : this.stepList) {
+            if (st.getCode().equals(code)) {
+                return Optional.of(st);
+            }
+        }
+        return Optional.empty();
+    }
+    /**
+     * 
+     */
+    @Override
+    public Optional<List<SubSteps>> getSubStepsByStepType(final String type) {
+        List<SubSteps> sBySteps = new ArrayList<>();
+        for (SubSteps subSteps : this.stepList) {
+            if (subSteps.getStepType().getType().equals(type)) {
+                sBySteps.add(subSteps);
+            }
+        }
+        return (sBySteps.isEmpty()) ? Optional.empty() : Optional.of(sBySteps);
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public double getProportialTime(final double value, final Clients s, final int staff) {
+        double tot = 0;
+        tot = (value * s.getMqStructure()) / (500 * staff);
+        return tot;
+    }
+    /**
+     * 
+     */
+    @Override
+    public double getProportialEarn(double value, Clients s) {
+        return getProportialTime(value, s, 1);
+    }
 }

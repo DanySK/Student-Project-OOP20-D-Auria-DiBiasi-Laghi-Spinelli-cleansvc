@@ -57,7 +57,7 @@ public class StaffView extends JFrame {
     private CompanyImpl company = CompanyImpl.getInstance();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF/PIVA"};
 
-    private final static int COL_KEY = 7;
+    private static final int COL_KEY = 7;
     private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
@@ -448,7 +448,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return name if is well formatted
      */
     public String getName() {
         return validator.isName(txtName.getText()) ? txtName.getText() : "";
@@ -456,7 +456,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return address if is well formatted
      */
     public String getAddress() {
         return validator.isNameAndNum(txtAddress.getText()) ? txtAddress.getText() : "";
@@ -464,7 +464,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return city if is well formatted
      */
     public String getCity() {
         return validator.isName(txtCity.getText()) ? txtCity.getText() : "";
@@ -472,7 +472,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return CAP if is well formatted
      */
     public int getCAP() {
         return validator.isCAP(txtCAP.getText()) ? Integer.parseInt(txtCAP.getText()) : Integer.MIN_VALUE;
@@ -480,7 +480,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return true if the employee has the administrator permissions
      */
     public Boolean isAdmin() {
         return checkAdmin.isSelected();
@@ -488,7 +488,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return telephone if is well formatted
      */
     public String getTel() {
         return validator.isPhone(txtTel.getText()) ? txtTel.getText() : "";
@@ -496,7 +496,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return email if is well formatted
      */
     public String getEmail() {
         return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : "";
@@ -504,7 +504,7 @@ public class StaffView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return the index of the selected item in JComboBox
      */
     public int getIndexStaffSearched() {
         return staffCFs.getSelectedIndex();

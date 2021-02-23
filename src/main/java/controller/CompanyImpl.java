@@ -5,13 +5,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+
 import model.Appointments;
 import model.Products;
 import model.step.enumerations.StepType;
 import model.users.Clients;
 import model.users.Staff;
 
-public class CompanyImpl implements Company {
+public final class CompanyImpl implements Company {
 
     private static final CompanyImpl SINGLETON = new CompanyImpl();
     private final List<Staff> staff = new ArrayList<>();
@@ -19,23 +20,29 @@ public class CompanyImpl implements Company {
     private final List<Products> products = new ArrayList<>();
     private final List<Appointments> appointments = new ArrayList<>();
 
-    public CompanyImpl() {}
+    public CompanyImpl() { }
     public static CompanyImpl getInstance() {
         return SINGLETON;
     }
 
+    /**
+     * 
+     */
     @Override
-    public void addStaff(Staff s) {
+    public void addStaff(final Staff s) {
         this.staff.add(s);
     }
 
+    /**
+     * 
+     */
     @Override
-    public void removeStaff(Staff s) {
+    public void removeStaff(final Staff s) {
         this.staff.remove(s);
     }
-    
+
     @Override
-    public Optional<Staff> searchStaffbyCF(String CFStaff) {
+    public Optional<Staff> searchStaffbyCF(final String CFStaff) {
         for (final Staff s : this.staff) {
             if (s.getCFPIVA().equals(CFStaff)) {
                 return Optional.of(s);
@@ -45,7 +52,7 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<Staff> searchStaffbyEmail(String emailStaff) {
+    public Optional<Staff> searchStaffbyEmail(final String emailStaff) {
         for (final Staff s : this.staff) {
             if (s.getEmail().equals(emailStaff)) {
                 return Optional.of(s);
@@ -60,17 +67,17 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public void addClient(Clients c) {
+    public void addClient(final Clients c) {
         this.clients.add(c);
     }
 
     @Override
-    public void removeClient(Clients c) {
+    public void removeClient(final Clients c) {
         this.clients.remove(c);
     }
 
     @Override
-    public Optional<Clients> searchClient(String CF_PIVA) {
+    public Optional<Clients> searchClient(final String CF_PIVA) {
         for (final Clients c : this.clients) {
             if (c.getCFPIVA().equals(CF_PIVA)) {
                 return Optional.of(c);
@@ -85,17 +92,17 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public void addProduct(Products p) {
+    public void addProduct(final Products p) {
         this.products.add(p);
     }
 
     @Override
-    public void removeProduct(Products p) {
-        this.products.remove(p);        
+    public void removeProduct(final Products p) {
+        this.products.remove(p);
     }
 
     @Override
-    public Optional<Products> searchProduct(String codeProduct) {
+    public Optional<Products> searchProduct(final String codeProduct) {
         for (final Products p : this.products) {
             if (p.getCode().equals(codeProduct)) {
                 return Optional.of(p);
@@ -110,10 +117,10 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<List<Products>> getProductsByStepType(StepType stepType) {
+    public Optional<List<Products>> getProductsByStepType(final String stepType) {
         List<Products> productByStep = new ArrayList<>();
         for (final Products product : this.products) {
-            if (product.getStepType().equals(stepType)) {
+            if (product.getStepType().getType().equals(stepType)) {
                 productByStep.add(product);
             }
         }

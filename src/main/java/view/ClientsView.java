@@ -56,7 +56,9 @@ public class ClientsView extends JFrame {
      */
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura (mq)", "Telefono", "Email", "CF o P.IVA"};
     private Object[][] data = new Object[0][cols.length];
-    private final static int COL_KEY = 7;
+
+    private static final int COL_KEY = 7;
+
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private InputValidator validator = new InputValidator();
@@ -387,7 +389,7 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return true if all field are written
      */
     public Boolean missingField() {
         return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP() == Integer.MIN_VALUE || getMq() == Integer.MIN_VALUE || getTel().isEmpty() || getEmail().isEmpty());
@@ -416,12 +418,16 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return index of the JComboBox's item selected
      */
     public int getIndexClientSearched() {
         return clientCFPIVAs.getSelectedIndex();
     }
-    
+
+    /**
+     * 
+     * @param clientCFPIVAs
+     */
     public void updateSearchingCFPIVAs(final JComboBox<String> clientCFPIVAs) {
         clientCFPIVAs.removeAllItems();
         for (Clients client : company.getClients()) {
@@ -431,14 +437,14 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return CF or P.IVA if is well formatted
      */
     public String getCFPIVA() {
         return validator.isCFPIVA(txtCFPIVA.getText().toUpperCase()) ? txtCFPIVA.getText().toUpperCase() : "";
     }
 
     /**
-     * 
+     * @return name if is well formatted
      */
     public String getName() {
         return validator.isName(txtName.getText()) ? txtName.getText() : "";
@@ -446,7 +452,7 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return address if is well formatted
      */
     public String getAddress() {
         return validator.isNameAndNum(txtAddress.getText()) ? txtAddress.getText() : "";
@@ -454,7 +460,7 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return city if is well formatted
      */
     public String getCity() {
         return validator.isName(txtCity.getText()) ? txtCity.getText() : "";
@@ -462,7 +468,7 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return CAP if is well formatted
      */
     public int getCAP() {
         return validator.isCAP(txtCAP.getText()) ? Integer.parseInt(txtCAP.getText()) : Integer.MIN_VALUE;
@@ -470,7 +476,7 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return client's structure in square meters if is well formatted
      */
     public int getMq() {
         return validator.isInteger(txtMq.getText()) ? Integer.parseInt(txtMq.getText()) : Integer.MIN_VALUE;
@@ -478,7 +484,7 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return telephone if is well formatted
      */
     public String getTel() {
         return validator.isPhone(txtTel.getText()) ? txtTel.getText() : "";
@@ -486,7 +492,7 @@ public class ClientsView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return email if is well formatted
      */
     public String getEmail() {
         return validator.isEmail(txtEmail.getText()) ? txtEmail.getText() : "";

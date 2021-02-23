@@ -3,9 +3,6 @@ package utility;
 import java.awt.Font;
 
 public abstract class ConstantsCleanSvc {
-    /**
-     * Common magic numbers of the application
-     */
     public static final String TITLE = "CLEAN SERVICE MANAGER";
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 500;

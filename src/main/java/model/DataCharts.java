@@ -9,9 +9,9 @@ import org.knowm.xchart.XYChart;
 public interface DataCharts {
 
      List<Double> buildChartsFromData(LocalDate dateStart, LocalDate dateEnd, Integer choose);
-    
+
      List<Date> getDaysDate(LocalDate dateStart, LocalDate dateEnd);
-     
+
      void deleteLastItem(XYChart chart);
 
 }
