@@ -9,10 +9,4 @@ public interface People {
     int getCAP();
     String getTel();
     String getEmail();
-
-    void setAddress(String newAddress);
-    void setCity(String newCity);
-    void setCAP(int newCAP);
-    void setTel(String newTel);
-    void setEmail(String newEmail);
 }

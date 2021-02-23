@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ProcessImpl;
+import model.Products;
 import model.step.SubSteps;
 import model.step.SubStepsImpl;
 import model.step.enumerations.StepType;
@@ -102,6 +103,11 @@ public class SubStepView extends JFrame {
         });
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
+
+        for (int i = 0; i < process.getSubStepsList().size(); i++) {
+            SubSteps subStep = process.getSubStepsList().get(i);
+            model.insertRow(i, new Object[] {subStep.getCode(), subStep.getName(), subStep.getDescription(), subStep.getType(), subStep.getTime()});
+        } 
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 500));
         table.setFillsViewportHeight(true);
@@ -192,7 +198,7 @@ public class SubStepView extends JFrame {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    SubSteps c = new SubStepsImpl(getCode(), getTime(), getName(), getDescription());
+                    SubSteps c = new SubStepsImpl(getCode(), getTime(), getName(), getDescription(),process.getStepTypeList().get(getIndexComboStep()));
                     process.addStep(c);
                     popUp.popUpInfo("Sottofase inserita con successo.");
                     addSubStepToTable(process.getSubStepsList().get(process.getSubStepsList().size() - 1));
@@ -367,6 +373,13 @@ public class SubStepView extends JFrame {
      */
     public String getDescription() {
         return validator.isName(txtDescription.getText()) ? txtDescription.getText() : "";
+    }
+    
+    /**
+     * @return description.
+     */
+    public int getIndexComboStep() {
+        return comboSteps.getSelectedIndex();
     }
 
     /**

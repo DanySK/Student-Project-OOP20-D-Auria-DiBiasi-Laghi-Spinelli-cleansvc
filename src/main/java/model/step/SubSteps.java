@@ -1,5 +1,7 @@
 package model.step;
 
+import model.step.enumerations.StepType;
+
 public interface SubSteps {
 
     String getName();
@@ -9,4 +11,6 @@ public interface SubSteps {
     int getTime();
 
     String getCode();
+
+    StepType getType();
 }

@@ -13,11 +13,13 @@ public final class Main {
         SaveAndLoadStaff backupS = new SaveAndLoadStaff();
         SaveAndLoadProducts backupP = new SaveAndLoadProducts();
         SaveAndLoadAppointments backupA = new SaveAndLoadAppointments();
+        SaveAndLoadSubSteps backupSt = new SaveAndLoadSubSteps();
 
-        backupC.load();
         backupS.load();
-        backupP.load();
+        backupC.load();
         backupA.load();
+        backupP.load();
+        backupSt.load();
         new HomeView().display();
     }
 

@@ -26,17 +26,15 @@ public class HomeView extends JFrame{
     final JButton btnGrafici;
     final JButton btnStaff;
     final JButton btnProduct;
-
     final JButton btnProcess;
-
     final JButton btnAppointment;
-
     final JButton btnSaveAndExit;
 
     private SaveAndLoadClients backupClients = new SaveAndLoadClients();
     private SaveAndLoadStaff backupStaff = new SaveAndLoadStaff();
     private SaveAndLoadProducts backupProducts = new SaveAndLoadProducts();
     private SaveAndLoadAppointments backupAppointments = new SaveAndLoadAppointments();
+    private SaveAndLoadSubSteps backupSubSteps = new SaveAndLoadSubSteps();
 
     public HomeView() {
 
@@ -166,6 +164,7 @@ public class HomeView extends JFrame{
                 backupStaff.save();
                 backupProducts.save();
                 backupAppointments.save();
+                backupSubSteps.save();
                 dispose();
             }
             
