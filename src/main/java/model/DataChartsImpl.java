@@ -19,7 +19,7 @@ import org.knowm.xchart.XYChart;
 public class DataChartsImpl implements DataCharts {
      
     private static final String SEP = File.separator;
-    private static final String FILE = System.getProperty("user.home") + SEP + "Documenti" + SEP + "ProvaFile.txt";
+    private static final String FILE = System.getProperty("user.home") + SEP + "Documenti" /*Sostituire percorso file+ SEP + "ProvaFile.txt"*/;
     private ArrayList<LocalDate> listToReturn;
     
     public DataChartsImpl() {
