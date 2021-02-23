@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,6 +25,7 @@ import com.github.lgooddatepicker.components.TimePicker;
 
 import controller.Company;
 import controller.CompanyImpl;
+import controller.backupFile.SaveStatistics;
 import model.Appointments;
 import model.AppointmentsImpl;
 import model.users.Clients;
@@ -138,10 +142,20 @@ public class NewAppointmentView extends JFrame {
                     Clients c = company.getClients().get(comboClients.getSelectedIndex());
                     Appointments a = new AppointmentsImpl(getDate(), getHour(), c);
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
-                        company.addAppointment(a);
-                        popUp.popUpInfo("Appuntamento inserito con successo.");
-                        new AppointmentsView().display();
-                        setVisible(false);
+                        if (datepicker.getDate().isBefore(LocalDate.now())
+                                || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
+                            popUp.popUpErrorOrMissing();
+                        } else {
+                            company.addAppointment(a);
+                            popUp.popUpInfo("Appuntamento inserito con successo.");
+                            new AppointmentsView().display();
+                            //Qui richiama la SaveStatistics.save()
+                            /*
+                             * testing
+                                new SaveStatistics().save(datepicker.getDate(), timepicker.getTime().getMinute(), 100);
+                            */
+                            setVisible(false);
+                        }
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
                     }

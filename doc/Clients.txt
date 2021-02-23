@@ -14,3 +14,11 @@ CAP: 47034
 TEL: 3884727388
 EMAIL: aurora.laghi@studio.unibo.it
 MQSTRUCTURE: 1000
+CFPIVA: SPNSLV97T67C573C
+NAME: Silvia Spinelli
+ADDRESS: Via Malatesta Novello, 5
+CITY: Cesena
+CAP: 47521
+TEL: 3454476636
+EMAIL: silviaspinelli97@gmail.com
+MQSTRUCTURE: 1000
