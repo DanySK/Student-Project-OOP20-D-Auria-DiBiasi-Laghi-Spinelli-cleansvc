@@ -89,9 +89,16 @@ public class ProcessImpl implements Process {
      * 
      */
     @Override
-    public double getProportialValue(final double value, final Clients s, final int staff) {
+    public double getProportialTime(final double value, final Clients s, final int staff) {
         double tot = 0;
-        tot = Math.floor((value * s.getMqStructure()) / (500 * staff));
+        tot = (value * s.getMqStructure()) / (500 * staff);
         return tot;
+    }
+    /**
+     * 
+     */
+    @Override
+    public double getProportialEarn(double value, Clients s) {
+        return getProportialTime(value, s, 1);
     }
 }

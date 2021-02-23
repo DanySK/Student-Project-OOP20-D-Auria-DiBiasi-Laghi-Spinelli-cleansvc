@@ -26,7 +26,7 @@ public interface Company {
     void removeProduct(final Products p);
     Optional<Products> searchProduct(final String codeProduct);
     List<Products> getProducts();
-    Optional<List<Products>> getProductsByStepType(StepType stepType);
+    Optional<List<Products>> getProductsByStepType(String stepType);
 
     void addAppointment(Appointments a);
     void removeAppointment(Appointments a);

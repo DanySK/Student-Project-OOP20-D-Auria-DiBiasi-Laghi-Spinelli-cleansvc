@@ -35,6 +35,7 @@ import model.step.SubSteps;
 import model.step.enumerations.StepType;
 import model.users.Clients;
 import utility.PopUp;
+import utility.InputValidator;
 
 public class NewAppointmentView extends JFrame {
     /**
@@ -67,6 +68,8 @@ public class NewAppointmentView extends JFrame {
     private JLabel labelDisinfestation;
     private JLabel labelConclusion;
     private JLabel labelStaffOnWork;
+    
+    private InputValidator validator = new InputValidator();
     public NewAppointmentView() {
 
         setTitle(NewAppointmentView.TITLE);
@@ -351,10 +354,13 @@ public class NewAppointmentView extends JFrame {
          double earn = 0;
          double totalTime = 0;
          double totalEarn = 0;
+         double nProd = 0;
          List<Integer> partialTime = new ArrayList<>();
 
          for (JCheckBox check : checkboxs) {
              time = 0;
+             earn = 0;
+             nProd = 0;
              if (check.isSelected()) {
                  if (!process.getSubStepsByStepType(check.getText()).isEmpty()) {
                      List<SubSteps> list = process.getSubStepsByStepType(check.getText()).get();
@@ -363,18 +369,21 @@ public class NewAppointmentView extends JFrame {
                      }
                  }
                  if (!company.getProductsByStepType(check.getText()).isEmpty()) {
-                     List<Products> list2 = company.getProductsByStepType(check.getText()).get();
+                     List<Products> list2 = company.getProductsByStepType(check.getText()).get(); 
                      for (Products p : list2) {
                          earn += p.getPricePerLitre();
+                         nProd++;
                      }
+                     totalEarn += (earn / nProd);
+                     System.out.println(totalEarn);
                  }
              }
-             totalEarn += earn;
+
              totalTime += time;
              partialTime.add(time);
          }
-         totTime = process.getProportialValue(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
-         totEarn = process.getProportialValue(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
+         totTime = process.getProportialTime(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
+         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()));
          labelCleaning.setText(labelCleaning.getText() + " " + String.valueOf(partialTime.get(0)));
          labelCleansing.setText(labelCleansing.getText() + " " + String.valueOf(partialTime.get(1)));
          labelDisinfection.setText(labelDisinfection.getText() + " " + String.valueOf(partialTime.get(2)));
@@ -386,7 +395,7 @@ public class NewAppointmentView extends JFrame {
     }
 
     public Boolean missingField() {
-        return (getDate().isEmpty() || getHour().isEmpty());
+        return (getDate().isEmpty() || getHour().isEmpty() || getStaff() == Integer.MIN_VALUE);
     }
 
     public String getDate() {
@@ -395,6 +404,10 @@ public class NewAppointmentView extends JFrame {
 
     public String getHour() {
         return timepicker.getText();
+    }
+
+    public int getStaff() {
+        return validator.isCAP(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
     }
 
 }

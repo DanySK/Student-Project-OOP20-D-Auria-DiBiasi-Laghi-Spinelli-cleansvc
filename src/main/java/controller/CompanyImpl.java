@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+
 import model.Appointments;
 import model.Products;
 import model.step.enumerations.StepType;
@@ -110,10 +111,10 @@ public class CompanyImpl implements Company {
     }
 
     @Override
-    public Optional<List<Products>> getProductsByStepType(StepType stepType) {
+    public Optional<List<Products>> getProductsByStepType(final String stepType) {
         List<Products> productByStep = new ArrayList<>();
         for (final Products product : this.products) {
-            if (product.getStepType().equals(stepType)) {
+            if (product.getStepType().getType().equals(stepType)) {
                 productByStep.add(product);
             }
         }
