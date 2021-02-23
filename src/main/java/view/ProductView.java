@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -129,11 +128,11 @@ public class ProductView extends JFrame {
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati prodotto", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
         pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
-        
+
         JLabel lblsearch = new JLabel("Codice prodotti:");
         lblsearch.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(lblsearch);
-        
+
         productCodes = new JComboBox<>();
         productCodes.setPreferredSize(new Dimension(ConstantsCleanSvc.SEARCH_CF_BOX_WIDTH, ConstantsCleanSvc.SEARCH_CF_BOX_HEIGHT));
         productCodes.setBackground(SystemColor.activeCaption);
@@ -358,7 +357,7 @@ public class ProductView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return product code of the selected item in JComboBox
      */
     public int getIndexProductSearched() {
         return productCodes.getSelectedIndex();
@@ -392,7 +391,7 @@ public class ProductView extends JFrame {
     }
     /**
      * 
-     * @return
+     * @return true if all text field are written
      */
     public Boolean missingField() {
         return (getCode().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || Double.isNaN(getPrice()) || Double.isNaN(getUsage()));
@@ -416,6 +415,9 @@ public class ProductView extends JFrame {
         }
     }
 
+    /**
+     * @param productCodes
+     */
     public void updateSearchingCodes(final JComboBox<String> productCodes) {
         productCodes.removeAllItems();
         for (Products product : company.getProducts()) {
@@ -424,27 +426,29 @@ public class ProductView extends JFrame {
     }
     /**
      * 
-     * @return
+     * @return code if is well formatted
      */
     public String getCode() {
         return validator.isNameAndNum(txtCode.getText()) ? txtCode.getText() : "";
     }
     /**
      * 
-     * @return
+     * @return index of selected step type in JComboBox
      */
     public int getIndexSelectedStep() {
         return comboStep.getSelectedIndex();
     }
+
+
     /**
-     * 
+     * @return name if is well formatted
      */
     public String getName() {
         return validator.isNameAndNum(txtName.getText()) ? txtName.getText() : "";
     }
     /**
      * 
-     * @return
+     * @return description if is well formatted
      */
     public String getDescription() {
         return validator.isNameAndNum(txtDescr.getText()) ? txtDescr.getText() : "";
@@ -452,7 +456,7 @@ public class ProductView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return price if is well formatted
      */
     public double getPrice() {
         return validator.isDouble(txtPrice.getText()) ? Double.parseDouble(txtPrice.getText()) : Double.NaN;
@@ -460,7 +464,7 @@ public class ProductView extends JFrame {
 
     /**
      * 
-     * @return
+     * @return usage if is well formatted
      */
     public double getUsage() {
         return validator.isDouble(txtUsage.getText()) ? Double.parseDouble(txtUsage.getText()) : Double.NaN;

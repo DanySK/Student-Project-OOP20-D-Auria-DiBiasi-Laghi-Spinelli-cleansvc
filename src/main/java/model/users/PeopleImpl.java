@@ -20,30 +20,57 @@ public abstract class PeopleImpl implements People {
         this.email = email;
     }
 
+    /**
+     * @return name
+     */
     @Override
     public String getName() {
         return this.name;
     }
+    
+    /**
+     * @return Fiscal Code or P.IVA
+     */
     @Override
     public String getCFPIVA() {
         return this.CF_PIVA;
     }
+    
+    /**
+     * @return address
+     */
     @Override
     public String getAddress() {
         return this.address;
     }
+    
+    /**
+     * @return city
+     */
     @Override
     public String getCity() {
         return this.city;
     }
+    
+    /**
+     * @return CAP
+     */
     @Override
     public int getCAP() {
         return this.cap;
     }
+    
+    /**
+     * @return telephone
+     */
     @Override
     public String getTel() {
         return this.tel;
     }
+    
+    /**
+     * @return email
+     */
     @Override
     public String getEmail() {
         return this.email;

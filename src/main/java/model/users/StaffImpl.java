@@ -9,6 +9,9 @@ public class StaffImpl extends PeopleImpl implements Staff {
         this.admin = admin;
     }
 
+    /**
+     * @return true if the employee have administrator permissions
+     */
     @Override
     public Boolean isAdmin() {
         return this.admin;
