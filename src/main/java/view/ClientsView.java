@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -22,12 +21,12 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.Company;
 import controller.CompanyImpl;
 import model.users.Clients;
 import model.users.ClientsImpl;
-import utility.InputValidator;
+import utility.ConstantsCleanSvc;
 import utility.PopUp;
+import utility.InputValidator;
 
 public class ClientsView extends JFrame {
 
@@ -35,7 +34,6 @@ public class ClientsView extends JFrame {
      * 
      */
     private static final long serialVersionUID = 3375687914483476432L;
-    private static final String TITLE = "CLEAN SERVICE MANAGER";
     private JTextField txtCFPIVA;
     private JTextField txtName;
     private JTextField txtAddress;
@@ -56,39 +54,41 @@ public class ClientsView extends JFrame {
      *
      * List<Clients> clientsList = new ArrayList<>();
      */
-    private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura_mq", "Telefono", "Email", "CF_PIVA"};
+    private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura (mq)", "Telefono", "Email", "CF o P.IVA"};
     private Object[][] data = new Object[0][cols.length];
+    private final static int COL_KEY = 7;
+
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private InputValidator validator = new InputValidator();
     private PopUp popUp = new PopUp();
 
     public ClientsView() {
-        setTitle(ClientsView.TITLE);
-        setMinimumSize(new Dimension(1200, 500));
+        setTitle(ConstantsCleanSvc.TITLE);
+        setMinimumSize(new Dimension(ConstantsCleanSvc.WIDTH, ConstantsCleanSvc.HEIGHT));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panelTable = new JPanel();
-        panelTable.setMinimumSize(new Dimension(1000, 200));
+        panelTable.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTable.setBackground(SystemColor.activeCaption);
-        panelTable.setLayout(new BorderLayout(0, 0));
+        panelTable.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setMinimumSize(new Dimension(1000, 60));
+        panelTitle.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTitle.setBackground(SystemColor.activeCaption);
-        panelTitle.setLayout(new BorderLayout(0, 0));
+        panelTitle.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JLabel lblTitle = new JLabel("Elenco clienti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE,20));
+        lblTitle.setFont(ConstantsCleanSvc.FONT_TITLE);
         panelTitle.add(lblTitle, BorderLayout.WEST);
 
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120, 20));
-        btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnHome.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnHome.setFont(ConstantsCleanSvc.FONT);
         btnHome.addActionListener(new ActionListener() {
 
             @Override
@@ -113,38 +113,38 @@ public class ClientsView extends JFrame {
 
         for (int i = 0; i < company.getClients().size(); i++) {
             Clients client = company.getClients().get(i);
-            model.insertRow(i, new Object[] {client.getName(), client.getAddress(), client.getCity(), client.getCAP(), client.getMqStructure(), client.getTel(), client.getEmail(), client.getCFPIVA()});
+            model.insertRow(i, new Object[] {client.getName(), client.getAddress(), client.getCity(), client.getCAP(), client.getMqStructure(), client.getTel(), client.getEmail(), client.getCFPIVA().toUpperCase()});
         }
 
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
+        table.setPreferredScrollableViewportSize(new Dimension(ConstantsCleanSvc.TABLE_WIDTH, ConstantsCleanSvc.TABLE_HEIGHT));
         table.setFillsViewportHeight(true);
-        table.setAutoCreateRowSorter(true); //sort by the column header clicked
+        table.setAutoCreateRowSorter(true);
         panelTable.add(table, BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
 
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati clienti", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 40));
-        pnlSearch.setMinimumSize(new Dimension(1000, 40));
+        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
 
         JLabel lblsearchCFPIVA = new JLabel("CF/P.IVA clienti:");
-        lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblsearchCFPIVA.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(lblsearchCFPIVA);
 
         clientCFPIVAs = new JComboBox<>();
-        clientCFPIVAs.setPreferredSize(new Dimension(200, 20));
+        clientCFPIVAs.setPreferredSize(new Dimension(ConstantsCleanSvc.SEARCH_CF_BOX_WIDTH, ConstantsCleanSvc.SEARCH_CF_BOX_HEIGHT));
         clientCFPIVAs.setBackground(SystemColor.activeCaption);
         clientCFPIVAs.setForeground(SystemColor.textText);
-        clientCFPIVAs.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        clientCFPIVAs.setFont(ConstantsCleanSvc.FONT);
         updateSearchingCFPIVAs(clientCFPIVAs);
         pnlSearch.add(clientCFPIVAs);
 
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(120, 20));
-        btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnSearch.setFont(ConstantsCleanSvc.FONT);
+        btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per modificarli e per eliminare il cliente");
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
@@ -153,6 +153,8 @@ public class ClientsView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     writeField(company.getClients().get(getIndexClientSearched()));
+                    btnChange.setEnabled(true);
+                    btnRemove.setEnabled(true);
                 }
             }
         });
@@ -161,100 +163,94 @@ public class ClientsView extends JFrame {
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati cliente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
-        pnlSubmit.setPreferredSize(new Dimension(900, 140));
-        pnlSubmit.setMinimumSize(new Dimension(900, 140));
-        pnlSubmit.setLayout(new BorderLayout(0, 0));
+        pnlSubmit.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBMIT_HEIGHT));
+        pnlSubmit.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
-        pnlData.setPreferredSize(new Dimension(900, 60));
-        pnlData.setMinimumSize(new Dimension(900, 60));
-        pnlData.setLayout(new GridLayout(4, 4, 20, 2));
+        pnlData.setLayout(new GridLayout(ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID_2_GAP));
 
         JLabel labelCFPIVA = new JLabel("CF/P.IVA:");
-        labelCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCFPIVA.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelCFPIVA);
 
-        txtCFPIVA = new JTextField(20);
-        txtCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtCFPIVA = new JTextField();
+        txtCFPIVA.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtCFPIVA);
 
         JLabel labelName = new JLabel("Nome:");
-        labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelName.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelName);
 
-        txtName = new JTextField(10);
-        txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtName = new JTextField();
+        txtName.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtName);
 
         JLabel labelAddress = new JLabel("Indirizzo:");
-        labelAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelAddress.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelAddress);
 
-        txtAddress = new JTextField(20);
-        txtAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtAddress = new JTextField();
+        txtAddress.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtAddress);
 
         JLabel labelCity = new JLabel("Città:");
-        labelCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCity.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelCity);
 
-        txtCity = new JTextField(10);
-        txtCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtCity = new JTextField();
+        txtCity.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtCity);
 
         JLabel labelCAP = new JLabel("CAP:");
-        labelCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCAP.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelCAP);
 
-        txtCAP = new JTextField(5);
-        txtCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtCAP = new JTextField();
+        txtCAP.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtCAP);
 
         JLabel labelmq = new JLabel("Struttura (mq):");
-        labelmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelmq.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelmq);
 
-        txtMq = new JTextField(5);
-        txtMq.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtMq = new JTextField();
+        txtMq.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtMq);
 
         JLabel labeltel = new JLabel("Telefono:");
-        labeltel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labeltel.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labeltel);
 
-        txtTel = new JTextField(10);
-        txtTel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtTel = new JTextField();
+        txtTel.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtTel);
 
         JLabel labelemail = new JLabel("Email:");
-        labelemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelemail.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelemail);
 
-        txtEmail = new JTextField(15);
-        txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtEmail = new JTextField();
+        txtEmail.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtEmail);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
 
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
-        pnlButtons.setPreferredSize(new Dimension(900, 30));
-        pnlButtons.setMinimumSize(new Dimension(900, 30));
-        pnlButtons.setLayout(new GridLayout(1, 3, 20, 20));
+        pnlButtons.setLayout(new GridLayout(ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID3, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_20_GAP));
 
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setPreferredSize(new Dimension(120, 20));
-        btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSubmit.setFont(ConstantsCleanSvc.FONT);
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    Clients newClient = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                    Clients newClient = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     if (company.searchClient(newClient.getCFPIVA()).isEmpty()) {
                         popUp.popUpInfo("Cliente inserito con successo.");
                         company.addClient(newClient);
@@ -274,25 +270,27 @@ public class ClientsView extends JFrame {
         btnChange = new JButton("Modifica esistente");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setPreferredSize(new Dimension(120, 20));
-        btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnChange.setFont(ConstantsCleanSvc.FONT);
+        btnChange.setEnabled(false);
         btnChange.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
-                    Clients changed = new ClientsImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
+                    Clients changed = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     Optional<Clients> toModify = company.searchClient(changed.getCFPIVA());
                     if (toModify.isEmpty()) {
                         popUp.popUpWarning("Codice Fiscale o Partita IVA inesistente tra i clienti!");
                     } else {
                         popUp.popUpInfo("Cliente modificato con successo.");
-                        company.removeClient(toModify.get());
                         removeClientToTable(toModify.get());
+                        company.removeClient(toModify.get());
                         company.addClient(changed);
                         addClientToTable(changed);
                         updateSearchingCFPIVAs(clientCFPIVAs);
                         clearInsertField();
+                        btnChange.setEnabled(false);
+                        btnRemove.setEnabled(false);
                     }
                 } else {
                     popUp.popUpErrorOrMissing();
@@ -304,8 +302,8 @@ public class ClientsView extends JFrame {
         btnRemove = new JButton("Elimina cliente");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setPreferredSize(new Dimension(120, 20));
-        btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.setFont(ConstantsCleanSvc.FONT);
+        btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
 
             @Override
@@ -320,10 +318,12 @@ public class ClientsView extends JFrame {
                         Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il cliente '" + clientToRemove.get().getName() + "' ?");
                         if (confirmed) {
                             popUp.popUpInfo("Cliente eliminato con successo.");
-                            company.removeClient(clientToRemove.get());
                             removeClientToTable(clientToRemove.get());
+                            company.removeClient(clientToRemove.get());
                             updateSearchingCFPIVAs(clientCFPIVAs);
                             clearInsertField();
+                            btnChange.setEnabled(false);
+                            btnRemove.setEnabled(false);
                         } else {
                             popUp.popUpInfo("Eliminazione annullata.");
                         }
@@ -376,7 +376,7 @@ public class ClientsView extends JFrame {
      * @param c
      */
     public void writeField(final Clients c) {
-        txtCFPIVA.setText(c.getCFPIVA());
+        txtCFPIVA.setText(c.getCFPIVA().toUpperCase());
         txtName.setText(c.getName());
         txtAddress.setText(c.getAddress());
         txtCity.setText(c.getCity());
@@ -399,7 +399,7 @@ public class ClientsView extends JFrame {
      * @param c
      */
     public void addClientToTable(final Clients c) {
-        model.insertRow(company.getClients().size() - 1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA()});
+        model.insertRow(company.getClients().size() - 1, new Object[] {c.getName(), c.getAddress(), c.getCity(), c.getCAP(), c.getMqStructure(), c.getTel(), c.getEmail(), c.getCFPIVA().toUpperCase()});
     }
 
     /**
@@ -408,8 +408,9 @@ public class ClientsView extends JFrame {
      */
     public void removeClientToTable(final Clients c) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(7).equals(c.getCFPIVA())) {
+            if (model.getDataVector().elementAt(i).elementAt(COL_KEY).equals(c.getCFPIVA())) {
                 model.removeRow(i);
+                return;
             }
         }
     }
@@ -422,10 +423,10 @@ public class ClientsView extends JFrame {
         return clientCFPIVAs.getSelectedIndex();
     }
     
-    public void updateSearchingCFPIVAs(JComboBox<String> clientCFPIVAs) {
+    public void updateSearchingCFPIVAs(final JComboBox<String> clientCFPIVAs) {
         clientCFPIVAs.removeAllItems();
-        for (Clients client : company.getClients()){
-            clientCFPIVAs.addItem(client.getCFPIVA());
+        for (Clients client : company.getClients()) {
+            clientCFPIVAs.addItem(client.getCFPIVA().toUpperCase() + " - " + client.getName());
         }
     }
 

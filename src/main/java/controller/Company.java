@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import model.Appointments;
 import model.Products;
+import model.step.enumerations.StepType;
 import model.users.Clients;
 import model.users.Staff;
 
@@ -25,7 +26,7 @@ public interface Company {
     void removeProduct(final Products p);
     Optional<Products> searchProduct(final String codeProduct);
     List<Products> getProducts();
-    Optional<List<Products>> getProductsByStepType(String stepType);
+    Optional<List<Products>> getProductsByStepType(StepType stepType);
 
     void addAppointment(Appointments a);
     void removeAppointment(Appointments a);

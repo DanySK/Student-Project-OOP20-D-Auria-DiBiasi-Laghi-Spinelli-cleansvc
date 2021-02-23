@@ -1,8 +1,10 @@
 package model;
 
+import model.step.enumerations.StepType;
+
 public interface Products {
     String getCode();
-    String getStepType(); //TODO change String to Step
+    StepType getStepType();
     String getName();
     String getDescription();
     double getPricePerLitre();

@@ -39,7 +39,8 @@ public class HomeView extends JFrame{
     public HomeView() {
 
         setTitle(HomeView.TITLE);
-        setLayout(new GridLayout(3,3));
+        setLayout(new GridLayout(3, 3));
+
         setMinimumSize(new Dimension(1200, 500));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         JPanel panelTitle = new JPanel();

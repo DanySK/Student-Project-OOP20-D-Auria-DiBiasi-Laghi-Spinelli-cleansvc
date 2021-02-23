@@ -1,5 +1,7 @@
 package model;
 
+import model.step.enumerations.StepType;
+
 public class ProductsImpl implements Products {
 
     private String code;
@@ -7,9 +9,9 @@ public class ProductsImpl implements Products {
     private String description;
     private double priceL;
     private double usage500mq;
-    private String step;
+    private StepType step;
 
-    public ProductsImpl(String code, String step, String name, String description, double priceLitre, double usage500mq) {
+    public ProductsImpl(final String code, final StepType step, final String name, final String description, final double priceLitre, final double usage500mq) {
         this.code = code;
         this.step = step;
         this.name = name;
@@ -24,7 +26,7 @@ public class ProductsImpl implements Products {
     }
     
     @Override
-    public String getStepType() {
+    public StepType getStepType() {
         return this.step;
     }
 

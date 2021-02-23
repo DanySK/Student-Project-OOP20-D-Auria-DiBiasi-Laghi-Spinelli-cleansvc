@@ -6,11 +6,19 @@ CAP: 47014
 TEL: 3467529933
 EMAIL: emporiodamario@libero.it
 MQSTRUCTURE: 150
-CFPIVA: lghrra97e69h199x
-NAME: aurora laghi
-ADDRESS: via fratelli bandiera, 7
+CFPIVA: LGHRRA97E69H199X
+NAME: Aurora Laghi
+ADDRESS: Via Fratelli Bandiera, 7
 CITY: Forlimpopoli
 CAP: 47034
 TEL: 3884727388
 EMAIL: aurora.laghi@studio.unibo.it
 MQSTRUCTURE: 1000
+CFPIVA: DBSVSS96S62D704U
+NAME: Vanessa Di Biasi
+ADDRESS: Strada Gualdo-Ribatta 16
+CITY: Rico'
+CAP: 47014
+TEL: 3311068731
+EMAIL: vanessa@unibo.it
+MQSTRUCTURE: 80

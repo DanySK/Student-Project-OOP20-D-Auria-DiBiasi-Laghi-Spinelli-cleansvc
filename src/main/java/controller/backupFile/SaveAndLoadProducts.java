@@ -12,7 +12,9 @@ import java.util.List;
 import model.Products;
 import controller.Company;
 import controller.CompanyImpl;
+import controller.ProcessImpl;
 import model.ProductsImpl;
+import model.step.enumerations.StepType;
 
 public class SaveAndLoadProducts implements SaveAndLoad {
 
@@ -25,6 +27,7 @@ public class SaveAndLoadProducts implements SaveAndLoad {
     private static final String DESCRIPTION_STR = "DESCRIPTION: ";
     private static final String PRICELITRE_STR = "PRICELITRE: ";
     private static final String USAGE500MQ_STR = "USAGE500MQ: ";
+    private StepType stepProduct;
 
     @Override
     public void save() {
@@ -63,6 +66,7 @@ public class SaveAndLoadProducts implements SaveAndLoad {
                 }
                 if (l.contains(STEP_STR)) {
                     stepList.add(l.substring(STEP_STR.length()));
+                    
                 }
                 if (l.contains(NAME_STR)) {
                     nameList.add(l.substring(NAME_STR.length()));
@@ -78,7 +82,12 @@ public class SaveAndLoadProducts implements SaveAndLoad {
                 }
             });
             for (int i = 0; i < codeList.size(); i++) {
-                this.company.addProduct(new ProductsImpl(codeList.get(i), stepList.get(i), nameList.get(i),
+                for (StepType step : ProcessImpl.getInstance().getStepTypeList()) {
+                    if (step.getType().equals(stepList.get(i))) {
+                        stepProduct = step;
+                    }
+                }
+                this.company.addProduct(new ProductsImpl(codeList.get(i), stepProduct, nameList.get(i),
                         descriptionList.get(i), priceLitreList.get(i), usageList.get(i)));
             }
         } catch (final IOException e) {

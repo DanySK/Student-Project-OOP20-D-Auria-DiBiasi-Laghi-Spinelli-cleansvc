@@ -1,6 +1,6 @@
 package model.users;
 
-public class PeopleImpl implements People {
+public abstract class PeopleImpl implements People {
 
     private String CF_PIVA;
     private String name;
@@ -10,7 +10,7 @@ public class PeopleImpl implements People {
     private String tel;
     private String email;
 
-    public PeopleImpl(String CF_PIVA, String name, String address, String city, int cap, String tel, String email) {
+    public PeopleImpl(final String CF_PIVA, final String name, final String address, final String city, final int cap, final String tel, final String email) {
         this.CF_PIVA = CF_PIVA;
         this.name = name;
         this.address = address;
