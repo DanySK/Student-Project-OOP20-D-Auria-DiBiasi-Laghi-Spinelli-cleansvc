@@ -19,32 +19,50 @@ public class ProductsImpl implements Products {
         this.priceL = priceLitre;
         this.usage500mq = usage500mq;
     }
-    
+
+    /**
+     * @return code
+     */
     @Override
     public String getCode() {
         return this.code;
     }
-    
+
+    /**
+     * @return stepType
+     */
     @Override
     public StepType getStepType() {
         return this.step;
     }
 
+    /**
+     * @return name
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @return description
+     */
     @Override
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * @return price per litre
+     */
     @Override
     public double getPricePerLitre() {
         return this.priceL;
     }
 
+    /**
+     * @return liters used in 500mq
+     */
     @Override
     public double getLitersPer500Mq() {
         return this.usage500mq;

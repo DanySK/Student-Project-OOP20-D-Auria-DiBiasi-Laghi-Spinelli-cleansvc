@@ -60,7 +60,7 @@ public class InputValidator {
      */
     public Boolean isInteger(String txtField) {
         try {
-            Integer i = Integer.parseInt(txtField);
+            Integer.parseInt(txtField);
             return true;
         } catch (NullPointerException | NumberFormatException e) {
             return false;
@@ -74,7 +74,7 @@ public class InputValidator {
      */
     public Boolean isDouble(String txtField) {
         try {
-            Double d = Double.parseDouble(txtField);
+            Double.parseDouble(txtField);
             return true;
         } catch (NullPointerException | NumberFormatException e) {
             return false;
