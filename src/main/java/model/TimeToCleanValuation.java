@@ -17,6 +17,7 @@ public class TimeToCleanValuation {
     
     public long washValuation() {                     
         Duration timeToRoom =  CleaningTimeEnum.LAVAGGIO.getSeconds().multipliedBy(this.getMqStanza())
+
                                                                 .dividedBy(this.getNumDipendenti());
         return timeToRoom.toMinutes();
     }

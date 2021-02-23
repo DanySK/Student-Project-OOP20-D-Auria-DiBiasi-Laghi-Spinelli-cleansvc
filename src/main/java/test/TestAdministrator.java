@@ -17,6 +17,7 @@ public class TestAdministrator {
     private final XYChart chart = new XYChartBuilder().build();
     private DatePicker dateStart = new DatePicker();
     private DatePicker dateEnd = new DatePicker();
+
     @Test
     public void dateControllerDateStartBefore() throws DateException {
         
@@ -34,13 +35,15 @@ public class TestAdministrator {
         Assertions.assertThrows(DateException.class, ()->{
             new AdministratorChartsControllerImpl().addLine(dateStart, dateEnd, 2, panel,chart);
         });
+
     }   /*Ok*/
-    
+
     @Test
     public void dataChartTest() {
         DataChartsImpl data = new DataChartsImpl();
         System.out.println(data.buildChartsFromData(LocalDate.of(2020,8,20), LocalDate.of(2020,8, 24),2));
     }/*Ok*/
+
 
     @Test 
     public void isVisible() {

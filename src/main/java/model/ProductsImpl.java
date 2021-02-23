@@ -1,5 +1,7 @@
 package model;
 
+import model.step.enumerations.StepType;
+
 public class ProductsImpl implements Products {
 
     private String code;
@@ -7,9 +9,9 @@ public class ProductsImpl implements Products {
     private String description;
     private double priceL;
     private double usage500mq;
-    private String step;
+    private StepType step;
 
-    public ProductsImpl(String code, String step, String name, String description, double priceLitre, double usage500mq) {
+    public ProductsImpl(final String code, final StepType step, final String name, final String description, final double priceLitre, final double usage500mq) {
         this.code = code;
         this.step = step;
         this.name = name;
@@ -17,65 +19,52 @@ public class ProductsImpl implements Products {
         this.priceL = priceLitre;
         this.usage500mq = usage500mq;
     }
-    
+
+    /**
+     * @return code
+     */
     @Override
     public String getCode() {
         return this.code;
     }
-    
+
+    /**
+     * @return stepType
+     */
     @Override
-    public String getStepType() {
+    public StepType getStepType() {
         return this.step;
     }
 
+    /**
+     * @return name
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @return description
+     */
     @Override
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * @return price per litre
+     */
     @Override
     public double getPricePerLitre() {
         return this.priceL;
     }
 
+    /**
+     * @return liters used in 500mq
+     */
     @Override
     public double getLitersPer500Mq() {
         return this.usage500mq;
-    }
-
-    @Override
-    public void setCode(String code) {
-        this.code = code;
-        
-    }
-    
-    @Override
-    public void setStepType(String stepType) {
-        this.step = stepType;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void setDescription(String descr) {
-        this.description = descr;
-    }
-
-    @Override
-    public void setPricePerLitre(double newPrice) {
-        this.priceL = newPrice;
-    }
-
-    @Override
-    public void setLitersPer500MQ(double newUsage) {
-        this.usage500mq = newUsage;
     }
 }

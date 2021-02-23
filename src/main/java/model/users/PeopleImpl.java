@@ -1,16 +1,16 @@
 package model.users;
 
-public class PeopleImpl implements People {
+public abstract class PeopleImpl implements People {
 
     private String CF_PIVA;
     private String name;
     private String address;
     private String city;
-    private String cap;
+    private int cap;
     private String tel;
     private String email;
 
-    public PeopleImpl(String CF_PIVA, String name, String address, String city, String cap, String tel, String email) {
+    public PeopleImpl(final String CF_PIVA, final String name, final String address, final String city, final int cap, final String tel, final String email) {
         this.CF_PIVA = CF_PIVA;
         this.name = name;
         this.address = address;
@@ -20,55 +20,59 @@ public class PeopleImpl implements People {
         this.email = email;
     }
 
+    /**
+     * @return name
+     */
     @Override
     public String getName() {
         return this.name;
     }
+    
+    /**
+     * @return Fiscal Code or P.IVA
+     */
     @Override
     public String getCFPIVA() {
         return this.CF_PIVA;
     }
+    
+    /**
+     * @return address
+     */
     @Override
     public String getAddress() {
         return this.address;
     }
+    
+    /**
+     * @return city
+     */
     @Override
     public String getCity() {
         return this.city;
     }
+    
+    /**
+     * @return CAP
+     */
     @Override
-    public String getCAP() {
+    public int getCAP() {
         return this.cap;
     }
+    
+    /**
+     * @return telephone
+     */
     @Override
     public String getTel() {
         return this.tel;
     }
+    
+    /**
+     * @return email
+     */
     @Override
     public String getEmail() {
         return this.email;
-    }
-    /*
-     * methods for the change of client/employee's contacts
-     */
-    @Override
-    public void setAddress(String newAddress) {
-        this.address = newAddress;
-    }
-    @Override
-    public void setCity(String newCity) {
-        this.city = newCity;
-    }
-    @Override
-    public void setCAP(String newCAP) {
-        this.cap = newCAP;
-    }
-    @Override
-    public void setTel(String newTel) {
-        this.tel = newTel;
-    }
-    @Override
-    public void setEmail(String newEmail) {
-        this.email = newEmail;
     }
 }

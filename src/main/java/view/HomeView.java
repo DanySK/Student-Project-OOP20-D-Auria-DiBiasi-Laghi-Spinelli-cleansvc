@@ -40,10 +40,12 @@ public class HomeView extends JFrame{
     private JPanel panelExit;
     private JButton btnStages;
 
+
     public HomeView() {
 
         setTitle(HomeView.TITLE);
         setMinimumSize(new Dimension(1000, 500));
+
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout(0, 0));
         JPanel mainPanel = new JPanel();
@@ -56,6 +58,7 @@ public class HomeView extends JFrame{
         panelClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(153, 180, 209), new Color(109, 109, 109)), "Clienti", TitledBorder.LEFT, TitledBorder.TOP, null, SystemColor.activeCaption));
         mainPanel.add(panelClient, BorderLayout.NORTH);
         
+
         btnClienti = new JButton("Area Clienti");
         panelClient.add(btnClienti);
         btnClienti.setForeground(SystemColor.textText);
@@ -96,9 +99,10 @@ public class HomeView extends JFrame{
                         btnGrafici.setPreferredSize(new Dimension(280,70));
                         
                         btnStages = new JButton("Area Processi");
-                        btnStages.addActionListener(new ActionListener() {
-                            public void actionPerformed(ActionEvent e) {
-                            }
+                        btnStages.addActionListener(e->{
+                            SubStepView stv = new SubStepView();
+                            stv.display();
+                            dispose();
                         });
                         btnStages.setPreferredSize(new Dimension(280, 70));
                         btnStages.setForeground(Color.BLACK);
