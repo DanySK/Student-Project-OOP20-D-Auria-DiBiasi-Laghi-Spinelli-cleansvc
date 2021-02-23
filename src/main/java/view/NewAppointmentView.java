@@ -29,6 +29,7 @@ import controller.backupFile.SaveStatistics;
 import model.Appointments;
 import model.AppointmentsImpl;
 import model.users.Clients;
+import utility.ConstantsCleanSvc;
 import utility.PopUp;
 
 public class NewAppointmentView extends JFrame {
@@ -36,7 +37,6 @@ public class NewAppointmentView extends JFrame {
      * 
      */
     private static final long serialVersionUID = 2089945830206989799L;
-    private static final String TITLE = "CLEAN SERVICE MANAGER";
     private JComboBox<String> comboClients;
     private final JButton btnSubmit;
     private final JButton btnHome;
@@ -48,27 +48,27 @@ public class NewAppointmentView extends JFrame {
 
     public NewAppointmentView() {
 
-        setTitle(NewAppointmentView.TITLE);
-        setMinimumSize(new Dimension(1200, 500));
+        setTitle(ConstantsCleanSvc.TITLE);
+        setMinimumSize(new Dimension(ConstantsCleanSvc.WIDTH, ConstantsCleanSvc.HEIGHT));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setMinimumSize(new Dimension(1000, 60));
+        panelTitle.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(panelTitle, BorderLayout.NORTH);
-        panelTitle.setLayout(new BorderLayout(0, 0));
+        panelTitle.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JLabel lblTitle = new JLabel("Nuovo Appuntamento");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE, 20));
+        lblTitle.setFont(ConstantsCleanSvc.FONT_TITLE);
         panelTitle.add(lblTitle, BorderLayout.WEST);
 
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120, 20));
-        btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnHome.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnHome.setFont(ConstantsCleanSvc.FONT);
         btnHome.addActionListener(new ActionListener() {
 
             @Override
@@ -82,17 +82,16 @@ public class NewAppointmentView extends JFrame {
 
         JPanel mainPanel = new JPanel();
         getContentPane().add(mainPanel, BorderLayout.CENTER);
-        mainPanel.setLayout(new BorderLayout(0, 0));
+        mainPanel.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati nuovo appuntamento", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
-        pnlSubmit.setPreferredSize(new Dimension(10, 100));
-        pnlSubmit.setMinimumSize(new Dimension(1000, 100));
+        pnlSubmit.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
         mainPanel.add(pnlSubmit, BorderLayout.NORTH);
 
         JLabel labelCliente = new JLabel("Cliente:");
-        labelCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCliente.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelCliente);
 
         comboClients = new JComboBox<>();
@@ -100,7 +99,7 @@ public class NewAppointmentView extends JFrame {
         comboClients.setToolTipText("Cliente");
         comboClients.setBackground(SystemColor.inactiveCaption);
         comboClients.setForeground(SystemColor.textText);
-        comboClients.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        comboClients.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(comboClients);
         Clients cc;
         for (int i = 0; i < clientsList.size(); i++) {
@@ -109,31 +108,31 @@ public class NewAppointmentView extends JFrame {
         }
 
         JLabel labelDatePicker = new JLabel("Data:");
-        labelDatePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelDatePicker.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelDatePicker);
 
         datepicker = new DatePicker();
         datepicker.getComponentToggleCalendarButton().setForeground(SystemColor.textText);
         datepicker.getComponentDateTextField().setToolTipText("Data dell'appuntamento");
         datepicker.getComponentToggleCalendarButton().setBackground(SystemColor.activeCaption);
-        datepicker.getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
+        datepicker.getComponentDateTextField().setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(datepicker);
 
         JLabel labelTimePicker = new JLabel("Orario:");
-        labelTimePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelTimePicker.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelTimePicker);
 
         timepicker = new TimePicker();
         timepicker.getComponentToggleTimeMenuButton().setForeground(SystemColor.textText);
         timepicker.getComponentTimeTextField().setToolTipText("Orario dell'appuntamento");
         timepicker.getComponentToggleTimeMenuButton().setBackground(SystemColor.activeCaption);
-        timepicker.getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
+        timepicker.getComponentTimeTextField().setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(timepicker);
 
         btnSubmit = new JButton("Conferma");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnSubmit.setFont(ConstantsCleanSvc.FONT);
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override

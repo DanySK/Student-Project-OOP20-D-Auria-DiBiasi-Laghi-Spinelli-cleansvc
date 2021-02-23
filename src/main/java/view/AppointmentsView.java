@@ -2,7 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import controller.Company;
 import controller.CompanyImpl;
 import model.Appointments;
+import utility.ConstantsCleanSvc;
 import utility.PopUp;
 
 public class AppointmentsView extends JFrame {
@@ -34,8 +35,6 @@ public class AppointmentsView extends JFrame {
      * 
      */
     private static final long serialVersionUID = -6203076048044842383L;
-    private static final String TITLE = "CLEAN SERVICE MANAGER";
-
     private JTextField txtClient;
     private JTextField txtDate;
     private JTextField txtHour;
@@ -56,31 +55,31 @@ public class AppointmentsView extends JFrame {
 
     public AppointmentsView() {
 
-        setTitle(AppointmentsView.TITLE);
-        setMinimumSize(new Dimension(1200, 600));
+        setTitle(ConstantsCleanSvc.TITLE);
+        setMinimumSize(new Dimension(ConstantsCleanSvc.WIDTH, ConstantsCleanSvc.HEIGHT));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panelTable = new JPanel();
-        panelTable.setMinimumSize(new Dimension(1000, 200));
+        panelTable.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTable.setBackground(SystemColor.activeCaption);
-        panelTable.setLayout(new BorderLayout(0, 0));
+        panelTable.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setMinimumSize(new Dimension(1000, 60));
+        panelTitle.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTitle.setBackground(SystemColor.activeCaption);
-        panelTitle.setLayout(new BorderLayout(0, 0));
+        panelTitle.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JLabel lblTitle = new JLabel("Elenco appuntamenti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE, 20));
+        lblTitle.setFont(ConstantsCleanSvc.FONT_TITLE);
         panelTitle.add(lblTitle, BorderLayout.WEST);
 
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120, 20));
-        btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnHome.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnHome.setFont(ConstantsCleanSvc.FONT);
         btnHome.addActionListener(new ActionListener() {
 
             @Override
@@ -101,7 +100,7 @@ public class AppointmentsView extends JFrame {
              model.insertRow(i, new Object[] {a.getDate(), a.getHour(), a.getClient().getName(), a.getClient().getCFPIVA().toUpperCase()});
          }
 
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
+        table.setPreferredScrollableViewportSize(new Dimension(ConstantsCleanSvc.TABLE_WIDTH, ConstantsCleanSvc.TABLE_HEIGHT));
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
         panelTable.add(table, BorderLayout.CENTER);
@@ -110,26 +109,26 @@ public class AppointmentsView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati appuntamento", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 40));
-        pnlSearch.setMinimumSize(new Dimension(1000, 40));
+        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
 
         JLabel lblsearchDataOra = new JLabel("Data e ora appuntamenti: ");
-        lblsearchDataOra.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblsearchDataOra.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(lblsearchDataOra);
 
         appDateHour = new JComboBox<>();
-        appDateHour.setPreferredSize(new Dimension(400, 20));
+        appDateHour.setPreferredSize(new Dimension(ConstantsCleanSvc.SEARCH_CF_BOX_WIDTH, ConstantsCleanSvc.SEARCH_CF_BOX_HEIGHT));
         appDateHour.setBackground(SystemColor.activeCaption);
         appDateHour.setForeground(SystemColor.textText);
-        appDateHour.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        appDateHour.setFont(ConstantsCleanSvc.FONT);
         updateSearchingDateHour(appDateHour);
         pnlSearch.add(appDateHour);
 
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(200, 20));
-        btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnSearch.setFont(ConstantsCleanSvc.FONT);
+        btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per eliminare l'appuntamento");
         btnSearch.addActionListener(new ActionListener() {
 
             @Override
@@ -148,40 +147,45 @@ public class AppointmentsView extends JFrame {
         final JPanel pnlDelete = new JPanel();
         pnlDelete.setBorder(new TitledBorder(null, "Elimina appuntamento", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlDelete.setBackground(SystemColor.window);
-        pnlDelete.setPreferredSize(new Dimension(10, 60));
-        pnlDelete.setMinimumSize(new Dimension(1000, 60));
+        pnlDelete.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBMIT_HEIGHT));
+        pnlDelete.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
+
+        final JPanel pnlData = new JPanel();
+        pnlData.setBorder(null);
+        pnlData.setBackground(SystemColor.window);
+        pnlData.setLayout(new GridLayout(ConstantsCleanSvc.GRID3, ConstantsCleanSvc.GRID2, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_2_GAP));
 
         JLabel labelCFPIVA = new JLabel("Cliente:");
-        labelCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlDelete.add(labelCFPIVA);
+        labelCFPIVA.setFont(ConstantsCleanSvc.FONT);
+        pnlData.add(labelCFPIVA);
 
-        txtClient = new JTextField(20);
-        txtClient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtClient = new JTextField();
+        txtClient.setFont(ConstantsCleanSvc.FONT);
         txtClient.setEditable(false);
-        pnlDelete.add(txtClient);
+        pnlData.add(txtClient);
 
         JLabel labelName = new JLabel("Data:");
-        labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlDelete.add(labelName);
+        labelName.setFont(ConstantsCleanSvc.FONT);
+        pnlData.add(labelName);
 
-        txtDate = new JTextField(14);
-        txtDate.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlDelete.add(txtDate);
+        txtDate = new JTextField();
+        txtDate.setFont(ConstantsCleanSvc.FONT);
+        pnlData.add(txtDate);
 
         JLabel labelAddress = new JLabel("Orario:");
-        labelAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlDelete.add(labelAddress);
+        labelAddress.setFont(ConstantsCleanSvc.FONT);
+        pnlData.add(labelAddress);
 
-        txtHour = new JTextField(20);
-        txtHour.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        pnlDelete.add(txtHour);
+        txtHour = new JTextField();
+        txtHour.setFont(ConstantsCleanSvc.FONT);
+        pnlData.add(txtHour);
+
+        pnlDelete.add(pnlData, BorderLayout.CENTER);
 
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
-        pnlButtons.setPreferredSize(new Dimension(900, 30));
-        pnlButtons.setMinimumSize(new Dimension(900, 30));
-        //pnlButtons.setLayout(new GridLayout(1, 3, 20, 20));
+        pnlButtons.setLayout(new GridLayout(ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_20_GAP));
 
         /*btnChange = new JButton("Aggiorna Modifiche");
         btnChange.setForeground(SystemColor.textText);
@@ -214,7 +218,7 @@ public class AppointmentsView extends JFrame {
         btnRemove = new JButton("Elimina appuntamento");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnRemove.setFont(ConstantsCleanSvc.FONT);
         btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
 
@@ -248,12 +252,12 @@ public class AppointmentsView extends JFrame {
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Inserisci nuovo appuntamento", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
-        pnlSubmit.setPreferredSize(new Dimension(10, 60));
-        pnlSubmit.setMinimumSize(new Dimension(1000, 60));
+        pnlSubmit.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBMIT_HEIGHT));
+
         btnSubmit = new JButton("Vai all'inserimento di un nuovo appuntamento >");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnSubmit.setFont(ConstantsCleanSvc.FONT);
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override

@@ -374,13 +374,9 @@ public class StaffView extends JFrame {
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addGroup(layout.createParallelGroup(Alignment.CENTER)
-                        .addGap(0)
                         .addComponent(panelTable)
-                        .addGap(0)
                         .addComponent(pnlSearch)
-                        .addGap(0)
-                        .addComponent(pnlSubmit)
-                        .addGap(0))
+                        .addComponent(pnlSubmit))
                 .addGap(0));
     }
 
