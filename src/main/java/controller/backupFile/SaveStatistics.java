@@ -12,7 +12,7 @@ public class SaveStatistics {
 
     private FileWriter fw;
 
-    public void save(final LocalDate datepicker, final int minutes, final int entries) {
+    public void save(final LocalDate datepicker, final double minutes, final double entries) {
         try {
             fw = new FileWriter(FILE_STATISTICS, true);
         } catch (IOException e1) {

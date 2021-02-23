@@ -30,8 +30,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
 import controller.CompanyImpl;
-import controller.backupFile.SaveStatistics;
 import controller.ProcessImpl;
+import controller.backupFile.SaveStatistics;
 import model.Appointments;
 import model.AppointmentsImpl;
 import model.Products;
@@ -72,7 +72,7 @@ public class NewAppointmentView extends JFrame {
     private JLabel labelDisinfestation;
     private JLabel labelConclusion;
     private JLabel labelStaffOnWork;
-    
+
     private InputValidator validator = new InputValidator();
     public NewAppointmentView() {
 
@@ -117,7 +117,7 @@ public class NewAppointmentView extends JFrame {
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
 
-        pnlSubmit.setLayout(new GridLayout(2, 6, 10, 20));
+        pnlSubmit.setLayout(new GridLayout(ConstantsCleanSvc.GRID2, ConstantsCleanSvc.GRID6, ConstantsCleanSvc.GRID_10_GAP, ConstantsCleanSvc.GRID_20_GAP));
         mainPanel.add(pnlSubmit, BorderLayout.NORTH);
 
         JLabel labelCliente = new JLabel("Cliente:");
@@ -171,11 +171,11 @@ public class NewAppointmentView extends JFrame {
         checkboxs.get(4).setEnabled(false);
 
         JLabel labelStaff = new JLabel("Dipendenti:");
-        labelStaff.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelStaff.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelStaff);
 
         txtStaffs = new JTextField(10);
-        txtStaffs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtStaffs.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(txtStaffs);
 
         btnSubmit = new JButton("Conferma");
@@ -196,14 +196,7 @@ public class NewAppointmentView extends JFrame {
                         } else {
                             company.addAppointment(a);
                             popUp.popUpInfo("Appuntamento inserito con successo.");
-                            new AppointmentsView().display();
                             setSummary();
-                            //Qui richiama la SaveStatistics.save()
-                            /*
-                             * testing
-                                new SaveStatistics().save(datepicker.getDate(), timepicker.getTime().getMinute(), 100);
-                            */
-                            setVisible(false);
                         }
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
@@ -261,7 +254,9 @@ public class NewAppointmentView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                //TODO salvare statistiche
+                new SaveStatistics().save(datepicker.getDate(), totTime, totEarn);
+                new AppointmentsView().display();
+                setVisible(false);
             }
         });
         pnlSearch.add(btnConfirm);
@@ -402,7 +397,7 @@ public class NewAppointmentView extends JFrame {
              partialTime.add(time);
          }
          totTime = process.getProportialTime(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
-         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()));
+         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex())) + 100;
          labelCleaning.setText(labelCleaning.getText() + " " + String.valueOf(partialTime.get(0)));
          labelCleansing.setText(labelCleansing.getText() + " " + String.valueOf(partialTime.get(1)));
          labelDisinfection.setText(labelDisinfection.getText() + " " + String.valueOf(partialTime.get(2)));
@@ -426,7 +421,7 @@ public class NewAppointmentView extends JFrame {
     }
 
     public int getStaff() {
-        return validator.isCAP(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
+        return validator.isInteger(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
     }
 
 }

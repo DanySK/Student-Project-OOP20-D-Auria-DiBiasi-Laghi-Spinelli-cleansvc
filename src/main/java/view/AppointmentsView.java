@@ -41,7 +41,6 @@ public class AppointmentsView extends JFrame {
     private final JButton btnSubmit;
     private final JButton btnHome;
     private final JButton btnSearch;
-    //private final JButton btnChange;
     private final JButton btnRemove;
     private JComboBox<String> appDateHour;
 
@@ -137,7 +136,6 @@ public class AppointmentsView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     writeField(company.getAppointment().get(getIndexAppointmentsSearched()));
-                    //btnChange.setEnabled(true);
                     btnRemove.setEnabled(true);
                 }
             }
@@ -186,34 +184,6 @@ public class AppointmentsView extends JFrame {
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
         pnlButtons.setLayout(new GridLayout(ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_20_GAP));
-
-        /*btnChange = new JButton("Aggiorna Modifiche");
-        btnChange.setForeground(SystemColor.textText);
-        btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-        btnChange.setEnabled(false);
-        btnChange.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!missingField()) {
-
-                    String s = getClientName();
-                    Clients c = company.searchClient(s).get();
-                    Appointments changed = new AppointmentsImpl(getDate(), getHour(), c);
-                    Optional<Appointments> toModify = company.searchAppointment(changed.getDate(), changed.getHour());
-                    popUp.popUpInfo("Appuntamento modificato con successo.");
-                    company.removeAppointment(toModify.get());
-                    removeAppointmentsToTable(toModify.get());
-                    company.addAppointment(changed);
-                    addAppointmentsToTable(changed);
-                    updateSearchingDateHour(appDateHour);
-                    clearInsertField();
-                    btnChange.setEnabled(false);
-                }
-            }
-        });
-        pnlButtons.add(btnChange);*/
 
         btnRemove = new JButton("Elimina appuntamento");
         btnRemove.setForeground(SystemColor.textText);
@@ -301,8 +271,8 @@ public class AppointmentsView extends JFrame {
 
     public void removeAppointmentsToTable(final Appointments a) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(0).equals(a.getDate()) &&
-                    model.getDataVector().elementAt(i).elementAt(1).equals(a.getHour())) {
+            if (model.getDataVector().elementAt(i).elementAt(0).equals(a.getDate()) 
+                    && model.getDataVector().elementAt(i).elementAt(1).equals(a.getHour())) {
                 model.removeRow(i);
             }
         }

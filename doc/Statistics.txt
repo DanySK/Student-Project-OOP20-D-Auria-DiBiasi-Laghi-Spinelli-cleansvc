@@ -1,0 +1,4 @@
+Data: 2021-03-28 Minuti: 36.666666666666664 Entrate: 156.25
+Data: 2021-02-23 Minuti: 18.333333333333332 Entrate: 199.25
+Data: 2021-04-22 Minuti: 27.5 Entrate: 228.65
+Data: 2021-04-22 Minuti: 27.5 Entrate: 156.25

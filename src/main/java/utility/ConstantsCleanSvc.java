@@ -22,7 +22,9 @@ public abstract class ConstantsCleanSvc {
     public static final int GRID2 = 2;
     public static final int GRID3 = 3;
     public static final int GRID4 = 4;
+    public static final int GRID6 = 6;
     public static final int GRID_2_GAP = 2;
+    public static final int GRID_10_GAP = 10;
     public static final int GRID_20_GAP = 20;
     public static final int SEARCH_CF_BOX_WIDTH = 400;
     public static final int SEARCH_CF_BOX_HEIGHT = 20;
