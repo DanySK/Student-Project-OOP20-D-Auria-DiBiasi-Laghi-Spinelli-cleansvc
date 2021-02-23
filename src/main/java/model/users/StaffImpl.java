@@ -13,10 +13,4 @@ public class StaffImpl extends PeopleImpl implements Staff {
     public Boolean isAdmin() {
         return this.admin;
     }
-
-    @Override
-    public void setIsAdmin(final Boolean value) {
-        this.admin = value;
-    }
-
 }

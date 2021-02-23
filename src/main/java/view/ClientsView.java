@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -25,7 +24,9 @@ import javax.swing.table.DefaultTableModel;
 import controller.CompanyImpl;
 import model.users.Clients;
 import model.users.ClientsImpl;
-import utility.*;
+import utility.ConstantsCleanSvc;
+import utility.PopUp;
+import utility.InputValidator;
 
 public class ClientsView extends JFrame {
 
@@ -55,6 +56,7 @@ public class ClientsView extends JFrame {
      */
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura (mq)", "Telefono", "Email", "CF o P.IVA"};
     private Object[][] data = new Object[0][cols.length];
+    private final static int COL_KEY = 7;
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private InputValidator validator = new InputValidator();
@@ -139,7 +141,7 @@ public class ClientsView extends JFrame {
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(120, 20));
+        btnSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
         btnSearch.setFont(ConstantsCleanSvc.FONT);
         btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per modificarli e per eliminare il cliente");
         btnSearch.addActionListener(new ActionListener() {
@@ -160,14 +162,13 @@ public class ClientsView extends JFrame {
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati cliente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
-        pnlSubmit.setPreferredSize(new Dimension(1000, 140));
-        pnlSubmit.setLayout(new BorderLayout(0, 0));
+        pnlSubmit.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBMIT_HEIGHT));
+        pnlSubmit.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
-        pnlData.setPreferredSize(new Dimension(1000, 60));
-        pnlData.setLayout(new GridLayout(4, 4, 20, 2));
+        pnlData.setLayout(new GridLayout(ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID_2_GAP));
 
         JLabel labelCFPIVA = new JLabel("CF/P.IVA:");
         labelCFPIVA.setFont(ConstantsCleanSvc.FONT);
@@ -237,14 +238,11 @@ public class ClientsView extends JFrame {
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
-        pnlButtons.setPreferredSize(new Dimension(900, 30));
-        pnlButtons.setMinimumSize(new Dimension(900, 30));
-        pnlButtons.setLayout(new GridLayout(1, 3, 20, 20));
+        pnlButtons.setLayout(new GridLayout(ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID3, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_20_GAP));
 
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setPreferredSize(new Dimension(120, 20));
         btnSubmit.setFont(ConstantsCleanSvc.FONT);
         btnSubmit.addActionListener(new ActionListener() {
 
@@ -271,7 +269,6 @@ public class ClientsView extends JFrame {
         btnChange = new JButton("Modifica esistente");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setPreferredSize(new Dimension(120, 20));
         btnChange.setFont(ConstantsCleanSvc.FONT);
         btnChange.setEnabled(false);
         btnChange.addActionListener(new ActionListener() {
@@ -287,8 +284,8 @@ public class ClientsView extends JFrame {
                         popUp.popUpInfo("Cliente modificato con successo.");
                         removeClientToTable(toModify.get());
                         company.removeClient(toModify.get());
-                        addClientToTable(changed);
                         company.addClient(changed);
+                        addClientToTable(changed);
                         updateSearchingCFPIVAs(clientCFPIVAs);
                         clearInsertField();
                         btnChange.setEnabled(false);
@@ -304,7 +301,6 @@ public class ClientsView extends JFrame {
         btnRemove = new JButton("Elimina cliente");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setPreferredSize(new Dimension(120, 20));
         btnRemove.setFont(ConstantsCleanSvc.FONT);
         btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
@@ -411,7 +407,7 @@ public class ClientsView extends JFrame {
      */
     public void removeClientToTable(final Clients c) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(7).equals(c.getCFPIVA())) {
+            if (model.getDataVector().elementAt(i).elementAt(COL_KEY).equals(c.getCFPIVA())) {
                 model.removeRow(i);
                 return;
             }

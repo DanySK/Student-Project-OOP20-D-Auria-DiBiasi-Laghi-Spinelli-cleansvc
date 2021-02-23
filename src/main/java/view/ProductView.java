@@ -28,6 +28,7 @@ import model.ProductsImpl;
 import model.step.enumerations.StepType;
 import utility.InputValidator;
 import utility.PopUp;
+import utility.ConstantsCleanSvc;
 import controller.ProcessImpl;
 
 public class ProductView extends JFrame {
@@ -36,7 +37,6 @@ public class ProductView extends JFrame {
      * 
      */
     private static final long serialVersionUID = 3438738368807932420L;
-    private static final String TITLE = "CLEAN SERVICE MANAGER";
     private final JButton btnHome;
     private final JButton btnSearch;
     private JTextField txtCode;
@@ -52,6 +52,7 @@ public class ProductView extends JFrame {
     private InputValidator validator = new InputValidator();
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo €/Litro", "Utilizzo Litro/500mq", "Fase sanificazione"};
     private Object[][] data = new Object[0][cols.length];
+    private static final int COL_KEY = 0;
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private JComboBox<String> productCodes;
@@ -60,31 +61,31 @@ public class ProductView extends JFrame {
 
     public ProductView() {
 
-        setTitle(ProductView.TITLE);
-        setMinimumSize(new Dimension(1200, 500));
+        setTitle(ConstantsCleanSvc.TITLE);
+        setMinimumSize(new Dimension(ConstantsCleanSvc.WIDTH, ConstantsCleanSvc.HEIGHT));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panelTable = new JPanel();
-        panelTable.setMinimumSize(new Dimension(1000, 200));
+        panelTable.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTable.setBackground(SystemColor.activeCaption);
-        panelTable.setLayout(new BorderLayout(0, 0));
+        panelTable.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setMinimumSize(new Dimension(1000, 60));
+        panelTitle.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTitle.setBackground(SystemColor.activeCaption);
         panelTitle.setLayout(new BorderLayout(0, 0));
 
         JLabel lblTitle = new JLabel("Elenco prodotti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE,20));
+        lblTitle.setFont(ConstantsCleanSvc.FONT_TITLE);
         panelTitle.add(lblTitle, BorderLayout.WEST);
 
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120, 20));
-        btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnHome.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnHome.setFont(ConstantsCleanSvc.FONT);
         btnHome.addActionListener(new ActionListener() {
 
             @Override
@@ -118,7 +119,7 @@ public class ProductView extends JFrame {
             Products product = company.getProducts().get(i);
             model.insertRow(i, new Object[] {product.getCode(), product.getName(), product.getDescription(), product.getPricePerLitre(), product.getLitersPer500Mq(), product.getStepType().getType()});
         } 
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
+        table.setPreferredScrollableViewportSize(new Dimension(ConstantsCleanSvc.TABLE_WIDTH, ConstantsCleanSvc.TABLE_HEIGHT));
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
         panelTable.add(table, BorderLayout.CENTER);
@@ -127,18 +128,17 @@ public class ProductView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati prodotto", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 50));
-        pnlSearch.setMinimumSize(new Dimension(1000, 50));
+        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
         
         JLabel lblsearch = new JLabel("Codice prodotti:");
-        lblsearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblsearch.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(lblsearch);
         
         productCodes = new JComboBox<>();
-        productCodes.setPreferredSize(new Dimension(200, 20));
+        productCodes.setPreferredSize(new Dimension(ConstantsCleanSvc.SEARCH_CF_BOX_WIDTH, ConstantsCleanSvc.SEARCH_CF_BOX_HEIGHT));
         productCodes.setBackground(SystemColor.activeCaption);
         productCodes.setForeground(SystemColor.textText);
-        productCodes.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        productCodes.setFont(ConstantsCleanSvc.FONT);
         updateSearchingCodes(productCodes);
         pnlSearch.add(productCodes);
 
@@ -152,8 +152,8 @@ public class ProductView extends JFrame {
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(120, 20));
-        btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnSearch.setFont(ConstantsCleanSvc.FONT);
         btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per modificarli e per eliminare il prodotto");
         btnSearch.addActionListener(new ActionListener() {
 
@@ -173,84 +173,77 @@ public class ProductView extends JFrame {
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati prodotto", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
-        pnlSubmit.setPreferredSize(new Dimension(900, 120));
-        pnlSubmit.setMinimumSize(new Dimension(900, 120));
-        pnlSubmit.setLayout(new BorderLayout(0, 0));
+        pnlSubmit.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBMIT_HEIGHT));
+        pnlSubmit.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
-        pnlData.setPreferredSize(new Dimension(900, 60));
-        pnlData.setMinimumSize(new Dimension(900, 60));
-        pnlData.setLayout(new GridLayout(3, 2, 20, 5));
+        pnlData.setLayout(new GridLayout(ConstantsCleanSvc.GRID3, ConstantsCleanSvc.GRID2, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_2_GAP));
 
         JLabel labelCode = new JLabel("Codice:");
-        labelCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCode.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelCode);
 
-        txtCode = new JTextField(15);
-        txtCode.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtCode = new JTextField();
+        txtCode.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtCode);
 
         JLabel labelStep = new JLabel("Step:");
-        labelStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelStep.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelStep);
 
         comboStep = new JComboBox<>();
-        comboStep.setPreferredSize(new Dimension(200, 20));
         comboStep.setBackground(SystemColor.activeCaption);
         comboStep.setForeground(SystemColor.textText);
-        comboStep.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        comboStep.setFont(ConstantsCleanSvc.FONT);
         for (StepType steps : process.getStepTypeList()) {
             comboStep.addItem(steps.getType());
         }
         pnlData.add(comboStep);
 
         JLabel labelName = new JLabel("Nome:");
-        labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelName.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelName);
 
-        txtName = new JTextField(15);
-        txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtName = new JTextField();
+        txtName.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtName);
 
         JLabel labelDescr = new JLabel("Descrizione:");
-        labelDescr.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelDescr.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelDescr);
 
-        txtDescr = new JTextField(15);
-        txtDescr.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtDescr = new JTextField();
+        txtDescr.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtDescr);
 
         JLabel labelPrice = new JLabel("Prezzo €/Litro:");
-        labelPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelPrice.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelPrice);
 
-        txtPrice = new JTextField(15);
-        txtPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtPrice = new JTextField();
+        txtPrice.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtPrice);
 
         JLabel labelUsage = new JLabel("Utilizzo L/500mq:");
-        labelUsage.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelUsage.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelUsage);
 
-        txtUsage = new JTextField(15);
-        txtUsage.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtUsage = new JTextField();
+        txtUsage.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtUsage);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
 
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
-        pnlButtons.setPreferredSize(new Dimension(900, 30));
-        pnlButtons.setMinimumSize(new Dimension(900, 30));
-        pnlButtons.setLayout(new GridLayout(1, 2, 20, 5));
+        pnlButtons.setLayout(new GridLayout(ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID2, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_2_GAP));
 
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setPreferredSize(new Dimension(120, 20));
-        btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSubmit.setFont(ConstantsCleanSvc.FONT);
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override
@@ -259,8 +252,8 @@ public class ProductView extends JFrame {
                     Products newProduct = new ProductsImpl(getCode(), process.getStepTypeList().get(getIndexSelectedStep()), getName(), getDescription(), getPrice(), getUsage());
                     if (company.searchProduct(newProduct.getCode()).isEmpty()) {
                         popUp.popUpInfo("Prodotto inserito con successo.");
-                        addProductToTable(company.getProducts().get(company.getProducts().size() - 1));
                         company.addProduct(newProduct);
+                        addProductToTable(company.getProducts().get(company.getProducts().size() - 1));
                         updateSearchingCodes(productCodes);
                         clearInsertField();
                     } else {
@@ -276,8 +269,7 @@ public class ProductView extends JFrame {
         btnChange = new JButton("Modifica esistente");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setPreferredSize(new Dimension(200, 20));
-        btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnChange.setFont(ConstantsCleanSvc.FONT);
         btnChange.setEnabled(false);
         btnChange.addActionListener(new ActionListener() {
 
@@ -292,8 +284,8 @@ public class ProductView extends JFrame {
                         popUp.popUpInfo("Prodotto modificato con successo.");
                         removeProductToTable(toModify.get());
                         company.removeProduct(toModify.get());
-                        addProductToTable(changed);
                         company.addProduct(changed);
+                        addProductToTable(changed);
                         updateSearchingCodes(productCodes);
                         clearInsertField();
                         btnChange.setEnabled(false);
@@ -309,8 +301,7 @@ public class ProductView extends JFrame {
         btnRemove = new JButton("Elimina prodotto");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setPreferredSize(new Dimension(200, 20));
-        btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.setFont(ConstantsCleanSvc.FONT);
         btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
 
@@ -419,15 +410,15 @@ public class ProductView extends JFrame {
      */
     public void removeProductToTable(final Products p) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(0).equals(p.getCode())) {
+            if (model.getDataVector().elementAt(i).elementAt(COL_KEY).equals(p.getCode())) {
                 model.removeRow(i);
             }
         }
     }
 
-    public void updateSearchingCodes(JComboBox<String> productCodes) {
+    public void updateSearchingCodes(final JComboBox<String> productCodes) {
         productCodes.removeAllItems();
-        for (Products product : company.getProducts()){
+        for (Products product : company.getProducts()) {
             productCodes.addItem(product.getCode() + " - " + product.getName());
         }
     }
@@ -449,14 +440,14 @@ public class ProductView extends JFrame {
      * 
      */
     public String getName() {
-        return validator.isName(txtName.getText()) ? txtName.getText() : "";
+        return validator.isNameAndNum(txtName.getText()) ? txtName.getText() : "";
     }
     /**
      * 
      * @return
      */
     public String getDescription() {
-        return validator.isName(txtDescr.getText()) ? txtDescr.getText() : "";
+        return validator.isNameAndNum(txtDescr.getText()) ? txtDescr.getText() : "";
     }
 
     /**

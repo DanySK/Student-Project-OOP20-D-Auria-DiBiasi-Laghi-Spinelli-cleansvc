@@ -48,27 +48,4 @@ public abstract class PeopleImpl implements People {
     public String getEmail() {
         return this.email;
     }
-    /*
-     * methods for the change of client/employee's contacts
-     */
-    @Override
-    public void setAddress(final String newAddress) {
-        this.address = newAddress;
-    }
-    @Override
-    public void setCity(final String newCity) {
-        this.city = newCity;
-    }
-    @Override
-    public void setCAP(final int newCAP) {
-        this.cap = newCAP;
-    }
-    @Override
-    public void setTel(final String newTel) {
-        this.tel = newTel;
-    }
-    @Override
-    public void setEmail(final String newEmail) {
-        this.email = newEmail;
-    }
 }

@@ -49,34 +49,4 @@ public class ProductsImpl implements Products {
     public double getLitersPer500Mq() {
         return this.usage500mq;
     }
-
-    @Override
-    public void setCode(final String code) {
-        this.code = code;
-    }
-    
-    @Override
-    public void setStepType(final StepType stepType) {
-        this.step = stepType;
-    }
-
-    @Override
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    @Override
-    public void setDescription(final String descr) {
-        this.description = descr;
-    }
-
-    @Override
-    public void setPricePerLitre(final double newPrice) {
-        this.priceL = newPrice;
-    }
-
-    @Override
-    public void setLitersPer500MQ(final double newUsage) {
-        this.usage500mq = newUsage;
-    }
 }

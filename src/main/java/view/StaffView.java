@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -26,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import model.users.Staff;
 import controller.CompanyImpl;
 import model.users.StaffImpl;
+import utility.ConstantsCleanSvc;
 import utility.InputValidator;
 import utility.PopUp;
 
@@ -35,7 +35,6 @@ public class StaffView extends JFrame {
      * 
      */
     private static final long serialVersionUID = -6791011571687868971L;
-    private static final String TITLE = "CLEAN SERVICE MANAGER";
     private JTextField txtCFPIVA;
     private JTextField txtName;
     private JTextField txtAddress;
@@ -57,6 +56,7 @@ public class StaffView extends JFrame {
      */
     private CompanyImpl company = CompanyImpl.getInstance();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF/PIVA"};
+    private final static int COL_KEY = 7;
     private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
@@ -64,31 +64,31 @@ public class StaffView extends JFrame {
     private InputValidator validator = new InputValidator();
 
     public StaffView() {
-        setTitle(StaffView.TITLE);
-        setMinimumSize(new Dimension(1200, 500));
+        setTitle(ConstantsCleanSvc.TITLE);
+        setMinimumSize(new Dimension(ConstantsCleanSvc.WIDTH, ConstantsCleanSvc.HEIGHT));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panelTable = new JPanel();
-        panelTable.setMinimumSize(new Dimension(1000, 200));
+        panelTable.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTable.setBackground(SystemColor.activeCaption);
-        panelTable.setLayout(new BorderLayout(0, 0));
+        panelTable.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setMinimumSize(new Dimension(1000, 60));
+        panelTitle.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTitle.setBackground(SystemColor.activeCaption);
-        panelTitle.setLayout(new BorderLayout(0, 0));
+        panelTitle.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JLabel lblTitle = new JLabel("Elenco dipendenti");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE, 20));
+        lblTitle.setFont(ConstantsCleanSvc.FONT_TITLE);
         panelTitle.add(lblTitle, BorderLayout.WEST);
 
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120, 20));
-        btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnHome.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnHome.setFont(ConstantsCleanSvc.FONT);
         btnHome.addActionListener(new ActionListener() {
 
             @Override
@@ -124,7 +124,7 @@ public class StaffView extends JFrame {
             String admin = staff.isAdmin() ? "si" : "no";
             model.insertRow(i, new Object[] {staff.getName(), staff.getAddress(), staff.getCity(), staff.getCAP(), admin, staff.getTel(), staff.getEmail(), staff.getCFPIVA()});
         }
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 200));
+        table.setPreferredScrollableViewportSize(new Dimension(ConstantsCleanSvc.TABLE_WIDTH, ConstantsCleanSvc.TABLE_HEIGHT));
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true); //sort by the column header clicked
         panelTable.add(table, BorderLayout.CENTER);
@@ -133,26 +133,25 @@ public class StaffView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Recupera dati dipendente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 40));
-        pnlSearch.setMinimumSize(new Dimension(1000, 40));
+        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
 
         JLabel lblsearchCFPIVA = new JLabel("CF dipendenti: ");
-        lblsearchCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblsearchCFPIVA.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(lblsearchCFPIVA);
 
         staffCFs = new JComboBox<>();
-        staffCFs.setPreferredSize(new Dimension(400, 20));
+        staffCFs.setPreferredSize(new Dimension(ConstantsCleanSvc.SEARCH_CF_BOX_WIDTH, ConstantsCleanSvc.SEARCH_CF_BOX_HEIGHT));
         staffCFs.setBackground(SystemColor.activeCaption);
         staffCFs.setForeground(SystemColor.textText);
-        staffCFs.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        staffCFs.setFont(ConstantsCleanSvc.FONT);
         updateSearchingCFs(staffCFs);
         pnlSearch.add(staffCFs);
 
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
         btnSearch.setBackground(SystemColor.activeCaption);
-        btnSearch.setPreferredSize(new Dimension(120, 20));
-        btnSearch.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnSearch.setFont(ConstantsCleanSvc.FONT);
         btnSearch.setToolTipText("Recupera i dati per visualizzarli nella sezione sottostante per modificarli e per eliminare il dipendente");
         btnSearch.addActionListener(new ActionListener() {
 
@@ -172,94 +171,88 @@ public class StaffView extends JFrame {
         final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati dipendente", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
-        pnlSubmit.setPreferredSize(new Dimension(900, 140));
-        pnlSubmit.setMinimumSize(new Dimension(900, 140));
-        pnlSubmit.setLayout(new BorderLayout(0, 0));
+        pnlSubmit.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBMIT_HEIGHT));
+        pnlSubmit.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         final JPanel pnlData = new JPanel();
         pnlData.setBorder(null);
         pnlData.setBackground(SystemColor.window);
-        pnlData.setPreferredSize(new Dimension(900, 60));
-        pnlData.setMinimumSize(new Dimension(900, 60));
-        pnlData.setLayout(new GridLayout(4, 4, 20, 2));
+        pnlData.setLayout(new GridLayout(ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID4, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_2_GAP));
 
         JLabel labelCFPIVA = new JLabel("CF:");
-        labelCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCFPIVA.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelCFPIVA);
 
-        txtCFPIVA = new JTextField(18);
-        txtCFPIVA.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtCFPIVA = new JTextField();
+        txtCFPIVA.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtCFPIVA);
 
         JLabel labelName = new JLabel("Nome:");
-        labelName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelName.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelName);
 
-        txtName = new JTextField(14);
-        txtName.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtName = new JTextField();
+        txtName.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtName);
 
         JLabel labelAddress = new JLabel("Indirizzo:");
-        labelAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelAddress.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelAddress);
 
-        txtAddress = new JTextField(20);
-        txtAddress.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtAddress = new JTextField();
+        txtAddress.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtAddress);
 
         JLabel labelCity = new JLabel("Città:");
-        labelCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCity.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelCity);
 
-        txtCity = new JTextField(10);
-        txtCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtCity = new JTextField();
+        txtCity.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtCity);
 
         JLabel labelCAP = new JLabel("CAP:");
-        labelCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCAP.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelCAP);
 
-        txtCAP = new JTextField(5);
-        txtCAP.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtCAP = new JTextField();
+        txtCAP.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtCAP);
 
         JLabel labelmq = new JLabel("Amministratore:");
-        labelmq.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelmq.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelmq);
 
-        checkAdmin = new JCheckBox("");
+        checkAdmin = new JCheckBox();
         checkAdmin.setBackground(SystemColor.window);
         pnlData.add(checkAdmin);
 
         JLabel labeltel = new JLabel("Telefono:");
-        labeltel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labeltel.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labeltel);
 
-        txtTel = new JTextField(10);
-        txtTel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtTel = new JTextField();
+        txtTel.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtTel);
 
         JLabel labelemail = new JLabel("Email:");
-        labelemail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelemail.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(labelemail);
 
-        txtEmail = new JTextField(15);
-        txtEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtEmail = new JTextField();
+        txtEmail.setFont(ConstantsCleanSvc.FONT);
         pnlData.add(txtEmail);
         pnlSubmit.add(pnlData, BorderLayout.CENTER);
 
         final JPanel pnlButtons = new JPanel();
         pnlButtons.setBackground(SystemColor.window);
         pnlButtons.setBorder(null);
-        pnlButtons.setPreferredSize(new Dimension(900, 30));
-        pnlButtons.setMinimumSize(new Dimension(900, 30));
-        pnlButtons.setLayout(new GridLayout(1, 3, 20, 20));
+        pnlButtons.setLayout(new GridLayout(ConstantsCleanSvc.GRID1, ConstantsCleanSvc.GRID3, ConstantsCleanSvc.GRID_20_GAP, ConstantsCleanSvc.GRID_20_GAP));
 
         btnSubmit = new JButton("Inserisci nuovo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setPreferredSize(new Dimension(120, 20));
-        btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnSubmit.setFont(ConstantsCleanSvc.FONT);
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override
@@ -268,8 +261,8 @@ public class StaffView extends JFrame {
                     Staff staff = new StaffImpl(getCFPIVA().toUpperCase(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(), isAdmin());
                     if (company.searchStaffbyCF(staff.getCFPIVA()).isEmpty() && company.searchStaffbyEmail(staff.getEmail()).isEmpty()) {
                         popUp.popUpInfo("Dipendente inserito con successo.");
-                        addStaffToTable(company.getStaff().get(company.getStaff().size() - 1));
                         company.addStaff(staff);
+                        addStaffToTable(company.getStaff().get(company.getStaff().size() - 1));
                         updateSearchingCFs(staffCFs);
                         clearInsertField();
                     } else {
@@ -285,8 +278,7 @@ public class StaffView extends JFrame {
         btnChange = new JButton("Aggiorna modifiche");
         btnChange.setForeground(SystemColor.textText);
         btnChange.setBackground(SystemColor.activeCaption);
-        btnChange.setPreferredSize(new Dimension(120, 20));
-        btnChange.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnChange.setFont(ConstantsCleanSvc.FONT);
         btnChange.setEnabled(false);
         btnChange.addActionListener(new ActionListener() {
 
@@ -301,8 +293,8 @@ public class StaffView extends JFrame {
                         popUp.popUpInfo("Dipendente modificato con successo.");
                         removeStaffToTable(toModify.get());
                         company.removeStaff(toModify.get());
-                        addStaffToTable(changed);
                         company.addStaff(changed);
+                        addStaffToTable(changed);
                         updateSearchingCFs(staffCFs);
                         clearInsertField();
                         btnChange.setEnabled(false);
@@ -318,8 +310,7 @@ public class StaffView extends JFrame {
         btnRemove = new JButton("Elimina dipendente");
         btnRemove.setForeground(SystemColor.textText);
         btnRemove.setBackground(SystemColor.activeCaption);
-        btnRemove.setPreferredSize(new Dimension(120, 20));
-        btnRemove.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnRemove.setFont(ConstantsCleanSvc.FONT);
         btnRemove.setEnabled(false);
         btnRemove.addActionListener(new ActionListener() {
 
@@ -407,7 +398,7 @@ public class StaffView extends JFrame {
      */
     public void removeStaffToTable(final Staff s) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(7).equals(s.getCFPIVA())) {
+            if (model.getDataVector().elementAt(i).elementAt(COL_KEY).equals(s.getCFPIVA())) {
                 model.removeRow(i);
             }
         }
@@ -428,8 +419,8 @@ public class StaffView extends JFrame {
     }
 
     /**
-     * Check if all input field are fill
-     * @return true
+     * 
+     * @return true if all field are written
      */
     public Boolean missingField() {
         return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP() == Integer.MIN_VALUE || getTel().isEmpty() || getEmail().isEmpty());

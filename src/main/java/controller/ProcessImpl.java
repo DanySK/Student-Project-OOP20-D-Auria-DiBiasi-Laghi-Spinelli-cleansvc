@@ -52,8 +52,10 @@ public class ProcessImpl implements Process {
      */
     @Override
     public List<StepType> getStepTypeList() {
-        for (StepType step : StepType.values()) {
-            stepTypeList.add(step);
+        if (this.stepTypeList.isEmpty()) {
+            for (StepType step : StepType.values()) {
+                stepTypeList.add(step);
+            }
         }
         return this.stepTypeList;
     }
