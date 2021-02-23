@@ -38,7 +38,7 @@ public class SaveAndLoadSubSteps implements SaveAndLoad {
             for (final SubSteps s : this.process.getSubStepsList()) {
                 w.write(CODE_STR + s.getCode());
                 w.newLine();
-                w.write(STEP_STR + s.getType());
+                w.write(STEP_STR + s.getStepType());
                 w.newLine();
                 w.write(NAME_STR + s.getName());
                 w.newLine();

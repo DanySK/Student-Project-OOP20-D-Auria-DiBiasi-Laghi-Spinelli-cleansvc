@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,13 +25,13 @@ import javax.swing.border.TitledBorder;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
-import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 
-import controller.Company;
 import controller.CompanyImpl;
 import controller.ProcessImpl;
 import model.Appointments;
 import model.AppointmentsImpl;
+import model.Products;
+import model.step.SubSteps;
 import model.step.enumerations.StepType;
 import model.users.Clients;
 import utility.PopUp;
@@ -45,21 +44,29 @@ public class NewAppointmentView extends JFrame {
     private static final String TITLE = "CLEAN SERVICE MANAGER";
     private JComboBox<String> comboClients;
     private final JButton btnSubmit;
+    private final JButton btnConfirm;
     private final JButton btnHome;
     private final DatePicker datepicker;
     private final TimePicker timepicker;
     private JCheckBox check;
-//    private final JCheckBox check2;
-//    private final JCheckBox check3;
-//    private final JCheckBox check4;
-//    private final JCheckBox check5;
     private List<JCheckBox> checkboxs = new ArrayList<>();
-    private final JIntegerTextField txtStaffs;
+    private JTextField txtStaffs;
     private CompanyImpl company = CompanyImpl.getInstance();
     private ProcessImpl process = ProcessImpl.getInstance();
     private List<Clients> clientsList = company.getClients();
     private PopUp popUp = new PopUp();
+    private double totTime;
+    private double totEarn;
 
+
+    private JLabel labelTime;
+    private JLabel labelEarn;
+    private JLabel labelCleaning;
+    private JLabel labelCleansing;
+    private JLabel labelDisinfection;
+    private JLabel labelDisinfestation;
+    private JLabel labelConclusion;
+    private JLabel labelStaffOnWork;
     public NewAppointmentView() {
 
         setTitle(NewAppointmentView.TITLE);
@@ -115,7 +122,7 @@ public class NewAppointmentView extends JFrame {
         Clients cc;
         for (int i = 0; i < clientsList.size(); i++) {
             cc = company.getClients().get(i);
-            comboClients.addItem(cc.getName() + " " + cc.getCFPIVA());
+            comboClients.addItem(cc.getCFPIVA() + " " + cc.getName());
         }
 
         JLabel labelDatePicker = new JLabel("Data:");
@@ -146,15 +153,18 @@ public class NewAppointmentView extends JFrame {
             checkboxs.add(check);
             pnlSubmit.add(check);
         }
-        
+
+        checkboxs.get(0).setSelected(true);
+        checkboxs.get(4).setSelected(true);
+        checkboxs.get(4).setEnabled(false);
+
         JLabel labelStaff = new JLabel("Dipendenti:");
         labelStaff.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(labelStaff);
 
-        txtStaffs = new JIntegerTextField(10);
+        txtStaffs = new JTextField(10);
         txtStaffs.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSubmit.add(txtStaffs);
-
 
         btnSubmit = new JButton("Conferma");
         btnSubmit.setForeground(SystemColor.textText);
@@ -170,8 +180,9 @@ public class NewAppointmentView extends JFrame {
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
                         company.addAppointment(a);
                         popUp.popUpInfo("Appuntamento inserito con successo.");
-                        new AppointmentsView().display();
-                        setVisible(false);
+                        setSummary();
+//                        new AppointmentsView().display();
+//                        setVisible(false);
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
                     }
@@ -183,45 +194,58 @@ public class NewAppointmentView extends JFrame {
         pnlSubmit.add(btnSubmit);
 
         final JPanel pnlSearch = new JPanel();
-        pnlSearch.setBorder(new TitledBorder(null, "Rieilogo", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
+        pnlSearch.setBorder(new TitledBorder(null, "Riepilogo", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
         pnlSearch.setPreferredSize(new Dimension(1000, 300));
         pnlSearch.setMinimumSize(new Dimension(1000, 300));
 
-        JLabel labelCleaning = new JLabel("Tempo per la fase di PULIZIA:");
+       labelCleaning = new JLabel("Tempo per la fase di PULIZIA:");
         labelCleaning .setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelCleaning);
 
-        JLabel labelCleansing = new JLabel("Tempo per la fase di RISCIACQUO:");
+        labelCleansing = new JLabel("Tempo per la fase di RISCIACQUO:");
         labelCleansing .setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelCleansing);
 
-        JLabel labelDisinfection = new JLabel("Tempo per la fase di DISINFEZIONE:");
+        labelDisinfection = new JLabel("Tempo per la fase di DISINFEZIONE:");
         labelDisinfection .setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelDisinfection);
 
-        JLabel labelDisinfestation = new JLabel("Tempo per la fase di DISINFESTAZIONE:");
+        labelDisinfestation = new JLabel("Tempo per la fase di DISINFESTAZIONE:");
         labelDisinfestation .setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelDisinfestation);
 
-        JLabel labelConclusion = new JLabel("Tempo per la fase di CONCLUSIONE:");
+        labelConclusion = new JLabel("Tempo per la fase di CONCLUSIONE:");
         labelConclusion .setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelConclusion);
 
-        JLabel labelStaffOnWork = new JLabel("Dipendenti affidati al processo:");
+        labelStaffOnWork = new JLabel("Dipendenti affidati al processo:");
         labelStaffOnWork .setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelStaffOnWork);
 
-        JLabel labelTime = new JLabel("Tempo totale stimato:");
+        labelTime = new JLabel("Tempo totale stimato:");
         labelTime.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelTime);
 
-        JLabel labelEarn = new JLabel("Costo totale stimato:");
+        labelEarn = new JLabel("Costo totale stimato:");
         labelEarn.setFont(new Font("Tahoma", Font.PLAIN, 14));
         pnlSearch.add(labelEarn);
 
-        getContentPane().add(pnlSubmit,BorderLayout.CENTER);
-        getContentPane().add(pnlSearch,BorderLayout.SOUTH);
+        btnConfirm = new JButton("Fine");
+        btnConfirm.setForeground(SystemColor.textText);
+        btnConfirm.setBackground(SystemColor.activeCaption);
+        btnConfirm.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnConfirm.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                //TODO salvare statistiche
+            }
+        });
+        pnlSearch.add(btnConfirm);
+
+        getContentPane().add(pnlSubmit, BorderLayout.CENTER);
+        getContentPane().add(pnlSearch, BorderLayout.SOUTH);
 
         GroupLayout layout = new GroupLayout(pnlSubmit);
         pnlSubmit.setLayout(layout);
@@ -278,18 +302,22 @@ public class NewAppointmentView extends JFrame {
 
        layout2.setVerticalGroup(layout2.createSequentialGroup()
                .addComponent(labelCleaning)
-               .addGap(20)
+               .addGap(10)
                .addComponent(labelCleansing)
-               .addGap(20)
+               .addGap(10)
                .addComponent(labelDisinfection)
-               .addGap(20)
+               .addGap(10)
                .addComponent(labelDisinfestation)
-               .addGap(20)
+               .addGap(10)
+               .addComponent(labelConclusion)
+               .addGap(10)
                .addComponent(labelStaffOnWork)
-               .addGap(20)
+               .addGap(10)
                .addComponent(labelTime)
-               .addGap(20)
-               .addComponent(labelEarn));
+               .addGap(10)
+               .addComponent(labelEarn)
+               .addGap(10)
+               .addComponent(btnConfirm));
 
        layout2.setHorizontalGroup(layout2.createSequentialGroup()
                .addGroup(layout2.createParallelGroup(Alignment.LEADING)
@@ -297,15 +325,64 @@ public class NewAppointmentView extends JFrame {
                        .addComponent(labelCleansing)
                        .addComponent(labelDisinfection)
                        .addComponent(labelDisinfestation)
+                       .addComponent(labelConclusion)
                        .addComponent(labelStaffOnWork)
                        .addComponent(labelTime)
-                       .addComponent(labelEarn)));
-
+                       .addComponent(labelEarn))
+               .addGroup(layout2.createParallelGroup(Alignment.TRAILING)
+                       .addComponent(btnConfirm)));
     }
+
+    /**
+     * 
+     */
 
     public void display() {
         setVisible(true);
         setResizable(true);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public void setSummary() {
+         int time = 0;
+         double earn = 0;
+         double totalTime = 0;
+         double totalEarn = 0;
+         List<Integer> partialTime = new ArrayList<>();
+
+         for (JCheckBox check : checkboxs) {
+             time = 0;
+             if (check.isSelected()) {
+                 if (!process.getSubStepsByStepType(check.getText()).isEmpty()) {
+                     List<SubSteps> list = process.getSubStepsByStepType(check.getText()).get();
+                     for (SubSteps subSteps : list) {
+                         time += subSteps.getTime();
+                     }
+                 }
+                 if (!company.getProductsByStepType(check.getText()).isEmpty()) {
+                     List<Products> list2 = company.getProductsByStepType(check.getText()).get();
+                     for (Products p : list2) {
+                         earn += p.getPricePerLitre();
+                     }
+                 }
+             }
+             totalEarn += earn;
+             totalTime += time;
+             partialTime.add(time);
+         }
+         totTime = process.getProportialValue(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
+         totEarn = process.getProportialValue(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
+         labelCleaning.setText(labelCleaning.getText() + " " + String.valueOf(partialTime.get(0)));
+         labelCleansing.setText(labelCleansing.getText() + " " + String.valueOf(partialTime.get(1)));
+         labelDisinfection.setText(labelDisinfection.getText() + " " + String.valueOf(partialTime.get(2)));
+         labelDisinfestation.setText(labelDisinfestation.getText() + " " + String.valueOf(partialTime.get(3)));
+         labelConclusion.setText(labelConclusion.getText() + " " + String.valueOf(partialTime.get(4)));
+         labelStaffOnWork.setText(labelStaffOnWork.getText() + " " + txtStaffs.getText());
+         labelTime.setText(labelTime.getText() + " " + String.valueOf(totTime) + " minuti");
+         labelEarn.setText(labelEarn.getText() + " " + String.valueOf(totEarn) + " €");
     }
 
     public Boolean missingField() {
@@ -319,4 +396,5 @@ public class NewAppointmentView extends JFrame {
     public String getHour() {
         return timepicker.getText();
     }
+
 }

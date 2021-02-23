@@ -26,7 +26,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ProcessImpl;
-import model.Products;
 import model.step.SubSteps;
 import model.step.SubStepsImpl;
 import model.step.enumerations.StepType;
@@ -56,7 +55,6 @@ public class SubStepView extends JFrame {
     private final JButton btnHome;
 
     private ProcessImpl process = ProcessImpl.getInstance();
-    //private List<SubSteps> subStepsList = process.getSubStepsList();
 
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Fase", "Tempo"};
     private Object[][] data = new Object[0][cols.length];
@@ -106,7 +104,7 @@ public class SubStepView extends JFrame {
 
         for (int i = 0; i < process.getSubStepsList().size(); i++) {
             SubSteps subStep = process.getSubStepsList().get(i);
-            model.insertRow(i, new Object[] {subStep.getCode(), subStep.getName(), subStep.getDescription(), subStep.getType(), subStep.getTime()});
+            model.insertRow(i, new Object[] {subStep.getCode(), subStep.getName(), subStep.getDescription(), subStep.getStepType(), subStep.getTime()});
         } 
 
         table.setPreferredScrollableViewportSize(new Dimension(1000, 500));

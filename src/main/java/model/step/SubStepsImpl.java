@@ -58,7 +58,7 @@ public class SubStepsImpl implements SubSteps {
      * @return the type.
      */
     @Override
-    public StepType getType() {
+    public StepType getStepType() {
         return this.type;
     }
 }

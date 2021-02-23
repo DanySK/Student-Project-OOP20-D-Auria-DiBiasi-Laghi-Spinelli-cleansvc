@@ -12,5 +12,5 @@ public interface SubSteps {
 
     String getCode();
 
-    StepType getType();
+    StepType getStepType();
 }

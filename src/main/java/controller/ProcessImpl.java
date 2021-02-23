@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import model.Products;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
+import model.users.Clients;
 
 public class ProcessImpl implements Process {
 
@@ -49,8 +51,10 @@ public class ProcessImpl implements Process {
      */
     @Override
     public List<StepType> getStepTypeList() {
-        for (StepType step : StepType.values()) {
-            stepTypeList.add(step);
+        if(stepTypeList.isEmpty()) {
+            for (StepType step : StepType.values()) {
+                stepTypeList.add(step);
+            }
         }
         return this.stepTypeList;
     }
@@ -66,5 +70,28 @@ public class ProcessImpl implements Process {
             }
         }
         return Optional.empty();
+    }
+    /**
+     * 
+     */
+    @Override
+    public Optional<List<SubSteps>> getSubStepsByStepType(final String type) {
+        List<SubSteps> sBySteps = new ArrayList<>();
+        for (SubSteps subSteps : this.stepList) {
+            if (subSteps.getStepType().getType().equals(type)) {
+                sBySteps.add(subSteps);
+            }
+        }
+        return (sBySteps.isEmpty()) ? Optional.empty() : Optional.of(sBySteps);
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public double getProportialValue(final double value, final Clients s, final int staff) {
+        double tot = 0;
+        tot = Math.floor((value * s.getMqStructure()) / (500 * staff));
+        return tot;
     }
 }
