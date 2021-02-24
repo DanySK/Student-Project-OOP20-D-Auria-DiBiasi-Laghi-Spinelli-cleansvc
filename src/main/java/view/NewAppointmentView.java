@@ -8,6 +8,9 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
 import controller.CompanyImpl;
+import controller.backupFile.SaveStatistics;
 import controller.ProcessImpl;
 import model.Appointments;
 import model.AppointmentsImpl;
@@ -34,6 +38,7 @@ import model.Products;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
 import model.users.Clients;
+import utility.ConstantsCleanSvc;
 import utility.PopUp;
 import utility.ConstantsCleanSvc;
 import utility.InputValidator;
@@ -81,19 +86,19 @@ public class NewAppointmentView extends JFrame {
         panelTitle.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(panelTitle, BorderLayout.NORTH);
-        panelTitle.setLayout(new BorderLayout(0, 0));
+        panelTitle.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
 
         JLabel lblTitle = new JLabel("Nuovo Appuntamento");
         lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
         lblTitle.setForeground(SystemColor.textText);
-        lblTitle.setFont(new Font("Trebuchet MS", Font.CENTER_BASELINE, 20));
+        lblTitle.setFont(ConstantsCleanSvc.FONT_TITLE);
         panelTitle.add(lblTitle, BorderLayout.WEST);
 
         btnHome = new JButton("BACK HOME");
         btnHome.setForeground(SystemColor.textText);
         btnHome.setBackground(SystemColor.activeCaption);
-        btnHome.setPreferredSize(new Dimension(120, 20));
-        btnHome.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
+        btnHome.setPreferredSize(new Dimension(ConstantsCleanSvc.BTN_HOME_WIDTH, ConstantsCleanSvc.BTN_HOME_HEIGHT));
+        btnHome.setFont(ConstantsCleanSvc.FONT);
         btnHome.addActionListener(new ActionListener() {
 
             @Override
@@ -105,15 +110,20 @@ public class NewAppointmentView extends JFrame {
         });
         panelTitle.add(btnHome, BorderLayout.EAST);
 
-        JPanel pnlSubmit = new JPanel();
+        JPanel mainPanel = new JPanel();
+        getContentPane().add(mainPanel, BorderLayout.CENTER);
+        mainPanel.setLayout(new BorderLayout(ConstantsCleanSvc.BORDERLAYOUT0, ConstantsCleanSvc.BORDERLAYOUT0));
+
+        final JPanel pnlSubmit = new JPanel();
         pnlSubmit.setBorder(new TitledBorder(null, "Dati nuovo appuntamento", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSubmit.setBackground(SystemColor.window);
-        pnlSubmit.setPreferredSize(new Dimension(1000, 100));
-        pnlSubmit.setMinimumSize(new Dimension(1000, 100));
+        pnlSubmit.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
+
         pnlSubmit.setLayout(new GridLayout(2, 6, 10, 20));
+        mainPanel.add(pnlSubmit, BorderLayout.NORTH);
 
         JLabel labelCliente = new JLabel("Cliente:");
-        labelCliente.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCliente.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelCliente);
 
         comboClients = new JComboBox<>();
@@ -121,34 +131,34 @@ public class NewAppointmentView extends JFrame {
         comboClients.setToolTipText("Cliente");
         comboClients.setBackground(SystemColor.inactiveCaption);
         comboClients.setForeground(SystemColor.textText);
-        comboClients.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        comboClients.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(comboClients);
         Clients cc;
         for (int i = 0; i < clientsList.size(); i++) {
             cc = company.getClients().get(i);
-            comboClients.addItem(cc.getCFPIVA() + " " + cc.getName());
+            comboClients.addItem(cc.getName() + " " + cc.getCFPIVA().toUpperCase());
         }
 
         JLabel labelDatePicker = new JLabel("Data:");
-        labelDatePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelDatePicker.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelDatePicker);
 
         datepicker = new DatePicker();
         datepicker.getComponentToggleCalendarButton().setForeground(SystemColor.textText);
         datepicker.getComponentDateTextField().setToolTipText("Data dell'appuntamento");
         datepicker.getComponentToggleCalendarButton().setBackground(SystemColor.activeCaption);
-        datepicker.getComponentDateTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
+        datepicker.getComponentDateTextField().setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(datepicker);
 
         JLabel labelTimePicker = new JLabel("Orario:");
-        labelTimePicker.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelTimePicker.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelTimePicker);
 
         timepicker = new TimePicker();
         timepicker.getComponentToggleTimeMenuButton().setForeground(SystemColor.textText);
         timepicker.getComponentTimeTextField().setToolTipText("Orario dell'appuntamento");
         timepicker.getComponentToggleTimeMenuButton().setBackground(SystemColor.activeCaption);
-        timepicker.getComponentTimeTextField().setFont(new Font("Tahoma", Font.PLAIN, 13));
+        timepicker.getComponentTimeTextField().setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(timepicker);
 
         for (StepType stepType : process.getStepTypeList()) {
@@ -182,14 +192,26 @@ public class NewAppointmentView extends JFrame {
                     Clients c = company.getClients().get(comboClients.getSelectedIndex());
                     Appointments a = new AppointmentsImpl(getDate(), getHour(), c);
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
-                        company.addAppointment(a);
-                        popUp.popUpInfo("Appuntamento inserito con successo.");
-                        setSummary();
+                        if (datepicker.getDate().isBefore(LocalDate.now())
+                                || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
+                            popUp.popUpErrorOrMissing();
+                        } else {
+                            company.addAppointment(a);
+                            popUp.popUpInfo("Appuntamento inserito con successo.");
+                            new AppointmentsView().display();
+                            setSummary();
+                            //Qui richiama la SaveStatistics.save()
+                            /*
+                             * testing
+                                new SaveStatistics().save(datepicker.getDate(), timepicker.getTime().getMinute(), 100);
+                            */
+                            setVisible(false);
+                        }
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
                     }
                 } else {
-                    popUp.popUpWarning("Ci sono dati mancanti o errati");
+                    popUp.popUpErrorOrMissing();
                 }
             }
         });

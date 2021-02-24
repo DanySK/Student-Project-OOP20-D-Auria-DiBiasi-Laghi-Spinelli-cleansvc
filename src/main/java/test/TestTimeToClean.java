@@ -2,17 +2,20 @@ package test;
 
 
 import org.junit.jupiter.api.Test;
-
+import org.junit.Assert;
 import model.TimeToCleanValuation;
 
-
 public class TestTimeToClean {
-
-        @Test
-        public void timeToTest() {
-
-            System.out.println("Tempo stimato: " + new TimeToCleanValuation(1, 2, 30).coreValuation() + " min");
-
-        }
+    
+    TimeToCleanValuation time = new TimeToCleanValuation(2,2,300);
+    
+    @Test
+    private void testTime1(){
+        Assert.assertEquals(9000, time.washValuation());
     }
-
+    
+    @Test
+    private void testTime2() {
+       System.out.println(time.washValuation());
+    }
+}

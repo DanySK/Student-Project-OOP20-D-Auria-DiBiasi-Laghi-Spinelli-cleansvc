@@ -56,9 +56,8 @@ public class StaffView extends JFrame {
      */
     private CompanyImpl company = CompanyImpl.getInstance();
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Amministratore", "Telefono", "Email", "CF/PIVA"};
-    
-    private static final int COL_KEY = 7;
 
+    private static final int COL_KEY = 7;
     private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
@@ -375,13 +374,9 @@ public class StaffView extends JFrame {
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGap(0)
                 .addGroup(layout.createParallelGroup(Alignment.CENTER)
-                        .addGap(0)
                         .addComponent(panelTable)
-                        .addGap(0)
                         .addComponent(pnlSearch)
-                        .addGap(0)
-                        .addComponent(pnlSubmit)
-                        .addGap(0))
+                        .addComponent(pnlSubmit))
                 .addGap(0));
     }
 

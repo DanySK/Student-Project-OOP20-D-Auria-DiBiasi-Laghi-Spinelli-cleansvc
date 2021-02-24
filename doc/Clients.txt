@@ -22,3 +22,11 @@ CAP: 47014
 TEL: 3311068731
 EMAIL: vanessa@unibo.it
 MQSTRUCTURE: 80
+CFPIVA: SPNSLV97T67C573C
+NAME: Silvia Spinelli
+ADDRESS: Via Malatesta Novello, 5
+CITY: Cesena
+CAP: 47521
+TEL: 3454476636
+EMAIL: silviaspinelli97@gmail.com
+MQSTRUCTURE: 1000
