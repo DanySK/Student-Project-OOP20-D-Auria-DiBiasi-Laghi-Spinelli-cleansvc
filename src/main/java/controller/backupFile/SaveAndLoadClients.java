@@ -28,6 +28,9 @@ public class SaveAndLoadClients implements SaveAndLoad {
     private static final String EMAIL_STR = "EMAIL: ";
     private static final String MQ_STR = "MQSTRUCTURE: ";
 
+    /**
+     * A method that saves a client.
+     */
     @Override
     public void save() {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_CLIENTS))) {
@@ -54,6 +57,9 @@ public class SaveAndLoadClients implements SaveAndLoad {
         }
     }
 
+    /**
+     * A method that loads a client.
+     */
     @Override
     public void load() {
         final List<String> cfPIvaList = new ArrayList<>();

@@ -2,8 +2,6 @@ package controller;
 
 import java.util.List;
 import java.util.Optional;
-
-import model.Products;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
 import model.users.Clients;
@@ -23,7 +21,9 @@ public interface Process {
     Optional<List<SubSteps>> getSubStepsByStepType(String stepType);
 
     double getProportialTime(double value, Clients s, int staff);
-    
-    double getProportialEarn(double value, Clients s);
+
+    double getProportialCost(double value, Clients s);
+
+    double getIncome(double value);
 
 }

@@ -3,7 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -30,8 +29,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
 import controller.CompanyImpl;
-import controller.backupFile.SaveStatistics;
 import controller.ProcessImpl;
+import controller.backupFile.SaveStatistics;
 import model.Appointments;
 import model.AppointmentsImpl;
 import model.Products;
@@ -61,7 +60,8 @@ public class NewAppointmentView extends JFrame {
     private List<Clients> clientsList = company.getClients();
     private PopUp popUp = new PopUp();
     private double totTime;
-    private double totEarn;
+    private double totCost;
+    private double income;
 
 
     private JLabel labelTime;
@@ -72,7 +72,7 @@ public class NewAppointmentView extends JFrame {
     private JLabel labelDisinfestation;
     private JLabel labelConclusion;
     private JLabel labelStaffOnWork;
-    
+
     private InputValidator validator = new InputValidator();
     public NewAppointmentView() {
 
@@ -117,7 +117,7 @@ public class NewAppointmentView extends JFrame {
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
 
-        pnlSubmit.setLayout(new GridLayout(2, 6, 10, 20));
+        pnlSubmit.setLayout(new GridLayout(ConstantsCleanSvc.GRID2, ConstantsCleanSvc.GRID6, ConstantsCleanSvc.GRID_10_GAP, ConstantsCleanSvc.GRID_20_GAP));
         mainPanel.add(pnlSubmit, BorderLayout.NORTH);
 
         JLabel labelCliente = new JLabel("Cliente:");
@@ -171,14 +171,14 @@ public class NewAppointmentView extends JFrame {
         checkboxs.get(4).setEnabled(false);
 
         JLabel labelStaff = new JLabel("Dipendenti:");
-        labelStaff.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelStaff.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelStaff);
 
-        txtStaffs = new JTextField(10);
-        txtStaffs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtStaffs = new JTextField();
+        txtStaffs.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(txtStaffs);
 
-        btnSubmit = new JButton("Conferma");
+        btnSubmit = new JButton("Mostra Riepilogo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
         btnSubmit.setFont(ConstantsCleanSvc.FONT);
@@ -188,22 +188,14 @@ public class NewAppointmentView extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
                     Clients c = company.getClients().get(comboClients.getSelectedIndex());
-                    Appointments a = new AppointmentsImpl(getDate(), getHour(), c);
+                    Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
                         if (datepicker.getDate().isBefore(LocalDate.now())
                                 || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
                             popUp.popUpErrorOrMissing();
                         } else {
-                            company.addAppointment(a);
-                            popUp.popUpInfo("Appuntamento inserito con successo.");
-                            new AppointmentsView().display();
                             setSummary();
-                            //Qui richiama la SaveStatistics.save()
-                            /*
-                             * testing
-                                new SaveStatistics().save(datepicker.getDate(), timepicker.getTime().getMinute(), 100);
-                            */
-                            setVisible(false);
+                            btnConfirm.setEnabled(true);
                         }
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
@@ -218,56 +210,60 @@ public class NewAppointmentView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Riepilogo", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 300));
-        pnlSearch.setMinimumSize(new Dimension(1000, 300));
+        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
+        pnlSearch.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
 
        labelCleaning = new JLabel("Tempo per la fase di PULIZIA:");
-        labelCleaning .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCleaning .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelCleaning);
 
         labelCleansing = new JLabel("Tempo per la fase di RISCIACQUO:");
-        labelCleansing .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCleansing .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelCleansing);
 
         labelDisinfection = new JLabel("Tempo per la fase di DISINFEZIONE:");
-        labelDisinfection .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelDisinfection .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelDisinfection);
 
         labelDisinfestation = new JLabel("Tempo per la fase di DISINFESTAZIONE:");
-        labelDisinfestation .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelDisinfestation .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelDisinfestation);
 
         labelConclusion = new JLabel("Tempo per la fase di CONCLUSIONE:");
-        labelConclusion .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelConclusion .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelConclusion);
 
         labelStaffOnWork = new JLabel("Dipendenti affidati al processo:");
-        labelStaffOnWork .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelStaffOnWork .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelStaffOnWork);
 
         labelTime = new JLabel("Tempo totale stimato:");
-        labelTime.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelTime.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelTime);
 
         labelEarn = new JLabel("Costo totale stimato:");
-        labelEarn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelEarn.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelEarn);
 
         btnConfirm = new JButton("Fine");
         btnConfirm.setForeground(SystemColor.textText);
         btnConfirm.setBackground(SystemColor.activeCaption);
-        btnConfirm.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnConfirm.setFont(ConstantsCleanSvc.FONT);
+        btnConfirm.setEnabled(false);
         btnConfirm.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                //TODO salvare statistiche
+                new SaveStatistics().save(datepicker.getDate(), totTime, income);
+                popUp.popUpInfo("Appuntamento inserito con successo.");
+                new AppointmentsView().display();
+                setVisible(false);
             }
         });
         pnlSearch.add(btnConfirm);
 
-        getContentPane().add(pnlSubmit, BorderLayout.CENTER);
-        getContentPane().add(pnlSearch, BorderLayout.SOUTH);
+       getContentPane().add(pnlSubmit, BorderLayout.CENTER);
+       getContentPane().add(pnlSearch, BorderLayout.SOUTH);
 
         GroupLayout layout = new GroupLayout(pnlSubmit);
         pnlSubmit.setLayout(layout);
@@ -304,13 +300,13 @@ public class NewAppointmentView extends JFrame {
                                .addComponent(timepicker))
                        .addGroup(layout.createSequentialGroup()
                                .addComponent(checkboxs.get(0))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(1))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(2))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(3))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(4))
                                .addGap(100)
                                .addComponent(labelStaff)
@@ -356,7 +352,7 @@ public class NewAppointmentView extends JFrame {
     }
 
     /**
-     * 
+     * Method that displays the view.
      */
 
     public void display() {
@@ -366,19 +362,18 @@ public class NewAppointmentView extends JFrame {
 
     /**
      * 
-     * @return
      */
     public void setSummary() {
          int time = 0;
-         double earn = 0;
+         double cost = 0;
          double totalTime = 0;
-         double totalEarn = 0;
+         double totalCost = 0;
          double nProd = 0;
          List<Integer> partialTime = new ArrayList<>();
 
          for (JCheckBox check : checkboxs) {
              time = 0;
-             earn = 0;
+             cost = 0;
              nProd = 0;
              if (check.isSelected()) {
                  if (!process.getSubStepsByStepType(check.getText()).isEmpty()) {
@@ -390,19 +385,18 @@ public class NewAppointmentView extends JFrame {
                  if (!company.getProductsByStepType(check.getText()).isEmpty()) {
                      List<Products> list2 = company.getProductsByStepType(check.getText()).get(); 
                      for (Products p : list2) {
-                         earn += p.getPricePerLitre();
+                         cost += p.getPricePerLitre();
                          nProd++;
                      }
-                     totalEarn += (earn / nProd);
-                     System.out.println(totalEarn);
+                     totalCost += (cost / nProd);
                  }
              }
-
              totalTime += time;
              partialTime.add(time);
          }
          totTime = process.getProportialTime(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
-         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()));
+         totCost = process.getProportialCost(totalCost,  company.getClients().get(comboClients.getSelectedIndex()));
+         income = process.getIncome(totCost);
          labelCleaning.setText(labelCleaning.getText() + " " + String.valueOf(partialTime.get(0)));
          labelCleansing.setText(labelCleansing.getText() + " " + String.valueOf(partialTime.get(1)));
          labelDisinfection.setText(labelDisinfection.getText() + " " + String.valueOf(partialTime.get(2)));
@@ -410,23 +404,42 @@ public class NewAppointmentView extends JFrame {
          labelConclusion.setText(labelConclusion.getText() + " " + String.valueOf(partialTime.get(4)));
          labelStaffOnWork.setText(labelStaffOnWork.getText() + " " + txtStaffs.getText());
          labelTime.setText(labelTime.getText() + " " + String.valueOf(totTime) + " minuti");
-         labelEarn.setText(labelEarn.getText() + " " + String.valueOf(totEarn) + " €");
+         labelEarn.setText(labelEarn.getText() + " " + String.valueOf(income) + " €");
+         Clients c = company.getClients().get(comboClients.getSelectedIndex());
+         Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
+         company.addAppointment(a);
     }
 
+    /**
+     *
+     * @return true if some values are empty.
+     */
     public Boolean missingField() {
         return (getDate().isEmpty() || getHour().isEmpty() || getStaff() == Integer.MIN_VALUE);
     }
 
+    /**
+     * 
+     * @return appointment's date
+     */
     public String getDate() {
         return datepicker.getDateStringOrEmptyString();
     }
 
+    /**
+     * 
+     * @return appointment's hour
+     */
     public String getHour() {
         return timepicker.getText();
     }
 
+    /**
+     * Return an integer value.
+     * @return Return an integer value.
+     */
     public int getStaff() {
-        return validator.isCAP(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
+        return validator.isInteger(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
     }
 
 }
