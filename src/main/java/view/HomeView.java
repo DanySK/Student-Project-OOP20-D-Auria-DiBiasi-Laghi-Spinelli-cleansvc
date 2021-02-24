@@ -22,13 +22,13 @@ public class HomeView extends JFrame{
      */
     private static final long serialVersionUID = -1440993813136999810L;
     private static final String TITLE = "CLEAN SERVICE MANAGER";
-    final JButton btnClienti;
-    final JButton btnGrafici;
-    final JButton btnStaff;
-    final JButton btnProduct;
-    final JButton btnProcess;
-    final JButton btnAppointment;
-    final JButton btnSaveAndExit;
+    private JButton btnClienti;
+    private JButton btnGrafici;
+    private JButton btnStaff;
+    private JButton btnProduct;
+    private JButton btnProcess;
+    private JButton btnAppointment;
+    private JButton btnSaveAndExit;
 
     private SaveAndLoadClients backupClients = new SaveAndLoadClients();
     private SaveAndLoadStaff backupStaff = new SaveAndLoadStaff();
@@ -63,7 +63,7 @@ public class HomeView extends JFrame{
                 cv.display();
                 dispose();
             }
-            
+
         });
         panelTitle.add(btnClienti);
 
@@ -80,10 +80,10 @@ public class HomeView extends JFrame{
                 sv.display();
                 dispose();
             }
-            
+
         });
         panelTitle.add(btnStaff);
-        
+
         btnProduct = new JButton("Area Prodotti");
         btnProduct.setForeground(SystemColor.textText);
         btnProduct.setBackground(SystemColor.activeCaption);
@@ -97,10 +97,10 @@ public class HomeView extends JFrame{
                 pv.display();
                 dispose();
             }
-            
+
         });
         panelTitle.add(btnProduct);
-        
+
         btnProcess = new JButton("Area Processo");
         btnProcess.setForeground(SystemColor.textText);
         btnProcess.setBackground(SystemColor.activeCaption);
@@ -134,7 +134,7 @@ public class HomeView extends JFrame{
 
         });
         panelTitle.add(btnGrafici);
-        
+
         btnAppointment = new JButton("Area Appuntamenti");
         btnAppointment.setForeground(SystemColor.textText);
         btnAppointment.setBackground(SystemColor.activeCaption);
@@ -148,10 +148,10 @@ public class HomeView extends JFrame{
                 av.display();
                 dispose();
             }
-            
+
         });
         panelTitle.add(btnAppointment);
-        
+
         btnSaveAndExit = new JButton("Salva ed Esci");
         btnSaveAndExit.setForeground(SystemColor.textText);
         btnSaveAndExit.setBackground(SystemColor.activeCaption);
@@ -168,10 +168,14 @@ public class HomeView extends JFrame{
                 backupSubSteps.save();
                 dispose();
             }
-            
+
         });
         panelTitle.add(btnSaveAndExit);
     }
+
+    /**
+     * 
+     */
 
     public void display() {
         setVisible(true);

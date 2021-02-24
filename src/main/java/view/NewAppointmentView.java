@@ -35,6 +35,7 @@ import model.step.SubSteps;
 import model.step.enumerations.StepType;
 import model.users.Clients;
 import utility.PopUp;
+import utility.ConstantsCleanSvc;
 import utility.InputValidator;
 
 public class NewAppointmentView extends JFrame {
@@ -42,7 +43,6 @@ public class NewAppointmentView extends JFrame {
      * 
      */
     private static final long serialVersionUID = 2089945830206989799L;
-    private static final String TITLE = "CLEAN SERVICE MANAGER";
     private JComboBox<String> comboClients;
     private final JButton btnSubmit;
     private final JButton btnConfirm;
@@ -57,7 +57,8 @@ public class NewAppointmentView extends JFrame {
     private List<Clients> clientsList = company.getClients();
     private PopUp popUp = new PopUp();
     private double totTime;
-    private double totEarn;
+    private double totCost;
+    private double income;
 
 
     private JLabel labelTime;
@@ -68,16 +69,16 @@ public class NewAppointmentView extends JFrame {
     private JLabel labelDisinfestation;
     private JLabel labelConclusion;
     private JLabel labelStaffOnWork;
-    
+
     private InputValidator validator = new InputValidator();
     public NewAppointmentView() {
 
-        setTitle(NewAppointmentView.TITLE);
-        setMinimumSize(new Dimension(1200, 500));
+        setTitle(ConstantsCleanSvc.TITLE);
+        setMinimumSize(new Dimension(ConstantsCleanSvc.WIDTH, ConstantsCleanSvc.HEIGHT));
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setMinimumSize(new Dimension(1000, 60));
+        panelTitle.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_TITLE_HEIGHT));
         panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(panelTitle, BorderLayout.NORTH);
         panelTitle.setLayout(new BorderLayout(0, 0));
@@ -162,17 +163,17 @@ public class NewAppointmentView extends JFrame {
         checkboxs.get(4).setEnabled(false);
 
         JLabel labelStaff = new JLabel("Dipendenti:");
-        labelStaff.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelStaff.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelStaff);
 
-        txtStaffs = new JTextField(10);
-        txtStaffs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtStaffs = new JTextField();
+        txtStaffs.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(txtStaffs);
 
-        btnSubmit = new JButton("Conferma");
+        btnSubmit = new JButton("Mostra Riepilogo");
         btnSubmit.setForeground(SystemColor.textText);
         btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnSubmit.setFont(ConstantsCleanSvc.FONT);
         btnSubmit.addActionListener(new ActionListener() {
 
             @Override
@@ -184,8 +185,6 @@ public class NewAppointmentView extends JFrame {
                         company.addAppointment(a);
                         popUp.popUpInfo("Appuntamento inserito con successo.");
                         setSummary();
-//                        new AppointmentsView().display();
-//                        setVisible(false);
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
                     }
@@ -199,45 +198,45 @@ public class NewAppointmentView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Riepilogo", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(1000, 300));
-        pnlSearch.setMinimumSize(new Dimension(1000, 300));
+        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
+        pnlSearch.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
 
        labelCleaning = new JLabel("Tempo per la fase di PULIZIA:");
-        labelCleaning .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCleaning .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelCleaning);
 
         labelCleansing = new JLabel("Tempo per la fase di RISCIACQUO:");
-        labelCleansing .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelCleansing .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelCleansing);
 
         labelDisinfection = new JLabel("Tempo per la fase di DISINFEZIONE:");
-        labelDisinfection .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelDisinfection .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelDisinfection);
 
         labelDisinfestation = new JLabel("Tempo per la fase di DISINFESTAZIONE:");
-        labelDisinfestation .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelDisinfestation .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelDisinfestation);
 
         labelConclusion = new JLabel("Tempo per la fase di CONCLUSIONE:");
-        labelConclusion .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelConclusion .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelConclusion);
 
         labelStaffOnWork = new JLabel("Dipendenti affidati al processo:");
-        labelStaffOnWork .setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelStaffOnWork .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelStaffOnWork);
 
         labelTime = new JLabel("Tempo totale stimato:");
-        labelTime.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelTime.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelTime);
 
         labelEarn = new JLabel("Costo totale stimato:");
-        labelEarn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        labelEarn.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelEarn);
 
         btnConfirm = new JButton("Fine");
         btnConfirm.setForeground(SystemColor.textText);
         btnConfirm.setBackground(SystemColor.activeCaption);
-        btnConfirm.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
+        btnConfirm.setFont(ConstantsCleanSvc.FONT);
         btnConfirm.addActionListener(new ActionListener() {
 
             @Override
@@ -247,8 +246,8 @@ public class NewAppointmentView extends JFrame {
         });
         pnlSearch.add(btnConfirm);
 
-        getContentPane().add(pnlSubmit, BorderLayout.CENTER);
-        getContentPane().add(pnlSearch, BorderLayout.SOUTH);
+       getContentPane().add(pnlSubmit, BorderLayout.CENTER);
+       getContentPane().add(pnlSearch, BorderLayout.SOUTH);
 
         GroupLayout layout = new GroupLayout(pnlSubmit);
         pnlSubmit.setLayout(layout);
@@ -351,15 +350,15 @@ public class NewAppointmentView extends JFrame {
      */
     public void setSummary() {
          int time = 0;
-         double earn = 0;
+         double cost = 0;
          double totalTime = 0;
-         double totalEarn = 0;
+         double totalCost = 0;
          double nProd = 0;
          List<Integer> partialTime = new ArrayList<>();
 
          for (JCheckBox check : checkboxs) {
              time = 0;
-             earn = 0;
+             cost = 0;
              nProd = 0;
              if (check.isSelected()) {
                  if (!process.getSubStepsByStepType(check.getText()).isEmpty()) {
@@ -371,19 +370,18 @@ public class NewAppointmentView extends JFrame {
                  if (!company.getProductsByStepType(check.getText()).isEmpty()) {
                      List<Products> list2 = company.getProductsByStepType(check.getText()).get(); 
                      for (Products p : list2) {
-                         earn += p.getPricePerLitre();
+                         cost += p.getPricePerLitre();
                          nProd++;
                      }
-                     totalEarn += (earn / nProd);
-                     System.out.println(totalEarn);
+                     totalCost += (cost / nProd);
                  }
              }
-
              totalTime += time;
              partialTime.add(time);
          }
          totTime = process.getProportialTime(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
-         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()));
+         totCost = process.getProportialCost(totalCost,  company.getClients().get(comboClients.getSelectedIndex()));
+         income = process.getIncome(totCost);
          labelCleaning.setText(labelCleaning.getText() + " " + String.valueOf(partialTime.get(0)));
          labelCleansing.setText(labelCleansing.getText() + " " + String.valueOf(partialTime.get(1)));
          labelDisinfection.setText(labelDisinfection.getText() + " " + String.valueOf(partialTime.get(2)));
@@ -391,23 +389,43 @@ public class NewAppointmentView extends JFrame {
          labelConclusion.setText(labelConclusion.getText() + " " + String.valueOf(partialTime.get(4)));
          labelStaffOnWork.setText(labelStaffOnWork.getText() + " " + txtStaffs.getText());
          labelTime.setText(labelTime.getText() + " " + String.valueOf(totTime) + " minuti");
-         labelEarn.setText(labelEarn.getText() + " " + String.valueOf(totEarn) + " €");
+         labelEarn.setText(labelEarn.getText() + " " + String.valueOf(income) + " €");
     }
+
+    /**
+     *  
+     * @return true if some values are empty.
+     */
 
     public Boolean missingField() {
         return (getDate().isEmpty() || getHour().isEmpty() || getStaff() == Integer.MIN_VALUE);
     }
 
+    /**
+     * 
+     * @return
+     */
+
     public String getDate() {
         return datepicker.getDateStringOrEmptyString();
     }
+
+    /**
+     * 
+     * @return
+     */
 
     public String getHour() {
         return timepicker.getText();
     }
 
+    /**
+     * Return an integer value.
+     * @return Return an integer value.
+     */
+
     public int getStaff() {
-        return validator.isCAP(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
+        return validator.isInteger(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
     }
 
 }
