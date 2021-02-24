@@ -13,3 +13,8 @@ STEP: CLEANING
 NAME: Pulizia Vetri
 DESCRIPTION: Pulizia e lucidatura vetri
 TIME: 30
+CODE: 4S
+STEP: CLEANING
+NAME: Pulizia Bagni
+DESCRIPTION: Aspirapolvere, straccio.
+TIME: 40

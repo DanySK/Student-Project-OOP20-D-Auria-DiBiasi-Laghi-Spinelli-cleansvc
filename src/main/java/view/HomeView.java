@@ -25,17 +25,18 @@ public class HomeView extends JFrame{
     private static final long serialVersionUID = -1440993813136999810L;
     private static final String TITLE = "CLEAN SERVICE MANAGER";
     private static final double PERCENT = 0.6;
-    final JButton btnClienti;
-    final JButton btnGrafici;
-    final JButton btnStaff;
-    final JButton btnProduct;
+    private JButton btnClienti;
+    private JButton btnGrafici;
+    private JButton btnStaff;
+    private JButton btnProduct;
 //    private JButton btnProcess;
-    final JButton btnAppointment;
-    final JButton btnSaveAndExit;
+    private JButton btnAppointment;
+    private JButton btnSaveAndExit;
     private SaveAndLoadClients backupClients = new SaveAndLoadClients();
     private SaveAndLoadStaff backupStaff = new SaveAndLoadStaff();
     private SaveAndLoadProducts backupProducts = new SaveAndLoadProducts();
     private SaveAndLoadAppointments backupAppointments = new SaveAndLoadAppointments();
+    private SaveAndLoadSubSteps backupSubSteps = new SaveAndLoadSubSteps();
     private JPanel panelClient;
     private JPanel panelCenter;
     private JPanel panelExit;
@@ -54,11 +55,10 @@ public class HomeView extends JFrame{
         //panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(mainPanel);
         mainPanel.setLayout(new BorderLayout(0, 0));
-        
+
         panelClient = new JPanel();
         panelClient.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(153, 180, 209), new Color(109, 109, 109)), "Clienti", TitledBorder.LEFT, TitledBorder.TOP, null, SystemColor.activeCaption));
         mainPanel.add(panelClient, BorderLayout.NORTH);
-        
 
         btnClienti = new JButton("Area Clienti");
         panelClient.add(btnClienti);
@@ -152,32 +152,32 @@ public class HomeView extends JFrame{
         btnAppointment.setBackground(SystemColor.activeCaption);
         btnAppointment.setPreferredSize(new Dimension(280,70));
         btnAppointment.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-                
+
         panelCenter = new JPanel();
         panelCenter.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(153, 180, 209), new Color(105, 105, 105)), "Admin", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(153, 180, 209)));
         mainPanel.add(panelCenter, BorderLayout.CENTER);
-        
+
         btnStaff = new JButton("Area Dipendenti");
         panelCenter.add(btnStaff);
         btnStaff.setForeground(SystemColor.textText);
         btnStaff.setBackground(SystemColor.activeCaption);
         btnStaff.setPreferredSize(new Dimension(280,70));
         btnStaff.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-        
+
         btnProduct = new JButton("Area Prodotti");
         panelCenter.add(btnProduct);
         btnProduct.setForeground(SystemColor.textText);
         btnProduct.setBackground(SystemColor.activeCaption);
         btnProduct.setPreferredSize(new Dimension(280,70));
         btnProduct.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-        
+
         btnGrafici = new JButton("Area Grafici");
         panelCenter.add(btnGrafici);
         btnGrafici.setForeground(SystemColor.textText);
         btnGrafici.setBackground(SystemColor.activeCaption);
         btnGrafici.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
         btnGrafici.setPreferredSize(new Dimension(280,70));
-        
+
         btnStages = new JButton("Area Processi");
         btnStages.addActionListener(e->{
             SubStepView stv = new SubStepView();
@@ -189,18 +189,18 @@ public class HomeView extends JFrame{
         btnStages.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
         btnStages.setBackground(SystemColor.activeCaption);
         panelCenter.add(btnStages);
-        
+
         panelExit = new JPanel();
         mainPanel.add(panelExit, BorderLayout.SOUTH);
         panelExit.setLayout(new BorderLayout(0, 0));
-        
+
         btnSaveAndExit = new JButton("Salva ed Esci");
         panelExit.add(btnSaveAndExit, BorderLayout.EAST);
         btnSaveAndExit.setForeground(SystemColor.textText);
         btnSaveAndExit.setBackground(SystemColor.activeCaption);
         btnSaveAndExit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
         btnSaveAndExit.setPreferredSize(new Dimension(280,70));
-        
+
         btnSaveAndExit.addActionListener(new ActionListener() {
 
             @Override
@@ -209,9 +209,9 @@ public class HomeView extends JFrame{
                 backupStaff.save();
                 backupProducts.save();
                 backupAppointments.save();
+                backupSubSteps.save();
                 dispose();
             }
-            
         });
         btnGrafici.addActionListener(new ActionListener() {
 
@@ -221,7 +221,6 @@ public class HomeView extends JFrame{
                 av.display();
                 dispose();
             }
-            
         });
         btnProduct.addActionListener(new ActionListener() {
 
@@ -231,7 +230,6 @@ public class HomeView extends JFrame{
                 pv.display();
                 dispose();
             }
-            
         });
         btnStaff.addActionListener(new ActionListener() {
 
@@ -241,7 +239,6 @@ public class HomeView extends JFrame{
                 sv.display();
                 dispose();
             }
-            
         });
         btnAppointment.addActionListener(new ActionListener() {
 
