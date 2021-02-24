@@ -22,3 +22,6 @@ Data: 2021-04-25 Minuti: 27.5 Entrate: 229.25
 Data: 2021-05-30 Minuti: 55.0 Entrate: 241.65
 Data: 2021-02-24 Minuti: 22.0 Entrate: 156.25
 Data: 2021-02-24 Minuti: 3.3 Entrate: 108.4375
+Data: 2021-02-25 Minuti: 22.0 Entrate: 56.25
+Data: 2021-02-24 Minuti: 18.333333333333332 Entrate: 129.25
+Data: 2021-02-27 Minuti: 55.0 Entrate: 56.25

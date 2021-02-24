@@ -194,6 +194,7 @@ public class NewAppointmentView extends JFrame {
                             popUp.popUpErrorOrMissing();
                         } else {
                             setSummary();
+                            btnConfirm.setEnabled(true);
                         }
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
@@ -246,6 +247,7 @@ public class NewAppointmentView extends JFrame {
         btnConfirm.setForeground(SystemColor.textText);
         btnConfirm.setBackground(SystemColor.activeCaption);
         btnConfirm.setFont(ConstantsCleanSvc.FONT);
+        btnConfirm.setEnabled(false);
         btnConfirm.addActionListener(new ActionListener() {
 
             @Override
@@ -393,7 +395,7 @@ public class NewAppointmentView extends JFrame {
              partialTime.add(time);
          }
          totTime = process.getProportialTime(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
-         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex())) + 100;
+         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()));
          labelCleaning.setText(labelCleaning.getText() + " " + String.valueOf(partialTime.get(0)));
          labelCleansing.setText(labelCleansing.getText() + " " + String.valueOf(partialTime.get(1)));
          labelDisinfection.setText(labelDisinfection.getText() + " " + String.valueOf(partialTime.get(2)));
