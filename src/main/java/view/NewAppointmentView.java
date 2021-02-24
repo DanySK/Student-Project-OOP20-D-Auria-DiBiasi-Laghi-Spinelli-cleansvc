@@ -3,7 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -30,8 +29,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
 import controller.CompanyImpl;
-import controller.backupFile.SaveStatistics;
 import controller.ProcessImpl;
+import controller.backupFile.SaveStatistics;
 import model.Appointments;
 import model.AppointmentsImpl;
 import model.Products;
@@ -40,7 +39,6 @@ import model.step.enumerations.StepType;
 import model.users.Clients;
 import utility.ConstantsCleanSvc;
 import utility.PopUp;
-import utility.ConstantsCleanSvc;
 import utility.InputValidator;
 
 public class NewAppointmentView extends JFrame {
@@ -119,7 +117,7 @@ public class NewAppointmentView extends JFrame {
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
 
-        pnlSubmit.setLayout(new GridLayout(2, 6, 10, 20));
+        pnlSubmit.setLayout(new GridLayout(ConstantsCleanSvc.GRID2, ConstantsCleanSvc.GRID6, ConstantsCleanSvc.GRID_10_GAP, ConstantsCleanSvc.GRID_20_GAP));
         mainPanel.add(pnlSubmit, BorderLayout.NORTH);
 
         JLabel labelCliente = new JLabel("Cliente:");
@@ -190,22 +188,14 @@ public class NewAppointmentView extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
                     Clients c = company.getClients().get(comboClients.getSelectedIndex());
-                    Appointments a = new AppointmentsImpl(getDate(), getHour(), c);
+                    Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
                         if (datepicker.getDate().isBefore(LocalDate.now())
                                 || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
                             popUp.popUpErrorOrMissing();
                         } else {
-                            company.addAppointment(a);
-                            popUp.popUpInfo("Appuntamento inserito con successo.");
-                            new AppointmentsView().display();
                             setSummary();
-                            //Qui richiama la SaveStatistics.save()
-                            /*
-                             * testing
-                                new SaveStatistics().save(datepicker.getDate(), timepicker.getTime().getMinute(), 100);
-                            */
-                            setVisible(false);
+                            btnConfirm.setEnabled(true);
                         }
                     } else {
                         popUp.popUpError("Data e ora già prenotate");
@@ -259,11 +249,15 @@ public class NewAppointmentView extends JFrame {
         btnConfirm.setForeground(SystemColor.textText);
         btnConfirm.setBackground(SystemColor.activeCaption);
         btnConfirm.setFont(ConstantsCleanSvc.FONT);
+        btnConfirm.setEnabled(false);
         btnConfirm.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                //TODO salvare statistiche
+                new SaveStatistics().save(datepicker.getDate(), totTime, income);
+                popUp.popUpInfo("Appuntamento inserito con successo.");
+                new AppointmentsView().display();
+                setVisible(false);
             }
         });
         pnlSearch.add(btnConfirm);
@@ -306,13 +300,13 @@ public class NewAppointmentView extends JFrame {
                                .addComponent(timepicker))
                        .addGroup(layout.createSequentialGroup()
                                .addComponent(checkboxs.get(0))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(1))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(2))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(3))
-                               .addGap(50)
+                               .addGap(ConstantsCleanSvc.PANEL_50_GAP)
                                .addComponent(checkboxs.get(4))
                                .addGap(100)
                                .addComponent(labelStaff)
@@ -358,7 +352,7 @@ public class NewAppointmentView extends JFrame {
     }
 
     /**
-     * 
+     * Method that displays the view.
      */
 
     public void display() {
@@ -368,7 +362,6 @@ public class NewAppointmentView extends JFrame {
 
     /**
      * 
-     * @return
      */
     public void setSummary() {
          int time = 0;
@@ -412,31 +405,31 @@ public class NewAppointmentView extends JFrame {
          labelStaffOnWork.setText(labelStaffOnWork.getText() + " " + txtStaffs.getText());
          labelTime.setText(labelTime.getText() + " " + String.valueOf(totTime) + " minuti");
          labelEarn.setText(labelEarn.getText() + " " + String.valueOf(income) + " €");
+         Clients c = company.getClients().get(comboClients.getSelectedIndex());
+         Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
+         company.addAppointment(a);
     }
 
     /**
-     *  
+     *
      * @return true if some values are empty.
      */
-
     public Boolean missingField() {
         return (getDate().isEmpty() || getHour().isEmpty() || getStaff() == Integer.MIN_VALUE);
     }
 
     /**
      * 
-     * @return
+     * @return appointment's date
      */
-
     public String getDate() {
         return datepicker.getDateStringOrEmptyString();
     }
 
     /**
      * 
-     * @return
+     * @return appointment's hour
      */
-
     public String getHour() {
         return timepicker.getText();
     }
@@ -445,7 +438,6 @@ public class NewAppointmentView extends JFrame {
      * Return an integer value.
      * @return Return an integer value.
      */
-
     public int getStaff() {
         return validator.isInteger(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;
     }

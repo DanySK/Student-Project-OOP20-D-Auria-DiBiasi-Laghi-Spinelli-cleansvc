@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.ProcessImpl;
-import model.Products;
-import model.ProductsImpl;
 import model.step.SubSteps;
 import model.step.SubStepsImpl;
 import model.step.enumerations.StepType;
@@ -30,7 +28,7 @@ public class SaveAndLoadSubSteps implements SaveAndLoad {
     private StepType st;
 
     /**
-     * 
+     * A method that saves substeps.
      */
     @Override
     public void save() {
@@ -52,6 +50,9 @@ public class SaveAndLoadSubSteps implements SaveAndLoad {
         }
     }
 
+    /**
+     * A method that loads substeps.
+     */
     @Override
     public void load() {
         final List<String> codeList = new ArrayList<>();

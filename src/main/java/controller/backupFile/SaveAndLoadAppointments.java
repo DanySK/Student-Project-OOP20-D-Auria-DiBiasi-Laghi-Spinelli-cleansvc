@@ -23,7 +23,12 @@ public class SaveAndLoadAppointments implements SaveAndLoad {
     private static final String DATE_STR = "DATE: ";
     private static final String HOUR_STR = "HOUR: ";
     private static final String CLIENT_STR = "CLIENT: ";
+    private static final String TIME_STR = "TIME: ";
+    private static final String EARN_STR = "EARN: ";
 
+    /**
+     * A method that saves an appointment.
+     */
     @Override
     public void save() {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_APPOINTMENTS))) {
@@ -34,17 +39,26 @@ public class SaveAndLoadAppointments implements SaveAndLoad {
                 w.newLine();
                 w.write(CLIENT_STR + a.getClient().getCFPIVA());
                 w.newLine();
+                w.write(TIME_STR + a.getTime());
+                w.newLine();
+                w.write(EARN_STR + a.getEarn());
+                w.newLine();
             }
         } catch (final IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * A method that loads an appointment.
+     */
     @Override
     public void load() {
         final List<String> dateList = new ArrayList<>();
         final List<String> hourList = new ArrayList<>();
         final List<String> clientsList = new ArrayList<>();
+        final List<Double> timeList = new ArrayList<>();
+        final List<Double> earnList = new ArrayList<>();
         try (BufferedReader r = new BufferedReader(new FileReader(FILE_APPOINTMENTS))) {
             r.lines().forEach(l -> {
                 if (l.contains(DATE_STR)) {
@@ -56,11 +70,18 @@ public class SaveAndLoadAppointments implements SaveAndLoad {
                 if (l.contains(CLIENT_STR)) {
                     clientsList.add(l.substring(CLIENT_STR.length()));
                 }
+                if (l.contains(TIME_STR)) {
+                    timeList.add(Double.valueOf(l.substring(TIME_STR.length())));
+                }
+                if (l.contains(EARN_STR)) {
+                    earnList.add(Double.valueOf(l.substring(EARN_STR.length())));
+                }
             });
             for (int i = 0; i < dateList.size(); i++) {
                 Optional<Clients> c = this.company.searchClient(clientsList.get(i));
                 if (!c.isEmpty()) {
-                    this.company.addAppointment(new AppointmentsImpl(dateList.get(i), hourList.get(i), c.get()));
+                    this.company.addAppointment(new AppointmentsImpl(dateList.get(i), hourList.get(i), c.get(), 
+                            timeList.get(i), earnList.get(i)));
                 }
             }
         } catch (final IOException e) {

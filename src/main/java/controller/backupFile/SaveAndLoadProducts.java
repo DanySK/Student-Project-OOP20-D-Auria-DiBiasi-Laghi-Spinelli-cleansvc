@@ -29,6 +29,9 @@ public class SaveAndLoadProducts implements SaveAndLoad {
     private static final String USAGE500MQ_STR = "USAGE500MQ: ";
     private StepType stepProduct;
 
+    /**
+     * A method that saves a product.
+     */
     @Override
     public void save() {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_PRODUCTS))) {
@@ -51,6 +54,9 @@ public class SaveAndLoadProducts implements SaveAndLoad {
         }
     }
 
+    /**
+     * A method that loads a product.
+     */
     @Override
     public void load() {
         final List<String> codeList = new ArrayList<>();
@@ -66,7 +72,6 @@ public class SaveAndLoadProducts implements SaveAndLoad {
                 }
                 if (l.contains(STEP_STR)) {
                     stepList.add(l.substring(STEP_STR.length()));
-                    
                 }
                 if (l.contains(NAME_STR)) {
                     nameList.add(l.substring(NAME_STR.length()));

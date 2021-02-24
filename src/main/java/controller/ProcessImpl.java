@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import model.Products;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
 import model.users.Clients;

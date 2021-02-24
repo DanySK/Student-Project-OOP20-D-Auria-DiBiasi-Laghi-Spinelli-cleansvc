@@ -7,5 +7,7 @@ public interface Appointments {
     String getDate();
     String getHour();
     Clients getClient();
+    double getTime();
+    double getEarn();
 
 }
