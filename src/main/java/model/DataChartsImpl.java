@@ -19,7 +19,7 @@ import org.knowm.xchart.XYChart;
 public class DataChartsImpl implements DataCharts {
      
     private static final String SEP = File.separator;
-    private static final String FILE = System.getProperty("user.home") + SEP + "Documenti" /*Sostituire percorso file+ SEP + "ProvaFile.txt"*/;
+    private static final String FILE = "doc" + SEP + "Statistics.txt";
     private ArrayList<LocalDate> listToReturn;
     
     public DataChartsImpl() {
@@ -42,7 +42,7 @@ public class DataChartsImpl implements DataCharts {
         return null;
     }
     
-    private List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
+    public List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
         
         if(!this.listToReturn.isEmpty()) {
             this.listToReturn.clear();
@@ -69,7 +69,7 @@ public class DataChartsImpl implements DataCharts {
         return entrateList;
     }
     
-    private List<Double> getTempoLavoro(LocalDate dateStart, LocalDate dateEnd){
+    public List<Double> getTempoLavoro(LocalDate dateStart, LocalDate dateEnd){
         if(!this.listToReturn.isEmpty()) {
             this.listToReturn.clear();
         }

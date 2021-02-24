@@ -182,7 +182,11 @@ public class AdministratorChartsView extends JFrame {
        setResizable(true);
     }
     
-    //Setta lo stile del grafico;
+    /**
+     * 
+     * @param chart
+     */
+    
     private void setChartStyle(XYChart chart) {
         chart.setXAxisTitle("Data");
         chart.getStyler().setChartBackgroundColor(SystemColor.window)
