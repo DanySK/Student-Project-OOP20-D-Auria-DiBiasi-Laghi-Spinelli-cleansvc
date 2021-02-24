@@ -60,7 +60,8 @@ public class NewAppointmentView extends JFrame {
     private List<Clients> clientsList = company.getClients();
     private PopUp popUp = new PopUp();
     private double totTime;
-    private double totEarn;
+    private double totCost;
+    private double income;
 
 
     private JLabel labelTime;
@@ -173,7 +174,7 @@ public class NewAppointmentView extends JFrame {
         labelStaff.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(labelStaff);
 
-        txtStaffs = new JTextField(10);
+        txtStaffs = new JTextField();
         txtStaffs.setFont(ConstantsCleanSvc.FONT);
         pnlSubmit.add(txtStaffs);
 
@@ -187,7 +188,7 @@ public class NewAppointmentView extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
                     Clients c = company.getClients().get(comboClients.getSelectedIndex());
-                    Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, totEarn);
+                    Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
                         if (datepicker.getDate().isBefore(LocalDate.now())
                                 || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
@@ -209,7 +210,8 @@ public class NewAppointmentView extends JFrame {
         final JPanel pnlSearch = new JPanel();
         pnlSearch.setBorder(new TitledBorder(null, "Riepilogo", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.activeCaption));
         pnlSearch.setBackground(SystemColor.window);
-        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNLS_FULL_HEIGHT));
+        pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
+        pnlSearch.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
 
        labelCleaning = new JLabel("Tempo per la fase di PULIZIA:");
         labelCleaning .setFont(ConstantsCleanSvc.FONT);
@@ -252,7 +254,7 @@ public class NewAppointmentView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                new SaveStatistics().save(datepicker.getDate(), totTime, totEarn);
+                new SaveStatistics().save(datepicker.getDate(), totTime, income);
                 popUp.popUpInfo("Appuntamento inserito con successo.");
                 new AppointmentsView().display();
                 setVisible(false);
@@ -260,8 +262,8 @@ public class NewAppointmentView extends JFrame {
         });
         pnlSearch.add(btnConfirm);
 
-        getContentPane().add(pnlSubmit, BorderLayout.CENTER);
-        getContentPane().add(pnlSearch, BorderLayout.SOUTH);
+       getContentPane().add(pnlSubmit, BorderLayout.CENTER);
+       getContentPane().add(pnlSearch, BorderLayout.SOUTH);
 
         GroupLayout layout = new GroupLayout(pnlSubmit);
         pnlSubmit.setLayout(layout);
@@ -363,15 +365,15 @@ public class NewAppointmentView extends JFrame {
      */
     public void setSummary() {
          int time = 0;
-         double earn = 0;
+         double cost = 0;
          double totalTime = 0;
-         double totalEarn = 0;
+         double totalCost = 0;
          double nProd = 0;
          List<Integer> partialTime = new ArrayList<>();
 
          for (JCheckBox check : checkboxs) {
              time = 0;
-             earn = 0;
+             cost = 0;
              nProd = 0;
              if (check.isSelected()) {
                  if (!process.getSubStepsByStepType(check.getText()).isEmpty()) {
@@ -383,19 +385,18 @@ public class NewAppointmentView extends JFrame {
                  if (!company.getProductsByStepType(check.getText()).isEmpty()) {
                      List<Products> list2 = company.getProductsByStepType(check.getText()).get(); 
                      for (Products p : list2) {
-                         earn += p.getPricePerLitre();
+                         cost += p.getPricePerLitre();
                          nProd++;
                      }
-                     totalEarn += (earn / nProd);
-                     System.out.println(totalEarn);
+                     totalCost += (cost / nProd);
                  }
              }
-
              totalTime += time;
              partialTime.add(time);
          }
          totTime = process.getProportialTime(totalTime,  company.getClients().get(comboClients.getSelectedIndex()), Integer.parseInt(txtStaffs.getText()));
-         totEarn = process.getProportialEarn(totalEarn,  company.getClients().get(comboClients.getSelectedIndex()));
+         totCost = process.getProportialCost(totalCost,  company.getClients().get(comboClients.getSelectedIndex()));
+         income = process.getIncome(totCost);
          labelCleaning.setText(labelCleaning.getText() + " " + String.valueOf(partialTime.get(0)));
          labelCleansing.setText(labelCleansing.getText() + " " + String.valueOf(partialTime.get(1)));
          labelDisinfection.setText(labelDisinfection.getText() + " " + String.valueOf(partialTime.get(2)));
@@ -403,15 +404,15 @@ public class NewAppointmentView extends JFrame {
          labelConclusion.setText(labelConclusion.getText() + " " + String.valueOf(partialTime.get(4)));
          labelStaffOnWork.setText(labelStaffOnWork.getText() + " " + txtStaffs.getText());
          labelTime.setText(labelTime.getText() + " " + String.valueOf(totTime) + " minuti");
-         labelEarn.setText(labelEarn.getText() + " " + String.valueOf(totEarn) + " €");
+         labelEarn.setText(labelEarn.getText() + " " + String.valueOf(income) + " €");
          Clients c = company.getClients().get(comboClients.getSelectedIndex());
-         Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, totEarn);
+         Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
          company.addAppointment(a);
     }
 
     /**
-     * 
-     * @return true if all fields are written
+     *
+     * @return true if some values are empty.
      */
     public Boolean missingField() {
         return (getDate().isEmpty() || getHour().isEmpty() || getStaff() == Integer.MIN_VALUE);
@@ -434,8 +435,8 @@ public class NewAppointmentView extends JFrame {
     }
 
     /**
-     * 
-     * @return an integer value
+     * Return an integer value.
+     * @return Return an integer value.
      */
     public int getStaff() {
         return validator.isInteger(txtStaffs.getText()) ? Integer.parseInt(txtStaffs.getText()) : Integer.MIN_VALUE;

@@ -8,7 +8,6 @@ public class SubStepsImpl implements SubSteps {
     private int time500mq;
     private String name;
     private String description;
-    //private List<Products> productsList = company.getProductsByStepType(this.type);
 
     public SubStepsImpl(final String code, final int time, final String name, final String description, final StepType type) {
         this.type = type;
@@ -55,7 +54,7 @@ public class SubStepsImpl implements SubSteps {
 
     /**
      * 
-     * @return the type.
+     * @return the StepType.
      */
     @Override
     public StepType getStepType() {

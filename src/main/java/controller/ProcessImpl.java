@@ -21,7 +21,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * @return a list of SubSteps.
      */
     @Override
     public List<SubSteps> getSubStepsList() {
@@ -29,7 +29,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * Method adds to stepList a subStep.
      */
     @Override
     public void addStep(final SubSteps s) {
@@ -38,7 +38,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * Method removes from stepList a subStep.
      */
     @Override
     public void removeStep(final SubSteps s) {
@@ -46,7 +46,7 @@ public class ProcessImpl implements Process {
 
     }
 
-    /**
+    /**@return a list of StepType.
      * 
      */
     @Override
@@ -92,13 +92,22 @@ public class ProcessImpl implements Process {
     public double getProportialTime(final double value, final Clients s, final int staff) {
         double tot = 0;
         tot = (value * s.getMqStructure()) / (500 * staff);
-        return tot;
+        return Math.floor(tot);
     }
     /**
      * 
      */
     @Override
-    public double getProportialEarn(double value, Clients s) {
+    public double getProportialCost(final double value, final Clients s) {
         return getProportialTime(value, s, 1);
+    }
+    /**
+     * 
+     */
+    @Override
+    public double getIncome(final double value) {
+        double tot = 0;
+        tot = value * 1.5 * 1.22;
+        return Math.floor(tot);
     }
 }

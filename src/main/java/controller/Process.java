@@ -23,7 +23,9 @@ public interface Process {
     Optional<List<SubSteps>> getSubStepsByStepType(String stepType);
 
     double getProportialTime(double value, Clients s, int staff);
-    
-    double getProportialEarn(double value, Clients s);
+
+    double getProportialCost(double value, Clients s);
+
+    double getIncome(double value);
 
 }
