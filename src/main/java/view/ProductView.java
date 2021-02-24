@@ -51,7 +51,9 @@ public class ProductView extends JFrame {
     private InputValidator validator = new InputValidator();
     private final String[] cols = new String[] {"Codice", "Nome", "Descrizione", "Prezzo €/Litro", "Utilizzo Litro/500mq", "Fase sanificazione"};
     private Object[][] data = new Object[0][cols.length];
+
     private static final int COL_KEY = 0;
+
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private JComboBox<String> productCodes;

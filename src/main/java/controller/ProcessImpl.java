@@ -2,11 +2,9 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.checkerframework.framework.qual.SubtypeOf;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
-
+import model.users.Clients;
 
 public class ProcessImpl implements Process {
 
@@ -20,7 +18,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * @return a list of SubSteps.
      */
     @Override
     public List<SubSteps> getSubStepsList() {
@@ -28,7 +26,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * Method adds to stepList a subStep.
      */
     @Override
     public void addStep(final SubSteps s) {
@@ -37,7 +35,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * Method removes from stepList a subStep.
      */
     @Override
     public void removeStep(final SubSteps s) {
@@ -45,7 +43,7 @@ public class ProcessImpl implements Process {
 
     }
 
-    /**
+    /**@return a list of StepType.
      * 
      */
     @Override
@@ -58,4 +56,55 @@ public class ProcessImpl implements Process {
         return this.stepTypeList;
     }
 
+    /**
+     * 
+     */
+    @Override
+    public Optional<SubSteps> searchSubStep(final String code) {
+        for (final SubSteps st : this.stepList) {
+            if (st.getCode().equals(code)) {
+                return Optional.of(st);
+            }
+        }
+        return Optional.empty();
+    }
+    /**
+     * 
+     */
+    @Override
+    public Optional<List<SubSteps>> getSubStepsByStepType(final String type) {
+        List<SubSteps> sBySteps = new ArrayList<>();
+        for (SubSteps subSteps : this.stepList) {
+            if (subSteps.getStepType().getType().equals(type)) {
+                sBySteps.add(subSteps);
+            }
+        }
+        return (sBySteps.isEmpty()) ? Optional.empty() : Optional.of(sBySteps);
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public double getProportialTime(final double value, final Clients s, final int staff) {
+        double tot = 0;
+        tot = (value * s.getMqStructure()) / (500 * staff);
+        return Math.floor(tot);
+    }
+    /**
+     * 
+     */
+    @Override
+    public double getProportialCost(final double value, final Clients s) {
+        return getProportialTime(value, s, 1);
+    }
+    /**
+     * 
+     */
+    @Override
+    public double getIncome(final double value) {
+        double tot = 0;
+        tot = value * 1.5 * 1.22;
+        return Math.floor(tot);
+    }
 }

@@ -56,7 +56,9 @@ public class ClientsView extends JFrame {
      */
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura (mq)", "Telefono", "Email", "CF o P.IVA"};
     private Object[][] data = new Object[0][cols.length];
+
     private static final int COL_KEY = 7;
+
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
     private InputValidator validator = new InputValidator();

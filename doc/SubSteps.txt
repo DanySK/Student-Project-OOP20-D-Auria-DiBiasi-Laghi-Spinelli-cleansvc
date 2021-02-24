@@ -1,0 +1,20 @@
+CODE: 1S
+STEP: CLEANING
+NAME: Spolverare
+DESCRIPTION: Rimozione polvere
+TIME: 10
+CODE: 2S
+STEP: CONCLUSION
+NAME: Controllo Finale
+DESCRIPTION: Rimozione cestini spazzature
+TIME: 15
+CODE: 3S
+STEP: CLEANING
+NAME: Pulizia Vetri
+DESCRIPTION: Pulizia e lucidatura vetri
+TIME: 30
+CODE: 4S
+STEP: CLEANING
+NAME: Pulizia Bagni
+DESCRIPTION: Aspirapolvere, straccio.
+TIME: 40

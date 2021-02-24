@@ -1,18 +1,16 @@
 package model.step;
 
-//import model.Products;
+import model.step.enumerations.StepType;
 
 public class SubStepsImpl implements SubSteps {
-    //private StepType type;
-    private int code;
+    private StepType type;
+    private String code;
     private int time500mq;
     private String name;
     private String description;
-    //private List<Products> productsList = company.getProductsByStepType(this.type);
 
-
-
-    public SubStepsImpl(final int code, final int time, final String name, final String description) {
+    public SubStepsImpl(final String code, final int time, final String name, final String description, final StepType type) {
+        this.type = type;
         this.code = code;
         this.time500mq = time;
         this.name = name;
@@ -36,7 +34,6 @@ public class SubStepsImpl implements SubSteps {
         return this.description;
     }
 
-
     /**
      * Returns the cleaning time of 500 square meters by an employee.
      * @return the cleaning time.
@@ -51,8 +48,16 @@ public class SubStepsImpl implements SubSteps {
      * @return the code.
      */
     @Override
-    public int getCode() {
+    public String getCode() {
         return this.code;
     }
 
+    /**
+     * 
+     * @return the StepType.
+     */
+    @Override
+    public StepType getStepType() {
+        return this.type;
+    }
 }
