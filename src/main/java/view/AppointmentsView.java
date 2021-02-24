@@ -23,7 +23,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.Company;
 import controller.CompanyImpl;
 import model.Appointments;
 import utility.ConstantsCleanSvc;
@@ -44,9 +43,9 @@ public class AppointmentsView extends JFrame {
     private final JButton btnRemove;
     private JComboBox<String> appDateHour;
 
-    private Company company = CompanyImpl.getInstance();
+    private CompanyImpl company = CompanyImpl.getInstance();
     private List<Appointments> appointmentsList = company.getAppointment();
-    private final String[] cols = new String[] {"Data", "Ora", "Nome", "CF o Partita IVA"};
+    private final String[] cols = new String[] {"Data", "Ora", "Nome", "CF o Partita IVA", "Tempo totale", "Costo totale"};
     private Object[][] data = new Object[0][cols.length];
     private DefaultTableModel model = new DefaultTableModel(data, cols);
     private JTable table = new JTable(model);
@@ -96,7 +95,7 @@ public class AppointmentsView extends JFrame {
         Appointments a;
         for (int i = 0; i < appointmentsList.size(); i++) {
              a = company.getAppointment().get(i);
-             model.insertRow(i, new Object[] {a.getDate(), a.getHour(), a.getClient().getName(), a.getClient().getCFPIVA().toUpperCase()});
+             model.insertRow(i, new Object[] {a.getDate(), a.getHour(), a.getClient().getName(), a.getClient().getCFPIVA().toUpperCase(), a.getTime(), a.getEarn()});
          }
 
         table.setPreferredScrollableViewportSize(new Dimension(ConstantsCleanSvc.TABLE_WIDTH, ConstantsCleanSvc.TABLE_HEIGHT));
@@ -110,7 +109,7 @@ public class AppointmentsView extends JFrame {
         pnlSearch.setBackground(SystemColor.window);
         pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SEARCH_HEIGHT));
 
-        JLabel lblsearchDataOra = new JLabel("Data e ora appuntamenti: ");
+        JLabel lblsearchDataOra = new JLabel("Data e ora appuntamento: ");
         lblsearchDataOra.setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(lblsearchDataOra);
 
@@ -168,6 +167,7 @@ public class AppointmentsView extends JFrame {
 
         txtDate = new JTextField();
         txtDate.setFont(ConstantsCleanSvc.FONT);
+        txtDate.setEditable(false);
         pnlData.add(txtDate);
 
         JLabel labelAddress = new JLabel("Orario:");
@@ -176,6 +176,7 @@ public class AppointmentsView extends JFrame {
 
         txtHour = new JTextField();
         txtHour.setFont(ConstantsCleanSvc.FONT);
+        txtHour.setEditable(false);
         pnlData.add(txtHour);
 
         pnlDelete.add(pnlData, BorderLayout.CENTER);
@@ -265,10 +266,18 @@ public class AppointmentsView extends JFrame {
                 .addGap(0));
     }
 
+    /**
+     * Method that adds a new appointment to table.
+     * @param a
+     */
     public void addAppointmentsToTable(final Appointments a) {
-        model.insertRow(company.getAppointment().size() - 1, new Object[] {a.getDate(), a.getHour(), a.getClient()});
+        model.insertRow(company.getAppointment().size() - 1, new Object[] {a.getDate(), a.getHour(), a.getClient(), a.getTime(), a.getEarn()});
     }
 
+    /**
+     * Method that removes a specific appointment (indicated by date and hour) from table.
+     * @param a
+     */
     public void removeAppointmentsToTable(final Appointments a) {
         for (int i = 0; i < model.getRowCount(); i++) {
             if (model.getDataVector().elementAt(i).elementAt(0).equals(a.getDate()) 
@@ -279,7 +288,7 @@ public class AppointmentsView extends JFrame {
     }
 
     /**
-     * 
+     * Method that clears fields.
      */
     public void clearInsertField() {
         txtClient.setText("");
@@ -287,32 +296,60 @@ public class AppointmentsView extends JFrame {
         txtHour.setText("");
     }
 
+    /**
+     * 
+     * @return true if all fields are written
+     */
     public Boolean missingField() {
         return (getClientName().isEmpty() || getDate().isEmpty() || getHour().isEmpty());
     }
 
+    /**
+     * Method that writes fields for Client (with name and Fiscal Code or P.IVA), date and hour.
+     * @param a
+     */
     public void writeField(final Appointments a) {
         txtClient.setText(a.getClient().getName() + " " + a.getClient().getCFPIVA().toUpperCase());
         txtDate.setText(a.getDate());
         txtHour.setText(a.getHour());
     }
 
+    /**
+     * 
+     * @return client's name and Fiscal Code or P.IVA
+     */
     public String getClientName() {
         return txtClient.getText();
     }
 
+    /**
+     * 
+     * @return appointment's date
+     */
     public String getDate() {
         return txtDate.getText();
     }
 
+    /**
+     * 
+     * @return appointment's hour
+     */
     public String getHour() {
         return txtHour.getText();
     }
 
+    /**
+     * 
+     * @return the index of the selected item in JComboBox
+     */
     public int getIndexAppointmentsSearched() {
         return appDateHour.getSelectedIndex();
     }
 
+    /**
+     * Method that adds date and hour searched in JComboBox appDateHour.
+     * @param appDateHour
+     */
     public void updateSearchingDateHour(final JComboBox<String> appDateHour) {
         appDateHour.removeAllItems();
         for (Appointments appointments : company.getAppointment()) {
@@ -320,6 +357,9 @@ public class AppointmentsView extends JFrame {
         }
     }
 
+    /**
+     * Method that displays the view.
+     */
     public void display() {
         setVisible(true);
         setResizable(true);

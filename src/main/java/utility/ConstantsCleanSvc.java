@@ -6,10 +6,10 @@ public abstract class ConstantsCleanSvc {
     public static final String TITLE = "CLEAN SERVICE MANAGER";
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 500;
-    public static final int HEIGHT_LONG = 600;
     public static final Font FONT_TITLE = new Font("Trebuchet MS", Font.PLAIN, 20);
     public static final Font FONT = new Font("Trebuchet MS", Font.PLAIN, 14);
     public static final int PNLS_FULL_WIDTH = 1000;
+    public static final int PNLS_FULL_HEIGHT = 300;
     public static final int PNL_TITLE_HEIGHT = 60;
     public static final int BTN_HOME_WIDTH = 120;
     public static final int BTN_HOME_HEIGHT = 20;
@@ -26,6 +26,7 @@ public abstract class ConstantsCleanSvc {
     public static final int GRID_2_GAP = 2;
     public static final int GRID_10_GAP = 10;
     public static final int GRID_20_GAP = 20;
+    public static final int PANEL_50_GAP = 50;
     public static final int SEARCH_CF_BOX_WIDTH = 400;
     public static final int SEARCH_CF_BOX_HEIGHT = 20;
 }

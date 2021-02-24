@@ -12,6 +12,12 @@ public class SaveStatistics {
 
     private FileWriter fw;
 
+    /**
+     * A method that saves statistics.
+     * @param datepicker
+     * @param minutes
+     * @param entries
+     */
     public void save(final LocalDate datepicker, final double minutes, final double entries) {
         try {
             fw = new FileWriter(FILE_STATISTICS, true);
