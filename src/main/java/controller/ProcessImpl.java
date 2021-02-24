@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.checkerframework.framework.qual.SubtypeOf;
-
-import model.step.Step;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
 
