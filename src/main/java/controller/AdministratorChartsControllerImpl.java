@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.knowm.xchart.XYChart;
@@ -13,24 +14,25 @@ import model.DatiDaVisualizzareEnum;
 
 
 public class AdministratorChartsControllerImpl implements AdministratorChartsController{
+    
     private final ChartException chExc;
     private final DateException dateExc;
-
-
+    private DataChartsImpl dataChart;
     public AdministratorChartsControllerImpl() {
         this.chExc = new ChartException();
         this.dateExc= new DateException();
+        this.dataChart = new DataChartsImpl();
     }
     
     @Override
-    public void onButtonPressed(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel, XYChart chart) throws DateException {
-      
-        // TODO Auto-generated method stub 
+    public void addLine(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel, XYChart chart) 
+            throws DateException {
+        
         final LocalDate dataPartenza, dataArrivo;
         final Integer scelta = choice;
+        
         try {
-                if((dateStart.getText().isBlank() || dateStart.getText().isEmpty())
-                        || (dateEnd.getText().isBlank() || dateEnd.getText().isBlank())) {  //lancia un warning se le date sono vuote
+                if(dateStart.getText().isBlank() || dateEnd.getText().isBlank()) {
                     this.dateExc.warning(panel);
                     throw this.dateExc;
                 }    
@@ -38,39 +40,37 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 dataPartenza = dateStart.getDate();
                 dataArrivo = dateEnd.getDate();
                     
-                if(dataArrivo.isBefore(dataPartenza)) {
-                        this.dateExc.warning(panel);            //lancia un warning se la data di arrivo è prima della data di partenza
+                if(dataArrivo.isBefore(dataPartenza)
+                        || dataPartenza.isAfter(LocalDate.now())
+                            || dataArrivo.isAfter(LocalDate.now())) {
+                    
+                        this.dateExc.dateBefore(panel);            
                         throw this.dateExc;
                     }
         
-                DataChartsImpl dataChart = new DataChartsImpl();
-                chart.addSeries( this.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
-                                        dataChart.getDaysDate(dataPartenza, dataArrivo), 
-                                            dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta)).setMarker(SeriesMarkers.NONE);
-                chart.getStyler().setXAxisTicksVisible(true);
-                chart.getStyler().setYAxisTicksVisible(true);
-                
-                
-                panel.revalidate();
-                panel.repaint();
-        }       
-            catch(IllegalArgumentException e){
-                JOptionPane.showMessageDialog(panel, "Formato dati non valido, riprova.");
-                throw e;
-            }
+                List<Double> auxList = this.dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta);
+                chart.addSeries( this.dataChart.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
+                                                            this.dataChart.getDateList(), auxList);
+                    chart.getStyler().setXAxisTicksVisible(true);
+                    chart.getStyler().setYAxisTicksVisible(true);
+        }catch(IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(panel, "Impossibile aggiungere al grafico");
+        }
+                this.updatePanelChart(panel);
         }
     
     
-    public void resetChart(XYChart chart, JPanel panel) throws ChartException {        //elimina il grafico.   
+    public void resetChart(XYChart chart, JPanel panel) throws ChartException {       
+        
         if(chart.getSeriesMap().isEmpty()) {
             this.chExc.warning(panel); 
             throw chExc;
         }
         
-                        chart.getSeriesMap().clear();
-                        panel.revalidate();
-                        panel.repaint();
-     
+        chart.getSeriesMap().clear();
+        chart.getStyler().setXAxisTicksVisible(false);
+        chart.getStyler().setYAxisTicksVisible(false);
+        this.updatePanelChart(panel);
     }
 
 
@@ -80,16 +80,12 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
             throw chExc;
             
         }
-            new DataChartsImpl().deleteLastItem(chart);
-               panel.revalidate();
-               panel.repaint();   
-    }
-       
-
-    private String newLegendString(String dataArr, String dataPar, Integer scelta) {
-        String choose = scelta.equals(DatiDaVisualizzareEnum.ENTRATE.getIndex()) ?  DatiDaVisualizzareEnum.ENTRATE.getItemName()
-                                                                                 : DatiDaVisualizzareEnum.TEMPOLAVORO.getItemName();
-        return new String("Da: " + dataPar + " a: " + dataArr + ", "+ choose);
+        this.dataChart.deleteLastItem(chart);
+        this.updatePanelChart(panel);
     }
     
+    private void updatePanelChart(JPanel panel){
+        panel.revalidate();
+        panel.repaint();   
+    }
 }
