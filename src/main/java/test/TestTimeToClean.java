@@ -1,8 +1,9 @@
 package test;
 
 
-import org.junit.jupiter.api.Test;
 import org.junit.Assert;
+import org.junit.Test;
+
 import model.TimeToCleanValuation;
 
 public class TestTimeToClean {
