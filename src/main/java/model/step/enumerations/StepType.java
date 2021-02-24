@@ -29,7 +29,7 @@ public enum StepType {
         return this.type;
     }
 
-    public String getDesciption() {
+    public String getDescription() {
         return this.description;
     }
 
