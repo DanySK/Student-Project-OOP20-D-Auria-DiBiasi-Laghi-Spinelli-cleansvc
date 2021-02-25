@@ -18,3 +18,33 @@ STEP: CLEANING
 NAME: Pulizia Bagni
 DESCRIPTION: Aspirapolvere, straccio.
 TIME: 40
+CODE: 5S
+STEP: CLEANSING
+NAME: Detersione Neutra
+DESCRIPTION: Prima passata di detersione
+TIME: 35
+CODE: 6S
+STEP: CLEANSING
+NAME: Detersione Alcalina
+DESCRIPTION: Seconda passata di detersione
+TIME: 20
+CODE: 7S
+STEP: CLEANSING
+NAME: Osmosi
+DESCRIPTION: Ultima detersione
+TIME: 15
+CODE: 8S
+STEP: DISINFECTION
+NAME: Ozono
+DESCRIPTION: Vaporizzazione ozono
+TIME: 60
+CODE: 9S
+STEP: DISINFESTATION
+NAME: Muffe
+DESCRIPTION: Rimozione di muffe.
+TIME: 75
+CODE: 10S
+STEP: DISINFESTATION
+NAME: Scarafaggi e Tarme
+DESCRIPTION: Disinfestazione insetti
+TIME: 80

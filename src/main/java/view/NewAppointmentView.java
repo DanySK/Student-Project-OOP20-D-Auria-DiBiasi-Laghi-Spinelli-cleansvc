@@ -72,8 +72,8 @@ public class NewAppointmentView extends JFrame {
     private JLabel labelDisinfestation;
     private JLabel labelConclusion;
     private JLabel labelStaffOnWork;
-
     private InputValidator validator = new InputValidator();
+
     public NewAppointmentView() {
 
         setTitle(ConstantsCleanSvc.TITLE);
@@ -190,8 +190,7 @@ public class NewAppointmentView extends JFrame {
                     Clients c = company.getClients().get(comboClients.getSelectedIndex());
                     Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
                     if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
-                        if (datepicker.getDate().isBefore(LocalDate.now())
-                                || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
+                        if (datepicker.getDate().isBefore(LocalDate.now()) || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
                             popUp.popUpErrorOrMissing();
                         } else {
                             setSummary();
@@ -213,7 +212,7 @@ public class NewAppointmentView extends JFrame {
         pnlSearch.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
         pnlSearch.setMinimumSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBSTEPS_HEIGHT));
 
-       labelCleaning = new JLabel("Tempo per la fase di PULIZIA:");
+        labelCleaning = new JLabel("Tempo per la fase di PULIZIA:");
         labelCleaning .setFont(ConstantsCleanSvc.FONT);
         pnlSearch.add(labelCleaning);
 
@@ -262,8 +261,8 @@ public class NewAppointmentView extends JFrame {
         });
         pnlSearch.add(btnConfirm);
 
-       getContentPane().add(pnlSubmit, BorderLayout.CENTER);
-       getContentPane().add(pnlSearch, BorderLayout.SOUTH);
+        getContentPane().add(pnlSubmit, BorderLayout.CENTER);
+        getContentPane().add(pnlSearch, BorderLayout.SOUTH);
 
         GroupLayout layout = new GroupLayout(pnlSubmit);
         pnlSubmit.setLayout(layout);

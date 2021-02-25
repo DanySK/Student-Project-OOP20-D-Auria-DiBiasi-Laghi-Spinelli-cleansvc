@@ -37,7 +37,7 @@ public class AppointmentsView extends JFrame {
     private JTextField txtClient;
     private JTextField txtDate;
     private JTextField txtHour;
-    private final JButton btnSubmit;
+    private final JButton btnNewApp;
     private final JButton btnHome;
     private final JButton btnSearch;
     private final JButton btnRemove;
@@ -225,11 +225,11 @@ public class AppointmentsView extends JFrame {
         pnlSubmit.setBackground(SystemColor.window);
         pnlSubmit.setPreferredSize(new Dimension(ConstantsCleanSvc.PNLS_FULL_WIDTH, ConstantsCleanSvc.PNL_SUBMIT_HEIGHT));
 
-        btnSubmit = new JButton("Vai all'inserimento di un nuovo appuntamento >");
-        btnSubmit.setForeground(SystemColor.textText);
-        btnSubmit.setBackground(SystemColor.activeCaption);
-        btnSubmit.setFont(ConstantsCleanSvc.FONT);
-        btnSubmit.addActionListener(new ActionListener() {
+        btnNewApp = new JButton("Vai all'inserimento di un nuovo appuntamento >");
+        btnNewApp.setForeground(SystemColor.textText);
+        btnNewApp.setBackground(SystemColor.activeCaption);
+        btnNewApp.setFont(ConstantsCleanSvc.FONT);
+        btnNewApp.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -238,7 +238,7 @@ public class AppointmentsView extends JFrame {
                 dispose();
             }
         });
-        pnlSubmit.add(btnSubmit);
+        pnlSubmit.add(btnNewApp);
 
         GroupLayout layout = new GroupLayout(this.getContentPane());
         this.getContentPane().setLayout(layout);

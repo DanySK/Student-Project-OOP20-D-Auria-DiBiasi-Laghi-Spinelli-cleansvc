@@ -29,7 +29,6 @@ public class HomeView extends JFrame{
     private JButton btnGrafici;
     private JButton btnStaff;
     private JButton btnProduct;
-//    private JButton btnProcess;
     private JButton btnAppointment;
     private JButton btnSaveAndExit;
     private SaveAndLoadClients backupClients = new SaveAndLoadClients();
@@ -77,74 +76,6 @@ public class HomeView extends JFrame{
 
         });
         panelClient.add(btnClienti);
-//
-//        btnStaff = new JButton("Area Dipendenti");
-//        btnStaff.setForeground(SystemColor.textText);
-//        btnStaff.setBackground(SystemColor.activeCaption);
-//        btnStaff.setPreferredSize(new Dimension(280,70));
-//        btnStaff.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-//        btnStaff.addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                StaffView sv = new StaffView();
-//                sv.display();
-//                dispose();
-//            }
-//
-//        });
-//        panelTitle.add(btnStaff);
-//
-//        btnProduct = new JButton("Area Prodotti");
-//        btnProduct.setForeground(SystemColor.textText);
-//        btnProduct.setBackground(SystemColor.activeCaption);
-//        btnProduct.setPreferredSize(new Dimension(280,70));
-//        btnProduct.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-//        btnProduct.addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                ProductView pv = new ProductView();
-//                pv.display();
-//                dispose();
-//            }
-//
-//        });
-//        panelTitle.add(btnProduct);
-//
-//        btnProcess = new JButton("Area Processo");
-//        btnProcess.setForeground(SystemColor.textText);
-//        btnProcess.setBackground(SystemColor.activeCaption);
-//        btnProcess.setPreferredSize(new Dimension(280,70));
-//        btnProcess.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-//        btnProcess.addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(final ActionEvent e) {
-//                SubStepView stv = new SubStepView();
-//                stv.display();
-//                dispose();
-//            }
-//
-//        });
-//        panelTitle.add(btnProcess);
-//
-//        btnGrafici = new JButton("Area Grafici");
-//        btnGrafici.setForeground(SystemColor.textText);
-//        btnGrafici.setBackground(SystemColor.activeCaption);
-//        btnGrafici.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-//        btnGrafici.setPreferredSize(new Dimension(280,70));
-//        btnGrafici.addActionListener(new ActionListener() {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                AdministratorChartsView av = new AdministratorChartsView();
-//                av.display();
-//                dispose();
-//            }
-//
-//        });
-//        panelTitle.add(btnGrafici);
 
         btnAppointment = new JButton("Area Appuntamenti");
         panelClient.add(btnAppointment);
@@ -173,6 +104,7 @@ public class HomeView extends JFrame{
 
         btnGrafici = new JButton("Area Grafici");
         panelCenter.add(btnGrafici);
+        
         btnGrafici.setForeground(SystemColor.textText);
         btnGrafici.setBackground(SystemColor.activeCaption);
         btnGrafici.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
@@ -250,27 +182,8 @@ public class HomeView extends JFrame{
             }
 
         });
-//<<<<<<< HEAD
-//        panelTitle.add(btnAppointment);
-//
-//        btnSaveAndExit = new JButton("Salva ed Esci");
-//        btnSaveAndExit.setForeground(SystemColor.textText);
-//        btnSaveAndExit.setBackground(SystemColor.activeCaption);
-//        btnSaveAndExit.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
-//        btnSaveAndExit.setPreferredSize(new Dimension(280,70));
-//        btnSaveAndExit.addActionListener(new ActionListener() {
-//=======
-//        btnClienti.addActionListener(new ActionListener() {
-//>>>>>>> master
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                ClientsView cv = new ClientsView();
-//                cv.display();
-//                dispose();
-//            }
-//
-//        });
+
+
     }
 
     /**

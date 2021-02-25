@@ -3,8 +3,9 @@ package test;
 import java.io.IOException;
 import java.time.LocalDate;
 import javax.swing.JPanel;
+
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 import com.github.lgooddatepicker.components.DatePicker;

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+//import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class SaveAndLoadClients implements SaveAndLoad {
 
     private Company company = CompanyImpl.getInstance();
     private static final String SEP = File.separator;
-    private static final String FILE_CLIENTS = "doc" + SEP + "Clients.txt";
+    private static final String FILE_CLIENTS = "Clients.txt";
     private static final String CFPIVA_STR = "CFPIVA: ";
     private static final String NAME_STR = "NAME: ";
     private static final String ADDRESS_STR = "ADDRESS: ";
@@ -27,13 +28,18 @@ public class SaveAndLoadClients implements SaveAndLoad {
     private static final String TEL_STR = "TEL: ";
     private static final String EMAIL_STR = "EMAIL: ";
     private static final String MQ_STR = "MQSTRUCTURE: ";
-
+    private FileWriter fw;
     /**
      * A method that saves a client.
      */
     @Override
     public void save() {
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_CLIENTS))) {
+        try {
+            fw = new FileWriter(FILE_CLIENTS, true);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try (BufferedWriter w = new BufferedWriter(fw)) {
             for (final Clients c : this.company.getClients()) {
                 w.write(CFPIVA_STR + c.getCFPIVA());
                 w.newLine();
@@ -62,6 +68,7 @@ public class SaveAndLoadClients implements SaveAndLoad {
      */
     @Override
     public void load() {
+        //System.out.println(url);
         final List<String> cfPIvaList = new ArrayList<>();
         final List<String> nameList = new ArrayList<>();
         final List<String> addressList = new ArrayList<>();
@@ -98,8 +105,7 @@ public class SaveAndLoadClients implements SaveAndLoad {
                 }
             });
             for (int i = 0; i < cfPIvaList.size(); i++) {
-                this.company.addClient(new ClientsImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i),
-                        Integer.valueOf(capList.get(i)), telList.get(i), emailList.get(i), Integer.valueOf(mqStructureList.get(i))));
+                this.company.addClient(new ClientsImpl(cfPIvaList.get(i), nameList.get(i), addressList.get(i), cityList.get(i), Integer.parseInt(capList.get(i)), telList.get(i), emailList.get(i), mqStructureList.get(i)));
             }
         } catch (final IOException e) {
             System.err.println(e.getMessage());
