@@ -19,20 +19,25 @@ public class SaveAndLoadSubSteps implements SaveAndLoad {
     private ProcessImpl process = ProcessImpl.getInstance();
 
     private static final String SEP = File.separator;
-    private static final String FILE_SUBSTEPS = "doc" + SEP + "SubSteps.txt";
+    private static final String FILE_SUBSTEPS = "SubSteps.txt";
     private static final String CODE_STR = "CODE: ";
     private static final String STEP_STR = "STEP: ";
     private static final String DESCRIPTION_STR = "DESCRIPTION: ";
     private static final String NAME_STR = "NAME: ";
     private static final String TIME_STR = "TIME: ";
     private StepType st;
-
+    private FileWriter fw;
     /**
      * A method that saves substeps.
      */
     @Override
     public void save() {
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_SUBSTEPS))) {
+        try {
+            fw = new FileWriter(FILE_SUBSTEPS, true);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try (BufferedWriter w = new BufferedWriter(fw)) {
             for (final SubSteps s : this.process.getSubStepsList()) {
                 w.write(CODE_STR + s.getCode());
                 w.newLine();

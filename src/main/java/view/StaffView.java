@@ -325,7 +325,9 @@ public class StaffView extends JFrame {
                         popUp.popUpWarning("Dipendente non trovato.");
                     } else {
                         String email = popUp.popUpInput("Inserisci email:");
-                        if (validator.isEmail(email)) {
+                        if (email == null) {
+                            popUp.popUpInfo("Eliminazione annullata.");
+                        } else if (validator.isEmail(email)) {
                             Optional<Staff> staffAdmin = company.searchStaffbyEmail(email);
                             if (staffAdmin.isEmpty()) {
                                 popUp.popUpWarning("L'email non esiste!");

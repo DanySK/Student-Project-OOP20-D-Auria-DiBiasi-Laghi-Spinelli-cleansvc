@@ -5,12 +5,10 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.knowm.xchart.XYChart;
-import org.knowm.xchart.style.markers.SeriesMarkers;
 import com.github.lgooddatepicker.components.DatePicker;
 import model.ChartException;
 import model.DataChartsImpl;
 import model.DateException;
-import model.DatiDaVisualizzareEnum;
 
 
 public class AdministratorChartsControllerImpl implements AdministratorChartsController{
@@ -40,9 +38,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 dataPartenza = dateStart.getDate();
                 dataArrivo = dateEnd.getDate();
                     
-                if(dataArrivo.isBefore(dataPartenza)
-                        || dataPartenza.isAfter(LocalDate.now())
-                            || dataArrivo.isAfter(LocalDate.now())) {
+                if(dataArrivo.isBefore(dataPartenza)) {
                     
                         this.dateExc.dateBefore(panel);            
                         throw this.dateExc;
@@ -88,4 +84,6 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         panel.revalidate();
         panel.repaint();   
     }
+
+
 }

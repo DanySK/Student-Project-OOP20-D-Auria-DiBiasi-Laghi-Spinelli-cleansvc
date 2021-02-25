@@ -32,3 +32,6 @@ Data: 2021-04-22 Minuti: 4.0 Entrate: 34.0
 Data: 2021-02-28 Minuti: 5.0 Entrate: 12.0
 Data: 2021-04-21 Minuti: 3.0 Entrate: 45.0
 Data: 2021-02-24 Minuti: 7.0 Entrate: 14.0
+Data: 2021-02-26 Minuti: 165.0 Entrate: 179.0
+Data: 2021-02-25 Minuti: 40.0 Entrate: 12.0
+Data: 2021-02-28 Minuti: 150.0 Entrate: 258.0

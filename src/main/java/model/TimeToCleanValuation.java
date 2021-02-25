@@ -1,7 +1,11 @@
 package model;
 
 import java.time.*;
-
+/**
+ * 
+ * @author Nico Nize
+ *
+ */
 public class TimeToCleanValuation {
     
 

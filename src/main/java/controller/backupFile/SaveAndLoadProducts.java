@@ -3,6 +3,7 @@ package controller.backupFile;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class SaveAndLoadProducts implements SaveAndLoad {
 
     private Company company = CompanyImpl.getInstance();
     private static final String SEP = File.separator;
-    private static final String FILE_PRODUCTS = "doc" + SEP + "Products.txt";
+    private static final String FILE_PRODUCTS = "Products.txt";
     private static final String CODE_STR = "CODE: ";
     private static final String STEP_STR = "STEP: ";
     private static final String NAME_STR = "NAME: ";
@@ -28,13 +29,18 @@ public class SaveAndLoadProducts implements SaveAndLoad {
     private static final String PRICELITRE_STR = "PRICELITRE: ";
     private static final String USAGE500MQ_STR = "USAGE500MQ: ";
     private StepType stepProduct;
-
+    private FileWriter fw;
     /**
      * A method that saves a product.
      */
     @Override
     public void save() {
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_PRODUCTS))) {
+        try {
+            fw = new FileWriter(FILE_PRODUCTS, true);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try (BufferedWriter w = new BufferedWriter(fw)) {
             for (final Products p : this.company.getProducts()) {
                 w.write(CODE_STR + p.getCode());
                 w.newLine();

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import model.Products;
 import model.step.SubSteps;
 import model.step.enumerations.StepType;
 import model.users.Clients;
+import utility.ConstantsCleanSvc;
 
 public class ProcessImpl implements Process {
 
@@ -91,7 +91,7 @@ public class ProcessImpl implements Process {
     @Override
     public double getProportialTime(final double value, final Clients s, final int staff) {
         double tot = 0;
-        tot = (value * s.getMqStructure()) / (500 * staff);
+        tot = (value * s.getMqStructure()) / (ConstantsCleanSvc.OPERATION_MQ500 * staff);
         return Math.floor(tot);
     }
     /**
@@ -99,7 +99,7 @@ public class ProcessImpl implements Process {
      */
     @Override
     public double getProportialCost(final double value, final Clients s) {
-        return getProportialTime(value, s, 1);
+        return  getProportialTime(value, s, 1);
     }
     /**
      * 
@@ -107,7 +107,7 @@ public class ProcessImpl implements Process {
     @Override
     public double getIncome(final double value) {
         double tot = 0;
-        tot = value * 1.5 * 1.22;
+        tot = value * ConstantsCleanSvc.INCOME_INCRISE * ConstantsCleanSvc.INCOME_TAX;
         return Math.floor(tot);
     }
 }

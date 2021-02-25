@@ -1,5 +1,12 @@
 package model;
 
+/**
+ * Enumeration used by DataChartImpl for the choice.
+ * 
+ * @author Nico Nize
+ *
+ */
+
 public enum DatiDaVisualizzareEnum {
     
     TEMPOLAVORO(1, "Tempo di lavoro"),
