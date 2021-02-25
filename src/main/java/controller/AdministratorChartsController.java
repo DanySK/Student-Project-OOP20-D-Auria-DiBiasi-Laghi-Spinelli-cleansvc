@@ -7,12 +7,10 @@ import model.ChartException;
 import model.DateException;
 
 public interface AdministratorChartsController {
-    
-   void addLine(DatePicker dateStart,DatePicker dateEnd, int choice, JPanel panel, XYChart chart) throws DateException;
-    
+
+   void addLine(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel, XYChart chart) throws DateException;
+
    void resetChart(XYChart chart, JPanel panel) throws ChartException;
-    
+
    void deleteLast(XYChart chart, JPanel panel) throws ChartException;
-   
-    
 }
