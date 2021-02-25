@@ -40,9 +40,7 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
                 dataPartenza = dateStart.getDate();
                 dataArrivo = dateEnd.getDate();
                     
-                if(dataArrivo.isBefore(dataPartenza)
-                        || dataPartenza.isAfter(LocalDate.now())
-                            || dataArrivo.isAfter(LocalDate.now())) {
+                if(dataArrivo.isBefore(dataPartenza)) {
                     
                         this.dateExc.dateBefore(panel);            
                         throw this.dateExc;

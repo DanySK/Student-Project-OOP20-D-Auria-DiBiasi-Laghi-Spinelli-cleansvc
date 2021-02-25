@@ -11,6 +11,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,14 +27,15 @@ public class DataChartsImpl implements DataCharts {
     public DataChartsImpl() {
         this.listToReturn = new ArrayList<>();
     }
-    
-    public List<Double> buildChartsFromData(LocalDate dateStart, LocalDate dateEnd, Integer choose) {       
+
+
+    public List<Double> buildChartsFromData(final LocalDate dateStart, final LocalDate dateEnd, final Integer choice) {       
         try {
-                if(choose.equals(DatiDaVisualizzareEnum.TEMPOLAVORO.getIndex())) {
+                if(choice.equals(DatiDaVisualizzareEnum.TEMPOLAVORO.getIndex())) {
                 return this.getTempoLavoro(dateStart, dateEnd);
         }
         
-        else if(choose.equals(DatiDaVisualizzareEnum.ENTRATE.getIndex())){
+        else if(choice.equals(DatiDaVisualizzareEnum.ENTRATE.getIndex())){
               return this.getEntrate(dateStart, dateEnd);
         }
           
@@ -42,60 +45,79 @@ public class DataChartsImpl implements DataCharts {
         return null;
     }
     
-    public List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd){
+
+    public List<Double> getEntrate(final LocalDate dateStart, final LocalDate dateEnd){
         
         if(!this.listToReturn.isEmpty()) {
             this.listToReturn.clear();
         }
-        List<LocalDate> auxLocalDateList = new ArrayList<>();
-        List<Double> entrateList = new ArrayList<>();
+        Map<LocalDate, Double> auxMap = new TreeMap<>();
+        List<Double> entryList = new ArrayList<>();
         LocalDate auxDate = null;
         String line = null;
+        Double entry;
         try(BufferedReader reader = new BufferedReader(new FileReader(DataChartsImpl.FILE))){
             while( (line = reader.readLine()) != null) {
                 auxDate = LocalDate.parse(line.substring(line.indexOf("Date: ")+7, line.indexOf(" Minuti")));
-                System.out.println(auxDate + "from getEntrate");
+                //System.out.println(auxDate + "from getEntrate");
                 if(dateStart.equals(auxDate) || (auxDate.isAfter(dateStart) && auxDate.isBefore(dateEnd)) || auxDate.isEqual(dateEnd)) {
-                    //Debug System.out.println("entro in aggiunta");
-                    entrateList.add(Double.parseDouble(line.substring(line.indexOf("Entrate: ")+9)));
-                    auxLocalDateList.add(auxDate);
-                    //Debug System.out.println("Aggiunto");
+                    entry = Double.parseDouble(line.substring(line.indexOf("Entrate: ")+9));
+                    if(auxMap.containsKey(auxDate)) {
+                        auxMap.replace(auxDate, auxMap.get(auxDate), auxMap.get(auxDate) + entry);
+                    }else{
+                            auxMap.put(auxDate, entry);   
+                     }
+                    /*Debug*/ System.out.println("Aggiunto");
                 }
             }
         } catch(IOException e) {
             e.printStackTrace();
         }
-        this.listToReturn.addAll(auxLocalDateList);
-        return entrateList;
+        this.listToReturn.addAll(auxMap.keySet());
+        entryList.addAll(auxMap.values());
+        return entryList;
     }
     
+   
     public List<Double> getTempoLavoro(LocalDate dateStart, LocalDate dateEnd){
+        Map<LocalDate, Double> auxMap = new TreeMap<>();
+        List<Double> timeList = new ArrayList<>();
+        LocalDate auxDate = null;
+        String line = null;
+        Double time; 
+        
         if(!this.listToReturn.isEmpty()) {
             this.listToReturn.clear();
         }
-        List<LocalDate> auxLocalDateList = new ArrayList<>();
-        List<Double> lavoroList = new ArrayList<>();
-        LocalDate auxDate = null;
-        String line = null;
         try(BufferedReader reader = new BufferedReader(new FileReader(DataChartsImpl.FILE))){
+            
             while( (line = reader.readLine()) != null) {
                 auxDate = LocalDate.parse(line.substring(line.indexOf("Date: ")+7, line.indexOf(" Minuti")));
-                System.out.println(auxDate + "from getTempoLavoro");
-            if(dateStart.equals(auxDate) || (auxDate.isAfter(dateStart) && auxDate.isBefore(dateEnd)) || auxDate.isEqual(dateEnd)) {
-                    //Debug System.out.println("entro in aggiunta");
-                    lavoroList.add(Double.parseDouble(line.substring(line.indexOf("Minuti: ")+8, line.indexOf(" Entrate: "))));
-                    auxLocalDateList.add(auxDate);
-                    /* Debug*/ System.out.println("Aggiunto");
+                
+                //*Debug*/System.out.println(auxDate + " from getTempoLavoro");
+                
+                if(dateStart.equals(auxDate) || (auxDate.isAfter(dateStart) && auxDate.isBefore(dateEnd)) || auxDate.isEqual(dateEnd)) {
+                    
+                    time = Double.parseDouble(line.substring(line.indexOf("Minuti: ")+8, line.indexOf(" Entrate: ")));
+                   
+                    if(auxMap.containsKey(auxDate)) {
+                        auxMap.replace(auxDate, auxMap.get(auxDate), auxMap.get(auxDate) + time);
+                    }else{
+                            auxMap.put(auxDate, time);   
+                     }
+                    //* Debug*/ System.out.println("Aggiunto");
                 }
-
             }
         } catch(IOException e) {
             e.printStackTrace();
         }
-        this.listToReturn.addAll(auxLocalDateList);
-        return lavoroList;
+        
+        this.listToReturn.addAll(auxMap.keySet());
+        timeList.addAll(auxMap.values());
+        return timeList;
     }
     
+
     @Override
     public List<Date> getDateList() {
         List<Date> successiveDate = new ArrayList<>();
@@ -109,9 +131,9 @@ public class DataChartsImpl implements DataCharts {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
+        }        
         return successiveDate;
-    }
+        }
     
     @Override
     public void deleteLastItem(XYChart chart) {

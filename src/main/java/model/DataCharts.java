@@ -6,9 +6,16 @@ import java.util.List;
 
 import org.knowm.xchart.XYChart;
 
+/**
+ * 
+ * @author Nico Nize
+ *
+ */
+
 public interface DataCharts {
     /**
-     * 
+     * Given a choice, a date as startDate and another date as endDate,or each choice the corresponding 
+     * method will be performed
      * @param dateStart
      * @param dateEnd
      * @param choose
@@ -16,14 +23,16 @@ public interface DataCharts {
      */
      List<Double> buildChartsFromData(LocalDate dateStart, LocalDate dateEnd, Integer choose);
      /**
-      * 
+      *  Given a date as dateStart and a date as dateEnd,reading from file the method will calculate and sketch 
+      * the gain chart for the interval of days given, more values for a date will be added.
       * @param dateStart
       * @param dateEnd
       * @return
       */
      List<Double> getEntrate(LocalDate dateStart, LocalDate dateEnd);
      /**
-      * 
+      * Given a date as dateStart and a date as dateEnd,reading from file the method will calculate and sketch 
+      * the work time chart for the interval of days given, more values for a date will be added.
       * @param dateStart
       * @param dateEnd
       * @return
@@ -33,7 +42,7 @@ public interface DataCharts {
       * 
       * @return
       */
-     List<Date> getDateList();
+      List<Date> getDateList();
      /**
       * 
       * @param chart
