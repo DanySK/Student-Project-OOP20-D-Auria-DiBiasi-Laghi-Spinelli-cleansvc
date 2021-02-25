@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import model.Appointments;
 import model.Products;
-import model.step.enumerations.StepType;
 import model.users.Clients;
 import model.users.Staff;
 

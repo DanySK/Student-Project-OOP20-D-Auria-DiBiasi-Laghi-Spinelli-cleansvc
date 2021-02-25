@@ -44,5 +44,8 @@ public abstract class ConstantsCleanSvc {
     public static final int PANEL_50_GAP = 50;
     public static final int SEARCH_CF_BOX_WIDTH = 400;
     public static final int SEARCH_CF_BOX_HEIGHT = 20;
-    
+    public static final double INCOME_TAX = 1.22;
+    public static final double INCOME_INCRISE = 1.5;
+    public static final int OPERATION_MQ500 = 500;
+
 }

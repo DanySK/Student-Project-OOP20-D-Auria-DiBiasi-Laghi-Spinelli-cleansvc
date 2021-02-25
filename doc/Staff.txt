@@ -5,4 +5,4 @@ CITY: Rico'
 CAP: 47014
 TEL: 3311068731
 EMAIL: vanessa@unibo.it
-ADMIN: si
+ADMIN: no
