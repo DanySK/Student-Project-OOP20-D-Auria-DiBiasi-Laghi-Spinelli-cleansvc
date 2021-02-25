@@ -86,4 +86,6 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
         panel.revalidate();
         panel.repaint();   
     }
+
+
 }

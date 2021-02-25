@@ -25,7 +25,7 @@ public class AdministratorChartsView extends JFrame {
     private static final long serialVersionUID = -800518568134501851L;
     
     private static final double PERCENT = 0.6;
-    private static final String TITLE = "Grafici amministratore";
+    private static final String TITLE = "GRAFICI AMMINISTRATORE";
     final AdministratorChartsControllerImpl ctrl;
     final private JPanel panelTitle;
     final private JLabel lblNewLabel;
@@ -183,11 +183,12 @@ public class AdministratorChartsView extends JFrame {
     }
     
     /**
-     * 
-     * @param chart
-     */
+    * Set the chart's style.
+    *
+    * @param chart
+    */
     
-    private void setChartStyle(XYChart chart) {
+    public  void setChartStyle(XYChart chart) {
         chart.setXAxisTitle("Data");
         chart.getStyler().setChartBackgroundColor(SystemColor.window)
                             .setChartTitleBoxBackgroundColor(SystemColor.activeCaption)
