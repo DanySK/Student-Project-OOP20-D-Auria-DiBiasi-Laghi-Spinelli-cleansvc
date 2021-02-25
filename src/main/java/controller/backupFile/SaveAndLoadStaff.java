@@ -17,7 +17,7 @@ import model.users.StaffImpl;
 public class SaveAndLoadStaff implements SaveAndLoad {
     private Company company = CompanyImpl.getInstance();
     private static final String SEP = File.separator;
-    private static final String FILE_STAFF = "doc" + SEP + "Staff.txt";
+    private static final String FILE_STAFF = "Staff.txt";
     private static final String CFPIVA_STR = "CFPIVA: ";
     private static final String NAME_STR = "NAME: ";
     private static final String ADDRESS_STR = "ADDRESS: ";
@@ -26,13 +26,18 @@ public class SaveAndLoadStaff implements SaveAndLoad {
     private static final String TEL_STR = "TEL: ";
     private static final String EMAIL_STR = "EMAIL: ";
     private static final String ADMIN_STR = "ADMIN: ";
-
+    private FileWriter fw;
     /**
      * A method that saves a staff.
      */
     @Override
     public void save() {
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_STAFF))) {
+        try {
+            fw = new FileWriter(FILE_STAFF, true);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try (BufferedWriter w = new BufferedWriter(fw)) {
             for (final Staff s : this.company.getStaff()) {
                 w.write(CFPIVA_STR + s.getCFPIVA());
                 w.newLine();

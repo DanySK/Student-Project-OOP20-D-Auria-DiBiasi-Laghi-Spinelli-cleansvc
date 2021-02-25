@@ -19,19 +19,24 @@ import model.users.Clients;
 public class SaveAndLoadAppointments implements SaveAndLoad {
     private Company company = CompanyImpl.getInstance();
     private static final String SEP = File.separator;
-    private static final String FILE_APPOINTMENTS = "doc" + SEP + "Appointments.txt";
+    private static final String FILE_APPOINTMENTS = "Appointments.txt";
     private static final String DATE_STR = "DATE: ";
     private static final String HOUR_STR = "HOUR: ";
     private static final String CLIENT_STR = "CLIENT: ";
     private static final String TIME_STR = "TIME: ";
     private static final String EARN_STR = "EARN: ";
-
+    private FileWriter fw;
     /**
      * A method that saves an appointment.
      */
     @Override
     public void save() {
-        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_APPOINTMENTS))) {
+        try {
+            fw = new FileWriter(FILE_APPOINTMENTS, true);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try (BufferedWriter w = new BufferedWriter(fw)) {
             for (final Appointments a : this.company.getAppointment()) {
                 w.write(DATE_STR + a.getDate());
                 w.newLine();
