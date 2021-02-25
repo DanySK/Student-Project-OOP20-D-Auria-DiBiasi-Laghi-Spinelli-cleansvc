@@ -1,5 +1,6 @@
 package test;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import javax.swing.JPanel;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ public class TestAdministrator {
     public void dateControllerDateStartBefore() throws DateException {
         
         dateStart.setDate(LocalDate.now());
-        dateEnd.setDate(LocalDate.of(2031,8,18));
+        dateEnd.setDate(LocalDate.of(2020,8,18));
         Assertions.assertThrows(DateException.class, ()->{
             new AdministratorChartsControllerImpl().addLine(dateStart, dateEnd, 1, panel,chart);
         });
@@ -48,5 +49,10 @@ public class TestAdministrator {
     @Test 
     public void isVisible() {
        new AdministratorChartsView().display();
+    }
+    
+    public void correspondingValues() {
+  
+           System.out.println(new DataChartsImpl().getEntrate(LocalDate.now(), LocalDate.of(2021,4,18)));
     }
 }

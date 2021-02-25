@@ -17,6 +17,12 @@ import java.awt.SystemColor;
 import javax.swing.border.TitledBorder;
 import java.awt.Cursor;
 
+/**
+ * 
+ * @author Nico Nize
+ *
+ */
+
 public class AdministratorChartsView extends JFrame {
     
     /**

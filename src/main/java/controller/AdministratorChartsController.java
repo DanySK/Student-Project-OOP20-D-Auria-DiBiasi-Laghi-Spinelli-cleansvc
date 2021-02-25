@@ -25,7 +25,7 @@ public interface AdministratorChartsController {
    void addLine(DatePicker dateStart,DatePicker dateEnd, int choice, JPanel panel, XYChart chart) throws DateException;
    
    /**
-     * Reset the XYChart, a ChartException is thrown if the XYChart is empty
+     * Clean the XYChart Panel, a ChartException is thrown if the XYChart is empty
      * @param chart
      * @param panel
      * @throws ChartException

@@ -137,7 +137,7 @@ public class DataChartsImpl implements DataCharts {
     
     @Override
     public void deleteLastItem(XYChart chart) {
-        // TODO Auto-generated method stub
+
         List<String> list = new ArrayList<>();
         System.out.println(chart.getSeriesMap().keySet());
         list.addAll(chart.getSeriesMap().keySet().stream().collect(Collectors.toList()));
