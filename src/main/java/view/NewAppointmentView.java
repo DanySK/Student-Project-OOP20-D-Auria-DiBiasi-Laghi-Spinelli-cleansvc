@@ -254,7 +254,7 @@ public class NewAppointmentView extends JFrame {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                new SaveStatistics().save(datepicker.getDate(), totTime, income);
+                new SaveStatistics().save(datepicker.getDate(), totTime, income);                
                 popUp.popUpInfo("Appuntamento inserito con successo.");
                 new AppointmentsView().display();
                 setVisible(false);

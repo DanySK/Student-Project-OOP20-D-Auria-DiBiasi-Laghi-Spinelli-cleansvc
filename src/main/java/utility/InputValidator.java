@@ -18,6 +18,8 @@ public class InputValidator {
     private String CF = "^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$";
     private String PIVA = "^[0-9]{11}$";
     private String CAP = "^[0-9]{5}$";
+    private String date = "^((?:19|20)[0-9][0-9])-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$";
+    private String time = "^[0-2][0-3]:[0-5][0-9]$";
     /**
      * Check if the parameter is in alphanumeric format
      * @param txtField
