@@ -26,18 +26,12 @@ public class SaveAndLoadStaff implements SaveAndLoad {
     private static final String TEL_STR = "TEL: ";
     private static final String EMAIL_STR = "EMAIL: ";
     private static final String ADMIN_STR = "ADMIN: ";
-    private FileWriter fw;
     /**
      * A method that saves a staff.
      */
     @Override
     public void save() {
-        try {
-            fw = new FileWriter(FILE_STAFF, true);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        try (BufferedWriter w = new BufferedWriter(fw)) {
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_STAFF))) {
             for (final Staff s : this.company.getStaff()) {
                 w.write(CFPIVA_STR + s.getCFPIVA());
                 w.newLine();

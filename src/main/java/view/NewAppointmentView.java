@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -189,9 +190,9 @@ public class NewAppointmentView extends JFrame {
                 if (!missingField()) {
                     Clients c = company.getClients().get(comboClients.getSelectedIndex());
                     Appointments a = new AppointmentsImpl(getDate(), getHour(), c, totTime, income);
-                    if (company.searchAppointment(a.getDate(), a.getHour()).isEmpty()) {
+                    if (company.searchAppointment(a.getDate(), a.getHour()).equals(Optional.empty())) {
                         if (datepicker.getDate().isBefore(LocalDate.now()) || ((datepicker.getDate().equals(LocalDate.now()) && (!timepicker.getTime().isAfter(LocalTime.now().truncatedTo(ChronoUnit.MINUTES)))))) {
-                            popUp.popUpErrorOrMissing();
+                            popUp.popUpError("Hai selezionato una data e ora antecedenti ad oggi.");
                         } else {
                             setSummary();
                             btnConfirm.setEnabled(true);
@@ -375,13 +376,13 @@ public class NewAppointmentView extends JFrame {
              cost = 0;
              nProd = 0;
              if (check.isSelected()) {
-                 if (!process.getSubStepsByStepType(check.getText()).isEmpty()) {
+                 if (process.getSubStepsByStepType(check.getText()) != null) {
                      List<SubSteps> list = process.getSubStepsByStepType(check.getText()).get();
                      for (SubSteps subSteps : list) {
                          time += subSteps.getTime();
                      }
                  }
-                 if (!company.getProductsByStepType(check.getText()).isEmpty()) {
+                 if (company.getProductsByStepType(check.getText()) != null) {
                      List<Products> list2 = company.getProductsByStepType(check.getText()).get(); 
                      for (Products p : list2) {
                          cost += p.getPricePerLitre();
@@ -414,7 +415,7 @@ public class NewAppointmentView extends JFrame {
      * @return true if some values are empty.
      */
     public Boolean missingField() {
-        return (getDate().isEmpty() || getHour().isEmpty() || getStaff() == Integer.MIN_VALUE);
+        return (getDate() == null || getHour() == null || getStaff() == Integer.MIN_VALUE);
     }
 
     /**

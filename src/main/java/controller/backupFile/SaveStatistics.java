@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class SaveStatistics {
     private static final String SEP = File.separator;
-    private static final String FILE_STATISTICS = "doc" + SEP + "Statistics.txt";
+    private static final String FILE_STATISTICS = "Statistics.txt";
 
     private FileWriter fw;
 

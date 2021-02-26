@@ -27,7 +27,7 @@ public abstract class PeopleImpl implements People {
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * @return Fiscal Code or P.IVA
      */
@@ -35,7 +35,7 @@ public abstract class PeopleImpl implements People {
     public String getCFPIVA() {
         return this.CF_PIVA;
     }
-    
+
     /**
      * @return address
      */
@@ -43,7 +43,7 @@ public abstract class PeopleImpl implements People {
     public String getAddress() {
         return this.address;
     }
-    
+
     /**
      * @return city
      */
@@ -51,7 +51,7 @@ public abstract class PeopleImpl implements People {
     public String getCity() {
         return this.city;
     }
-    
+
     /**
      * @return CAP
      */
@@ -59,7 +59,7 @@ public abstract class PeopleImpl implements People {
     public int getCAP() {
         return this.cap;
     }
-    
+
     /**
      * @return telephone
      */
@@ -67,7 +67,7 @@ public abstract class PeopleImpl implements People {
     public String getTel() {
         return this.tel;
     }
-    
+
     /**
      * @return email
      */

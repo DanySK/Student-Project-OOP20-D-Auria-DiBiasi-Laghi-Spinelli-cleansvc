@@ -6,8 +6,10 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -192,12 +194,16 @@ public class SubStepView extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
                     SubSteps c = new SubStepsImpl(getCode(), getTime(), getName(), getDescription(), process.getStepTypeList().get(getIndexComboStep()));
-                    process.addStep(c);
-                    popUp.popUpInfo("Sottofase inserita con successo.");
-                    addSubStepToTable(process.getSubStepsList().get(process.getSubStepsList().size() - 1));
-                    clearInsertField();
+                    if (process.searchSubStep(c.getCode()).equals(Optional.empty())) {
+                        process.addStep(c);
+                        popUp.popUpInfo("Sottofase inserita con successo.");
+                        addSubStepToTable(process.getSubStepsList().get(process.getSubStepsList().size() - 1));
+                        clearInsertField(); 
+                    } else {
+                        popUp.popUpWarning("Codice Sotto-Fase già esistente.");
+                    }
                 } else {
-                    popUp.popUpInfo("Ci sono dati mancanti o errati.");
+                    popUp.popUpErrorOrMissing();
                 }
             }
         });
@@ -320,7 +326,7 @@ public class SubStepView extends JFrame {
      */
     public void removeSubStepToTable(final SubSteps subStep) {
         for (int j = 0; j < model.getRowCount(); j++) {
-            if (model.getDataVector().elementAt(j).elementAt(COL_KEY).equals(subStep.getCode())) {
+            if (model.getValueAt(j, COL_KEY).equals(subStep.getCode())) {
                 model.removeRow(j);
             }
         }

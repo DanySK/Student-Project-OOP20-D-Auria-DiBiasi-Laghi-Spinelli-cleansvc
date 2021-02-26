@@ -21,7 +21,7 @@ import org.knowm.xchart.XYChart;
 public class DataChartsImpl implements DataCharts {
      
     private static final String SEP = File.separator;
-    private static final String FILE = "doc" + SEP + "Statistics.txt";
+    private static final String FILE = "Statistics.txt";
     private ArrayList<LocalDate> listToReturn;
     
     public DataChartsImpl() {

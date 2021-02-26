@@ -49,11 +49,7 @@ public class ClientsView extends JFrame {
     private final JButton btnHome;
     private JComboBox<String> clientCFPIVAs;
     private CompanyImpl company = CompanyImpl.getInstance();
-    /*
-     * testing:
-     *
-     * List<Clients> clientsList = new ArrayList<>();
-     */
+
     private final String[] cols = new String[] {"Nome", "Indirizzo", "Città", "CAP", "Struttura (mq)", "Telefono", "Email", "CF o P.IVA"};
     private Object[][] data = new Object[0][cols.length];
 
@@ -102,15 +98,6 @@ public class ClientsView extends JFrame {
         });
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
-
-        /*
-         * testing:
-         *
-         *
-         * clientsList.add(new ClientsImpl("a", "b", "c", "d", "f", "f", "f", 22));
-         * clientsList.add(new ClientsImpl("b", "b", "b", "b", "f", "f", "f", 22));
-         */
-
 
         for (int i = 0; i < company.getClients().size(); i++) {
             Clients client = company.getClients().get(i);
@@ -252,7 +239,7 @@ public class ClientsView extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
                     Clients newClient = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
-                    if (company.searchClient(newClient.getCFPIVA()).isEmpty()) {
+                    if (company.searchClient(newClient.getCFPIVA()).equals(Optional.empty())) {
                         popUp.popUpInfo("Cliente inserito con successo.");
                         company.addClient(newClient);
                         addClientToTable(company.getClients().get(company.getClients().size() - 1));
@@ -280,7 +267,7 @@ public class ClientsView extends JFrame {
                 if (!missingField()) {
                     Clients changed = new ClientsImpl(getCFPIVA(), getName(), getAddress(), getCity(), getCAP(), getTel(), getEmail(),  getMq());
                     Optional<Clients> toModify = company.searchClient(changed.getCFPIVA());
-                    if (toModify.isEmpty()) {
+                    if (toModify.equals(Optional.empty())) {
                         popUp.popUpWarning("Codice Fiscale o Partita IVA inesistente tra i clienti!");
                     } else {
                         popUp.popUpInfo("Cliente modificato con successo.");
@@ -313,7 +300,7 @@ public class ClientsView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     Optional<Clients> clientToRemove = company.searchClient(getCFPIVA().toUpperCase());
-                    if (clientToRemove.isEmpty()) {
+                    if (clientToRemove.equals(Optional.empty())) {
                         popUp.popUpWarning("Cliente non trovato");
                     } else {
                         Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il cliente '" + clientToRemove.get().getName() + "' ?");
@@ -392,7 +379,7 @@ public class ClientsView extends JFrame {
      * @return true if all field are written
      */
     public Boolean missingField() {
-        return (getCFPIVA().isEmpty() || getName().isEmpty() || getAddress().isEmpty() || getCity().isEmpty() || getCAP() == Integer.MIN_VALUE || getMq() == Integer.MIN_VALUE || getTel().isEmpty() || getEmail().isEmpty());
+        return (getCFPIVA() == null || getName() == null || getAddress() == null || getCity() == null || getCAP() == Integer.MIN_VALUE || getMq() == Integer.MIN_VALUE || getTel() == null || getEmail() == null);
     }
 
     /**
@@ -409,7 +396,7 @@ public class ClientsView extends JFrame {
      */
     public void removeClientToTable(final Clients c) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(COL_KEY).equals(c.getCFPIVA())) {
+            if (model.getValueAt(i, COL_KEY).equals(c.getCFPIVA())) {
                 model.removeRow(i);
                 return;
             }

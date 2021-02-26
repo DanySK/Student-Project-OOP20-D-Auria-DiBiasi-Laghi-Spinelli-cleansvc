@@ -12,53 +12,50 @@ import model.DateException;
 
 
 public class AdministratorChartsControllerImpl implements AdministratorChartsController{
-    
+
     private final ChartException chExc;
     private final DateException dateExc;
     private DataChartsImpl dataChart;
     public AdministratorChartsControllerImpl() {
         this.chExc = new ChartException();
-        this.dateExc= new DateException();
+        this.dateExc = new DateException();
         this.dataChart = new DataChartsImpl();
     }
-    
+
     @Override
     public void addLine(DatePicker dateStart, DatePicker dateEnd, int choice, JPanel panel, XYChart chart) 
             throws DateException {
-        
+
         final LocalDate dataPartenza, dataArrivo;
         final Integer scelta = choice;
-        
+
         try {
-                if(dateStart.getText().isBlank() || dateEnd.getText().isBlank()) {
+                if(dateStart.getText().length() == 0 || dateEnd.getText().length() == 0) {
                     this.dateExc.warning(panel);
                     throw this.dateExc;
-                }    
-                
+                }
+
                 dataPartenza = dateStart.getDate();
-                dataArrivo = dateEnd.getDate();
-                    
+                dataArrivo = dateEnd.getDate();     
                 if(dataArrivo.isBefore(dataPartenza)) {
-                    
                         this.dateExc.dateBefore(panel);            
                         throw this.dateExc;
                     }
-        
+
                 List<Double> auxList = this.dataChart.buildChartsFromData(dataPartenza, dataArrivo, scelta);
-                chart.addSeries( this.dataChart.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
+                chart.addSeries (this.dataChart.newLegendString(dataArrivo.toString(), dataPartenza.toString(), scelta),
                                                             this.dataChart.getDateList(), auxList);
                     chart.getStyler().setXAxisTicksVisible(true);
                     chart.getStyler().setYAxisTicksVisible(true);
-        }catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(panel, "Impossibile aggiungere al grafico");
         }
                 this.updatePanelChart(panel);
         }
-    
-    
+
     public void resetChart(XYChart chart, JPanel panel) throws ChartException {       
-        
-        if(chart.getSeriesMap().isEmpty()) {
+
+        if (chart.getSeriesMap().isEmpty()) {
             this.chExc.warning(panel); 
             throw chExc;
         }
@@ -71,16 +68,16 @@ public class AdministratorChartsControllerImpl implements AdministratorChartsCon
 
 
     public void deleteLast(XYChart chart, JPanel panel) throws ChartException {
-        if(chart.getSeriesMap().isEmpty()) {
+        if (chart.getSeriesMap().isEmpty()) {
             this.chExc.warning(panel); 
             throw chExc;
-            
+
         }
         this.dataChart.deleteLastItem(chart);
         this.updatePanelChart(panel);
     }
-    
-    private void updatePanelChart(JPanel panel){
+
+    private void updatePanelChart (JPanel panel) {
         panel.revalidate();
         panel.repaint();   
     }

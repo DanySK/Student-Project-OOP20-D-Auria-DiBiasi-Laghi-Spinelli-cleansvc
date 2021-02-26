@@ -1,0 +1,32 @@
+CFPIVA: DBSVSS96S62D704U
+NAME: Vanessa Di Biasi
+ADDRESS: Strada Gualdo-Ribatta 16
+CITY: Rico'
+CAP: 47014
+TEL: 3311068731
+EMAIL: vanessa@unibo.it
+ADMIN: no
+CFPIVA: LGHRRA97E69H199X
+NAME: Aurora Laghi
+ADDRESS: Via Repubblica Cisalpina, 28
+CITY: Forli
+CAP: 47122
+TEL: 0543776483
+EMAIL: aurora@gmail.it
+ADMIN: si
+CFPIVA: PZZLRN94D04D704U
+NAME: Leonardo Pezzi
+ADDRESS: Via Meldola 234
+CITY: Bertinoro
+CAP: 47012
+TEL: 3337867809
+EMAIL: pezzi@emporio.it
+ADMIN: no
+CFPIVA: PLTSBR69T17R199X
+NAME: Sabrina Poletti
+ADDRESS: Via Bandiera 55 
+CITY: Forlimpopoli
+CAP: 47100
+TEL: 3456767122
+EMAIL: sabrina@adjutor.it
+ADMIN: si

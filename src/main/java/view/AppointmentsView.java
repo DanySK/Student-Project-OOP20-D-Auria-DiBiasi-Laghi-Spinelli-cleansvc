@@ -100,7 +100,7 @@ public class AppointmentsView extends JFrame {
 
         table.setPreferredScrollableViewportSize(new Dimension(ConstantsCleanSvc.TABLE_WIDTH, ConstantsCleanSvc.TABLE_HEIGHT));
         table.setFillsViewportHeight(true);
-        table.setAutoCreateRowSorter(true); //sort by the column header clicked
+        table.setAutoCreateRowSorter(true);
         panelTable.add(table, BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
 
@@ -199,7 +199,7 @@ public class AppointmentsView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     Optional<Appointments> appointmentsToRemove = company.searchAppointment(getDate(), getHour());
-                    if (appointmentsToRemove.isEmpty()) {
+                    if (appointmentsToRemove.equals(Optional.empty())) {
                         popUp.popUpWarning("Appuntamento non trovato.");
                     } else {
                         Boolean confirm = popUp.popUpConfirm("Vuoi eliminare l'appuntamento di " + appointmentsToRemove.get().getClient().getName() + "?");
@@ -280,8 +280,8 @@ public class AppointmentsView extends JFrame {
      */
     public void removeAppointmentsToTable(final Appointments a) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(0).equals(a.getDate()) 
-                    && model.getDataVector().elementAt(i).elementAt(1).equals(a.getHour())) {
+            if (model.getValueAt(i, 0).equals(a.getDate()) 
+                    && model.getValueAt(i, 1).equals(a.getHour())) {
                 model.removeRow(i);
             }
         }
@@ -301,7 +301,7 @@ public class AppointmentsView extends JFrame {
      * @return true if all fields are written
      */
     public Boolean missingField() {
-        return (getClientName().isEmpty() || getDate().isEmpty() || getHour().isEmpty());
+        return (getClientName() == null || getDate() == null || getHour() == null);
     }
 
     /**
