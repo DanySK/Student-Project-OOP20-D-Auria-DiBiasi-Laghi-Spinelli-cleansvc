@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-
 import model.Appointments;
 import model.Products;
 import model.users.Clients;
@@ -24,17 +23,11 @@ public final class CompanyImpl implements Company {
         return SINGLETON;
     }
 
-    /**
-     * 
-     */
     @Override
     public void addStaff(final Staff s) {
         this.staff.add(s);
     }
 
-    /**
-     * 
-     */
     @Override
     public void removeStaff(final Staff s) {
         this.staff.remove(s);

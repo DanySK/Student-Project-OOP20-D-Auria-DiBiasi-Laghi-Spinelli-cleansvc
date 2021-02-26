@@ -46,8 +46,8 @@ public class ProcessImpl implements Process {
 
     }
 
-    /**@return a list of StepType.
-     * 
+    /**
+     * @return a list of StepType.
      */
     @Override
     public List<StepType> getStepTypeList() {
@@ -60,7 +60,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * @return an element if exists or empty if not.
      */
     @Override
     public Optional<SubSteps> searchSubStep(final String code) {
@@ -72,7 +72,7 @@ public class ProcessImpl implements Process {
         return Optional.empty();
     }
     /**
-     * 
+     * @return list if exist subStep of this type or empty if not.
      */
     @Override
     public Optional<List<SubSteps>> getSubStepsByStepType(final String type) {
@@ -86,7 +86,7 @@ public class ProcessImpl implements Process {
     }
 
     /**
-     * 
+     * @return total time of clean process.
      */
     @Override
     public double getProportialTime(final double value, final Clients s, final int staff) {
@@ -95,14 +95,14 @@ public class ProcessImpl implements Process {
         return Math.floor(tot);
     }
     /**
-     * 
+     * @return cost of clean subSteps process.
      */
     @Override
     public double getProportialCost(final double value, final Clients s) {
         return  getProportialTime(value, s, 1);
     }
     /**
-     * 
+     * @return total income of clean process.
      */
     @Override
     public double getIncome(final double value) {

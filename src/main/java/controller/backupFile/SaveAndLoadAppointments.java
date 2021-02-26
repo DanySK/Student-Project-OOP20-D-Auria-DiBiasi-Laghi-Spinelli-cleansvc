@@ -25,18 +25,12 @@ public class SaveAndLoadAppointments implements SaveAndLoad {
     private static final String CLIENT_STR = "CLIENT: ";
     private static final String TIME_STR = "TIME: ";
     private static final String EARN_STR = "EARN: ";
-    private FileWriter fw;
     /**
      * A method that saves an appointment.
      */
     @Override
     public void save() {
-        try {
-            fw = new FileWriter(FILE_APPOINTMENTS, true);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        try (BufferedWriter w = new BufferedWriter(fw)) {
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_APPOINTMENTS))) {
             for (final Appointments a : this.company.getAppointment()) {
                 w.write(DATE_STR + a.getDate());
                 w.newLine();
@@ -84,9 +78,8 @@ public class SaveAndLoadAppointments implements SaveAndLoad {
             });
             for (int i = 0; i < dateList.size(); i++) {
                 Optional<Clients> c = this.company.searchClient(clientsList.get(i));
-                if (!c.isEmpty()) {
-                    this.company.addAppointment(new AppointmentsImpl(dateList.get(i), hourList.get(i), c.get(), 
-                            timeList.get(i), earnList.get(i)));
+                if (!c.equals(Optional.empty())) {
+                    this.company.addAppointment(new AppointmentsImpl(dateList.get(i), hourList.get(i), c.get(), timeList.get(i), earnList.get(i)));
                 }
             }
         } catch (final IOException e) {

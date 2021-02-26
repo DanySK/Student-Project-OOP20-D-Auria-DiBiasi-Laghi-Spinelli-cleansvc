@@ -48,3 +48,13 @@ STEP: DISINFESTATION
 NAME: Scarafaggi e Tarme
 DESCRIPTION: Disinfestazione insetti
 TIME: 80
+CODE: 11S
+STEP: CONCLUSION
+NAME: Profumazione
+DESCRIPTION: Eliminazione cattivi odori
+TIME: 5
+CODE: 12S
+STEP: DISINFESTATION
+NAME: Veleno formiche
+DESCRIPTION: Allontamento insetti
+TIME: 8

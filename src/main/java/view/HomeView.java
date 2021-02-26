@@ -17,7 +17,7 @@ import java.awt.Color;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
 
-public class HomeView extends JFrame{
+public class HomeView extends JFrame {
 
     /**
      * 
@@ -51,7 +51,6 @@ public class HomeView extends JFrame{
         getContentPane().setLayout(new BorderLayout(0, 0));
         JPanel mainPanel = new JPanel();
         mainPanel.setMinimumSize(new Dimension(10, 100));
-        //panelTitle.setBackground(SystemColor.activeCaption);
         getContentPane().add(mainPanel);
         mainPanel.setLayout(new BorderLayout(0, 0));
 
@@ -104,7 +103,7 @@ public class HomeView extends JFrame{
 
         btnGrafici = new JButton("Area Grafici");
         panelCenter.add(btnGrafici);
-        
+
         btnGrafici.setForeground(SystemColor.textText);
         btnGrafici.setBackground(SystemColor.activeCaption);
         btnGrafici.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));

@@ -26,18 +26,12 @@ public class SaveAndLoadSubSteps implements SaveAndLoad {
     private static final String NAME_STR = "NAME: ";
     private static final String TIME_STR = "TIME: ";
     private StepType st;
-    private FileWriter fw;
     /**
-     * A method that saves substeps.
+     * A method that saves subSteps.
      */
     @Override
     public void save() {
-        try {
-            fw = new FileWriter(FILE_SUBSTEPS, true);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        try (BufferedWriter w = new BufferedWriter(fw)) {
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_SUBSTEPS))) {
             for (final SubSteps s : this.process.getSubStepsList()) {
                 w.write(CODE_STR + s.getCode());
                 w.newLine();
@@ -56,7 +50,7 @@ public class SaveAndLoadSubSteps implements SaveAndLoad {
     }
 
     /**
-     * A method that loads substeps.
+     * A method that loads subSteps.
      */
     @Override
     public void load() {

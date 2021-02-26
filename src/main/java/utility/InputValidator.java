@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class InputValidator {
 
-    private String nameAndNum = "^[A-Za-z0-9-_./\\\\\\',\\s]+$";
+    private String nameAndNum = "^[A-Za-z0-9-_./\\\\',\\s]+$";
     private String name = "^[A-Za-z-.'\\s]+$";
     private String phone = "^[0-9]{3,12}$";
     private String email = "^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";

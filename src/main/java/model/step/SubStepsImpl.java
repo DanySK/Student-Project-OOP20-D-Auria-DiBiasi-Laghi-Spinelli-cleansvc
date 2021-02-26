@@ -43,8 +43,7 @@ public class SubStepsImpl implements SubSteps {
         return this.time500mq;
     }
 
-    /**
-     * 
+    /** 
      * @return the code.
      */
     @Override
@@ -53,7 +52,6 @@ public class SubStepsImpl implements SubSteps {
     }
 
     /**
-     * 
      * @return the StepType.
      */
     @Override

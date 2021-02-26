@@ -29,18 +29,12 @@ public class SaveAndLoadProducts implements SaveAndLoad {
     private static final String PRICELITRE_STR = "PRICELITRE: ";
     private static final String USAGE500MQ_STR = "USAGE500MQ: ";
     private StepType stepProduct;
-    private FileWriter fw;
     /**
      * A method that saves a product.
      */
     @Override
     public void save() {
-        try {
-            fw = new FileWriter(FILE_PRODUCTS, true);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        try (BufferedWriter w = new BufferedWriter(fw)) {
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(FILE_PRODUCTS))) {
             for (final Products p : this.company.getProducts()) {
                 w.write(CODE_STR + p.getCode());
                 w.newLine();

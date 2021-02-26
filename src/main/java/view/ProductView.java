@@ -100,29 +100,13 @@ public class ProductView extends JFrame {
         panelTitle.add(btnHome, BorderLayout.EAST);
         panelTable.add(panelTitle, BorderLayout.NORTH);
 
-        /*
-         * test
-         *
-         * productsList.add(new ProductsImpl("a", "b", 3.3, 22));
-         * productsList.add(new ProductsImpl("b", "b", 5.5, 22));
-         * final String[] cols = new String[] {"Nome", "Descrizione", "Prezzo/Litro", "Utilizzo L/500mq"};
-         * Object[][] data = new Object[productsList.size()][cols.length];
-         *
-         * for (int i = 0; i < productsList.size(); i++) {
-         *    data[i][0] = productsList.get(i).getName();
-         *    data[i][1] = productsList.get(i).getDescription();
-         *    data[i][2] = String.valueOf(productsList.get(i).getPricePerLitre());
-         *    data[i][3] = String.valueOf(productsList.get(i).getLitersPer500Mq());
-         * }
-         */
-
         for (int i = 0; i < company.getProducts().size(); i++) {
             Products product = company.getProducts().get(i);
             model.insertRow(i, new Object[] {product.getCode(), product.getName(), product.getDescription(), product.getPricePerLitre(), product.getLitersPer500Mq(), product.getStepType().getType()});
         } 
         table.setPreferredScrollableViewportSize(new Dimension(ConstantsCleanSvc.TABLE_WIDTH, ConstantsCleanSvc.TABLE_HEIGHT));
         table.setFillsViewportHeight(true);
-        table.setAutoCreateRowSorter(true); //sort by the column header clicked
+        table.setAutoCreateRowSorter(true); 
         panelTable.add(table, BorderLayout.CENTER);
         panelTable.add(new JScrollPane(table));
 
@@ -142,13 +126,6 @@ public class ProductView extends JFrame {
         productCodes.setFont(ConstantsCleanSvc.FONT);
         updateSearchingCodes(productCodes);
         pnlSearch.add(productCodes);
-
-
-        /**
-         * txtSearch = new JTextField(20);
-         * txtSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
-         * pnlSearch.add(txtSearch);
-         */
 
         btnSearch = new JButton("Estrai dati");
         btnSearch.setForeground(SystemColor.textText);
@@ -251,7 +228,7 @@ public class ProductView extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 if (!missingField()) {
                     Products newProduct = new ProductsImpl(getCode(), process.getStepTypeList().get(getIndexSelectedStep()), getName(), getDescription(), getPrice(), getUsage());
-                    if (company.searchProduct(newProduct.getCode()).isEmpty()) {
+                    if (company.searchProduct(newProduct.getCode()).equals(Optional.empty())) {
                         popUp.popUpInfo("Prodotto inserito con successo.");
                         company.addProduct(newProduct);
                         addProductToTable(company.getProducts().get(company.getProducts().size() - 1));
@@ -279,7 +256,7 @@ public class ProductView extends JFrame {
                 if (!missingField()) {
                     Products changed = new ProductsImpl(getCode(), process.getStepTypeList().get(getIndexSelectedStep()), getName(), getDescription(), getPrice(), getUsage());
                     Optional<Products> toModify = company.searchProduct(changed.getCode());
-                    if (toModify.isEmpty()) {
+                    if (toModify.equals(Optional.empty())) {
                         popUp.popUpWarning("Codice inesistente tra i prodotti.");
                     } else {
                         popUp.popUpInfo("Prodotto modificato con successo.");
@@ -312,7 +289,7 @@ public class ProductView extends JFrame {
                     popUp.popUpErrorOrMissing();
                 } else {
                     Optional<Products> productToRemove = company.searchProduct(getCode());
-                    if (productToRemove.isEmpty()) {
+                    if (productToRemove.equals(Optional.empty())) {
                         popUp.popUpWarning("Prodotto non trovato!");
                     } else {
                         Boolean confirmed = popUp.popUpConfirm("Vuoi eliminare il prodotto '" + productToRemove.get().getName() + "' ?");
@@ -396,7 +373,7 @@ public class ProductView extends JFrame {
      * @return true if all text field are written
      */
     public Boolean missingField() {
-        return (getCode().isEmpty() || getName().isEmpty() || getDescription().isEmpty() || Double.isNaN(getPrice()) || Double.isNaN(getUsage()));
+        return (getCode() == null || getName() == null || getDescription() == null || Double.isNaN(getPrice()) || Double.isNaN(getUsage()));
     }
     /**
      * 
@@ -411,7 +388,7 @@ public class ProductView extends JFrame {
      */
     public void removeProductToTable(final Products p) {
         for (int i = 0; i < model.getRowCount(); i++) {
-            if (model.getDataVector().elementAt(i).elementAt(COL_KEY).equals(p.getCode())) {
+            if (model.getValueAt(i, COL_KEY).equals(p.getCode())) {
                 model.removeRow(i);
             }
         }
