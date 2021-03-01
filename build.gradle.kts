@@ -1,3 +1,5 @@
+import de.aaschmid.gradle.plugins.cpd.Cpd
+
 // Declaration of the Gradle extension to use
 plugins {
     java
